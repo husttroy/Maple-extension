@@ -1,0 +1,20 @@
+{
+  "name": "Maple Prototype",
+  "description": "My prototype testing for Maple UI",
+  "version": "2.0",
+  "manifest_version": 2,
+  "web_accessible_resources": ["jquery.min.js", "jquery-ui.js", "jquery-ui.css",
+  "images/ui-icons_444444_256x240.png", "images/ui-icons_555555_256x240.png",
+  "images/ui-icons_ffffff_256x240.png", "images/ui-icons_777620_256x240.png",
+  "images/ui-icons_cc0000_256x240.png", "images/ui-icons_777777_256x240.png"],
+  "content_scripts": [
+    {
+      "matches": ["https://stackoverflow.com/*"],
+	  "css": ["bootstrap.min.css", "jquery-ui.css"],
+      "js": ["jquery.min.js", "bootstrap.min.js", "jquery-ui.js", "popup.js", "script.js"]
+    }
+  ],
+  "permissions": [
+	"tabs","http://localhost/","http://*/*"
+	]
+}
