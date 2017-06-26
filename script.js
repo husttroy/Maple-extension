@@ -11,7 +11,6 @@ function doSearch(text) {
 
         while (window.find(text)) {
 			//create link to dialog box
-			//document.execCommand('insertHTML', false, '<a href="#" runat="server" id="dialogLink">' + text + '</a>');
 			document.execCommand('insertHTML', false, '<a data-toggle="popover" id="popoverLink" data-title="Missing Exception Handling" data-container="body" data-html="true">' + text + '</a>');
         }
 		
