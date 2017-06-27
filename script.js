@@ -6,45 +6,51 @@
 		alert('WebSocket Error: ' + error);
 	};	
 	
-	/* FOR TESTING */
-	// Show a connected message when the WebSocket is opened.
-  socket.onopen = function(event) {
-    alert('Connected to your IDE via WebSocket', true);
+	// Make sure we're connected to the WebSocket before trying to send anything to the server
+	socket.onopen = function(event) {
+	
+		// parse HTML for <code> tags and send their content + post id + generated snippet id to server
+		// three classes: "question", "answer", and "answer accepted-answer"
+		var codeBlocks = document.getElementsByTagName("code");
+		var prevParentPost = null;
+		var parentPost;
+		var blockIndex;
+		
+		var message = {
+			snippets:[]
+		};
+		
+		// iterate through the code blocks and create JSON objects out of them
+		for (var i = 0; i < codeBlocks.length; i++)
+		{
+			// filter out code snippets from question post; we just want snippets from answers
+			parentPost = getParentPost(codeBlocks[i]);
+			if (parentPost != null)
+			{
+				if (parentPost != prevParentPost)
+				{
+					blockIndex = 0;
+				}
+				
+				message.snippets.push({
+					"id":getParentPost(codeBlocks[i]).getAttribute("data-answerid") + "-" + blockIndex,
+					"snippet":codeBlocks[i].innerHTML
+				});
+				blockIndex++;
+				
+				prevParentPost = parentPost;
+			}
+		}
+		
+		// send the code example to the backend for parsing and analysis
+		socket.send(JSON.stringify(message));
   };
 
-  // Show a disconnected message when the WebSocket is closed.
-  socket.onclose = function(event) {
-   alert('Disconnected from your IDE.', false);
-  };
+	// Show a disconnected message when the WebSocket is closed.
+	socket.onclose = function(event) {
+		alert('Disconnected from your IDE.', false);
+	};
 	
-	// parse HTML for <code> tags and send their content + post id + generated snippet id to server
-	// nested div?
-	// three classes: "question", "answer", and "answer accepted-answer"
-	var codeBlocks = document.getElementsByTagName("code");
-	var prevParentPost = null;
-	var blockIndex;
-	var parentPost;
-	var message = "";
-	
-	for (var i = 0; i < codeBlocks.length; i++)
-	{
-		// filter out code snippets from question post; we just want snippets from answers
-		parentPost = getParentPost(codeBlocks[i]);
-		if (parentPost != null)
-		{
-			if (parentPost != prevParentPost)
-			{
-				blockIndex = 0;
-			}
-			message += codeBlocks[i].innerHTML + "\nCode Snippet ID: " + getParentPost(codeBlocks[i]).getAttribute("id") + "-" + blockIndex;
-			blockIndex++;
-			
-			prevParentPost = parentPost;
-		}
-	}
-	
-	// send the code example to the backend for analysis
-   socket.send(message);
 	
 	// this function walks through the calling element's parents until it reaches
 	// the question/answer post div in which the code resides
