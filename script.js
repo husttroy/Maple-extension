@@ -1,3 +1,69 @@
+	// setup the websocket
+	var socket = new WebSocket('ws://127.0.0.1:8080/');
+	  
+	// Handle any errors that occur.
+	socket.onerror = function(error) {
+		alert('WebSocket Error: ' + error);
+	};	
+	
+	/* FOR TESTING */
+	// Show a connected message when the WebSocket is opened.
+  socket.onopen = function(event) {
+    alert('Connected to your IDE via WebSocket', true);
+  };
+
+  // Show a disconnected message when the WebSocket is closed.
+  socket.onclose = function(event) {
+   alert('Disconnected from your IDE.', false);
+  };
+	
+	// parse HTML for <code> tags and send their content + post id + generated snippet id to server
+	// nested div?
+	// three classes: "question", "answer", and "answer accepted-answer"
+	var codeBlocks = document.getElementsByTagName("code");
+	var prevParentPost = null;
+	var blockIndex;
+	var parentPost;
+	var message = "";
+	
+	for (var i = 0; i < codeBlocks.length; i++)
+	{
+		// filter out code snippets from question post; we just want snippets from answers
+		parentPost = getParentPost(codeBlocks[i]);
+		if (parentPost != null)
+		{
+			if (parentPost != prevParentPost)
+			{
+				blockIndex = 0;
+			}
+			message += codeBlocks[i].innerHTML + "\nCode Snippet ID: " + getParentPost(codeBlocks[i]).getAttribute("id") + "-" + blockIndex;
+			blockIndex++;
+			
+			prevParentPost = parentPost;
+		}
+	}
+	
+	// send the code example to the backend for analysis
+   socket.send(message);
+	
+	// this function walks through the calling element's parents until it reaches
+	// the question/answer post div in which the code resides
+	function getParentPost(_child) {
+        var object = _child;
+        while (object.className != "question" 
+		&& object.className != "answer" 
+		&& object.className != "answer accepted-answer") 
+		{
+            object = object.parentNode;
+        }
+
+		if (object.className == "question")
+		{
+			object = null;
+		}
+        return object;
+    }
+	
 	//check if substring is the code we want
 	// (later: get substring that violates API usage)
 	// and highlight substring
@@ -52,7 +118,7 @@ content: '<div class="pagination-container"><div data-page="1"><p>This code coul
 + '<p>This pattern is used by 3370 snippets in 578 GitHub repositories</p>'
 + '<a href="https://www.google.com/">See this in a GitHub example</a></div>'
 + '<div class="pagination pagination-centered">'
-+'<ul class="page_control"><li class="active" data-page="1"><a href="#" >1</a></li>'
++ '<ul class="page_control"><li class="active" data-page="1"><a href="#" >1</a></li>'
 + '<li data-page="2"><a href="#" >2</a></li>'
 + '<li data-page="3"><a href="#" >3</a></li>'
 + '</ul></div>'
