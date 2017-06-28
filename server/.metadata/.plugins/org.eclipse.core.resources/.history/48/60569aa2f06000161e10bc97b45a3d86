@@ -1,0 +1,10 @@
+
+public class Example {
+	public byte[] compress(String input){
+		byte[] output;
+		
+		
+		
+		return output;
+	}
+}

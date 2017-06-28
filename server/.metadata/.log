@@ -1,0 +1,217 @@
+!SESSION 2016-06-07 15:50:09.250 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_77
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.ui.browser 2 0 2016-06-07 15:50:26.752
+!MESSAGE Internal browser is not available: No more handles [Unknown Mozilla path (MOZILLA_FIVE_HOME not set)]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:13.442
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-linux.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:13.442
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-osx.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:19.480
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-linux.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:19.481
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-osx.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:28.520
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-linux.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:28.520
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-osx.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:35.061
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-linux.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:35.061
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-osx.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:43.612
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-linux.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:43.612
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-osx.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:50.151
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-linux.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:50.151
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-osx.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:57.189
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-linux.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:17:57.189
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-osx.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:18:06.816
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-linux.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:18:06.816
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-osx.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:18:16.860
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-linux.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:18:16.860
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-osx.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:19:07.825
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-linux.so [in TempoServer]
+
+!ENTRY org.eclipse.jdt.core 4 0 2016-06-07 16:19:07.825
+!MESSAGE Invalid ZIP archive: lib/setuid/libsetuid-osx.so [in TempoServer]
+!SESSION 2016-06-08 23:36:18.878 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_91
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2016-06-08 23:36:25.023
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY org.eclipse.ui.workbench 4 2 2016-06-09 15:54:32.760
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.ui.workbench".
+!STACK 0
+java.lang.RuntimeException: Could not create bundle file.
+	at org.eclipse.osgi.storage.Storage.createBundleFile(Storage.java:913)
+	at org.eclipse.osgi.storage.BundleInfo$Generation.getBundleFile(BundleInfo.java:77)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.addStandardClassPathEntry(ClasspathManager.java:197)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.addClassPathEntry(ClasspathManager.java:192)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.findClassPathEntry(ClasspathManager.java:175)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.buildClasspath(ClasspathManager.java:154)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.<init>(ClasspathManager.java:83)
+	at org.eclipse.osgi.internal.loader.EquinoxClassLoader.<init>(EquinoxClassLoader.java:57)
+	at org.eclipse.osgi.internal.loader.BundleLoader.createClassLoaderPrivledged(BundleLoader.java:277)
+	at org.eclipse.osgi.internal.loader.BundleLoader.getModuleClassLoader(BundleLoader.java:224)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:320)
+	at org.eclipse.osgi.internal.loader.sources.SingleSourcePackage.loadClass(SingleSourcePackage.java:36)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClassInternal(BundleLoader.java:391)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:345)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:337)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.loadClass(ModuleClassLoader.java:160)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+	at org.eclipse.wst.jsdt.debug.internal.ui.JavaScriptDebugUIPlugin.closeEditors(JavaScriptDebugUIPlugin.java:142)
+	at org.eclipse.wst.jsdt.debug.internal.ui.JavaScriptDebugUIPlugin.preShutdown(JavaScriptDebugUIPlugin.java:172)
+	at org.eclipse.ui.internal.Workbench$7.run(Workbench.java:949)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.ui.internal.JFaceUtil$1.run(JFaceUtil.java:50)
+	at org.eclipse.jface.util.SafeRunnable.run(SafeRunnable.java:178)
+	at org.eclipse.ui.internal.Workbench.firePreShutdown(Workbench.java:946)
+	at org.eclipse.ui.internal.Workbench.busyClose(Workbench.java:1091)
+	at org.eclipse.ui.internal.Workbench.access$21(Workbench.java:1079)
+	at org.eclipse.ui.internal.Workbench$19.run(Workbench.java:1410)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:70)
+	at org.eclipse.ui.internal.Workbench.close(Workbench.java:1407)
+	at org.eclipse.ui.internal.Workbench.close(Workbench.java:1380)
+	at org.eclipse.ui.internal.WorkbenchWindow.busyClose(WorkbenchWindow.java:1556)
+	at org.eclipse.ui.internal.WorkbenchWindow.access$15(WorkbenchWindow.java:1527)
+	at org.eclipse.ui.internal.WorkbenchWindow$10.run(WorkbenchWindow.java:1592)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:70)
+	at org.eclipse.ui.internal.WorkbenchWindow.close(WorkbenchWindow.java:1589)
+	at org.eclipse.ui.internal.WorkbenchWindow.close(WorkbenchWindow.java:1603)
+	at org.eclipse.ui.internal.WorkbenchWindow$6.close(WorkbenchWindow.java:521)
+	at org.eclipse.e4.ui.workbench.renderers.swt.WBWRenderer$11.shellClosed(WBWRenderer.java:563)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:98)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Display.sendEvent(Display.java:4454)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1388)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1412)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1397)
+	at org.eclipse.swt.widgets.Shell.closeWidget(Shell.java:649)
+	at org.eclipse.swt.widgets.Shell.gtk_delete_event(Shell.java:1256)
+	at org.eclipse.swt.widgets.Widget.windowProc(Widget.java:2081)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:5534)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4668)
+	at org.eclipse.swt.internal.gtk.OS._gtk_main_do_event(Native Method)
+	at org.eclipse.swt.internal.gtk.OS.gtk_main_do_event(OS.java:9106)
+	at org.eclipse.swt.widgets.Display.eventProc(Display.java:1253)
+	at org.eclipse.swt.internal.gtk.OS._g_main_context_iteration(Native Method)
+	at org.eclipse.swt.internal.gtk.OS.g_main_context_iteration(OS.java:2477)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3407)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$9.run(PartRenderingEngine.java:1151)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1032)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:148)
+	at org.eclipse.ui.internal.Workbench$5.run(Workbench.java:636)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:579)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:150)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:135)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:196)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:134)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:380)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:235)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:648)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:603)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1465)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1438)
+Caused by: java.io.IOException: The file "/home/troy/eclipse/plugins/org.eclipse.wst.jsdt.debug.core_3.1.100.v201405212207.jar" does not exist
+	at org.eclipse.osgi.storage.bundlefile.ZipBundleFile.<init>(ZipBundleFile.java:52)
+	at org.eclipse.osgi.storage.Storage.createBundleFile(Storage.java:910)
+	... 76 more
+!SESSION 2016-06-09 15:55:32.260 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_91
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.equinox.p2.core 4 0 2016-06-09 16:06:09.077
+!MESSAGE Provisioning exception
+!STACK 1
+org.eclipse.equinox.p2.core.ProvisionException: No repository found at http://www.eclipse.org/downloads/.
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:395)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:692)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:96)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.p2.ui.LoadMetadataRepositoryJob.doLoad(LoadMetadataRepositoryJob.java:117)
+	at org.eclipse.equinox.p2.ui.LoadMetadataRepositoryJob.runModal(LoadMetadataRepositoryJob.java:102)
+	at org.eclipse.equinox.internal.p2.ui.sdk.PreloadingRepositoryHandler$2.runModal(PreloadingRepositoryHandler.java:83)
+	at org.eclipse.equinox.p2.operations.ProvisioningJob.run(ProvisioningJob.java:177)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2016-06-09 16:06:09.078
+!MESSAGE No repository found at http://www.eclipse.org/downloads/.
+
+!ENTRY org.eclipse.equinox.p2.operations 4 10053 2016-06-09 16:06:35.148
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 10053 2016-06-09 16:06:35.148
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2016-06-09 16:06:35.148
+!MESSAGE Software being installed: Partial Program Analysis for Java 1.2.1.201106050716 (ca.mcgill.cs.swevo.ppa.feature.feature.group 1.2.1.201106050716)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2016-06-09 16:06:35.148
+!MESSAGE Missing requirement: Partial Program Analysis for Java 1.2.1.201106050716 (ca.mcgill.cs.swevo.ppa.feature.feature.group 1.2.1.201106050716) requires 'org.junit4 4.3.1' but it could not be found
+
+!ENTRY org.eclipse.equinox.p2.operations 4 10053 2016-06-09 16:06:35.151
+!MESSAGE Operation details
+!SUBENTRY 1 org.eclipse.equinox.p2.director 4 10053 2016-06-09 16:06:35.151
+!MESSAGE Cannot complete the install because one or more required items could not be found.
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2016-06-09 16:06:35.151
+!MESSAGE Software being installed: Partial Program Analysis for Java 1.2.1.201106050716 (ca.mcgill.cs.swevo.ppa.feature.feature.group 1.2.1.201106050716)
+!SUBENTRY 2 org.eclipse.equinox.p2.director 4 0 2016-06-09 16:06:35.151
+!MESSAGE Missing requirement: Partial Program Analysis for Java 1.2.1.201106050716 (ca.mcgill.cs.swevo.ppa.feature.feature.group 1.2.1.201106050716) requires 'org.junit4 4.3.1' but it could not be found
+!SESSION 2017-06-16 14:55:37.613 -----------------------------------------------
+eclipse.buildId=4.4.2.M20150204-1700
+java.version=1.8.0_111
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.core.resources 2 10035 2017-06-16 14:58:02.423
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.

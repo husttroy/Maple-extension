@@ -8,7 +8,6 @@
 	
 	// Make sure we're connected to the WebSocket before trying to send anything to the server
 	socket.onopen = function(event) {
-	
 		// parse HTML for <code> tags and send their content + post id + generated snippet id to server
 		// three classes: "question", "answer", and "answer accepted-answer"
 		var codeBlocks = document.getElementsByTagName("code");
@@ -34,7 +33,7 @@
 				
 				message.snippets.push({
 					"id":getParentPost(codeBlocks[i]).getAttribute("data-answerid") + "-" + blockIndex,
-					"snippet":codeBlocks[i].innerHTML
+					"snippet":codeBlocks[i].innerText //note: textContent strips out newlines
 				});
 				blockIndex++;
 				
@@ -43,12 +42,12 @@
 		}
 		
 		// send the code example to the backend for parsing and analysis
-		socket.send(JSON.stringify(message));
+		socket.send(JSON.stringify(message.snippets));
   };
 
 	// Show a disconnected message when the WebSocket is closed.
 	socket.onclose = function(event) {
-		alert('Disconnected from your IDE.', false);
+		//alert('Disconnected from your IDE.', false);
 	};
 	
 	
