@@ -1,4 +1,4 @@
-package edu.ucla.cs.tempo;
+package edu.ucla.cs.maple.server;
 
 import java.io.IOException;
 import org.eclipse.jetty.websocket.api.Session;
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @WebSocket
-public class TempoWebSocketHandler {
+public class MapleWebSocketHandler {
 	Session session = null;
 	
 	@OnWebSocketClose

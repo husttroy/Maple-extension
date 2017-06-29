@@ -1,4 +1,4 @@
-package edu.ucla.cs.tempo;
+package edu.ucla.cs.maple.server;
 
 public class CodeSnippet {
     
