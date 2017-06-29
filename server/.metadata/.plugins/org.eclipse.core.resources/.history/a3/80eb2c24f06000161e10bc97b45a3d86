@@ -1,6 +1,0 @@
-
-public class Example {
-	public byte[] compress(String input){
-		
-	}
-}
