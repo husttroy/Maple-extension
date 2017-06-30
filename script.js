@@ -122,8 +122,8 @@ content: '<div class="pagination-container"><div data-page="1"><p>This code coul
 + '<div data-page="3" style="display:none;"><p>This code could be improved with exception handling:</p><pre><code>'+ codeStringOne +'</code></pre>'
 + '<p>This pattern is used by 3370 snippets in 578 GitHub repositories</p>'
 + '<a href="https://www.google.com/">See this in a GitHub example</a></div>'
-+ '<div class="pagination pagination-centered">'
-+ '<ul class="page_control"><li class="active" data-page="1"><a href="#" >1</a></li>'
++ '<div class="pagination-container">'
++ '<ul class="pagination pagination-centered"><li class="active" data-page="1"><a href="#" >1</a></li>'
 + '<li data-page="2"><a href="#" >2</a></li>'
 + '<li data-page="3"><a href="#" >3</a></li>'
 + '</ul></div>'
@@ -136,7 +136,7 @@ $(document.body).on('shown.bs.popover', function () {
   var paginationHandler = function(){
     // store pagination container so we only select it once
     var $paginationContainer = $(".pagination-container"),
-        $pagination = $paginationContainer.find('.pagination ul');
+        $pagination = $paginationContainer.find('.pagination');
 
     console.log($paginationContainer);
     console.log($pagination);
@@ -150,6 +150,9 @@ $(document.body).on('shown.bs.popover', function () {
             currentPage = parseInt( $(".pagination-container div[data-page]:visible").data('page') ),
             numPages = $paginationContainer.find("div[data-page]").length;
         
+		$('.active').not($($(this).parent('li'))).removeClass('active');
+		$(this).parent('li').toggleClass('active');
+		
         // make sure they aren't clicking the current page
         if ( parseInt(parentLiPage) !== parseInt(currentPage) ) {
             // hide the current page
