@@ -1,0 +1,34 @@
+.popover{
+    max-width: 100%;
+}
+
+.upvote {
+	display: inline-block;
+  width: 0; 
+  height: 0; 
+  cursor: pointer;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  
+  border-bottom: 12px solid #817C7C;
+}
+
+.downvote {
+	display: inline-block;
+  width: 0; 
+  height: 0; 
+  cursor: pointer;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+	
+  border-top: 12px solid #817C7C;
+}
+
+.voteSpacer {
+  width: 0; 
+  height: 10; 
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  
+  border-bottom: 12px solid transparent;
+}

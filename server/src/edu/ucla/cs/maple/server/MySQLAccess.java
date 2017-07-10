@@ -6,12 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-
+import java.util.HashMap;
 
 
 public class MySQLAccess {
-    final String url = "jdbc:mysql://localhost:3306/maple";
+    final String url = "jdbc:mysql://localhost:3306/maple?autoReconnect=true&useSSL=false";
     final String username = "root";
     final String password = "Password69";
     String table;
@@ -31,20 +30,20 @@ public class MySQLAccess {
         }
     }
     
-    public ArrayList<String> getPatterns(String _class, String _method) {
-        ArrayList<String> patterns = new ArrayList<String>();
+    public HashMap<Integer, String> getPatterns(String _method) {
+        HashMap<Integer, String> patterns = new HashMap<Integer, String>();
         
         if (connect != null) {
             try {
                 // construct the query
-                String query = "select pattern from patterns where class='"
-                        + _class + "' and method='" + _method + "';";
+                String query = "select id, pattern from patterns where method='"
+                        + _method + "';";
                 
                 prep = connect.prepareStatement(query);
                 result = prep.executeQuery();
                 while(result.next()) {
-                    // populate ArrayList with the results
-                    patterns.add(result.getString("pattern"));
+                    // populate HashMap with the results
+                    patterns.put((Integer)result.getInt("id"), result.getString("pattern"));
                 }
                 result.close();
                 
@@ -54,6 +53,22 @@ public class MySQLAccess {
         }
         
         return patterns;
+    }
+    
+    public void addVote(int vote, int patternID) {
+        if (connect != null) {
+            try {
+                // construct the query
+                String query = "UPDATE patterns SET votes = votes +" + vote 
+                        + " WHERE id = " + patternID + ";";
+                
+                prep = connect.prepareStatement(query);
+                result = prep.executeQuery();
+                
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void close() {

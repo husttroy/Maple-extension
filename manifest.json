@@ -7,7 +7,7 @@
   "content_scripts": [
     {
       "matches": ["https://stackoverflow.com/*"],
-	  "css": ["bootstrap.min.css"],
+	  "css": ["bootstrap.min.css", "style.css"],
       "js": ["jquery.min.js", "bootstrap.min.js", "script.js"]
     }
   ],

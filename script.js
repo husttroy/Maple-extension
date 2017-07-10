@@ -3,7 +3,7 @@
 	  
 	// Handle any errors that occur.
 	socket.onerror = function(error) {
-		alert('WebSocket Error: ' + error);
+		//alert('WebSocket Error: ' + error);
 	};	
 	
 	// Make sure we're connected to the WebSocket before trying to send anything to the server
@@ -113,13 +113,19 @@ var codeStringTwo = '<span style="background-color: #FFFF00">try {</span> \n\r o
 
 // add content to the popover
 $("[data-toggle=popover]").popover({
-content: '<div class="pagination-container"><div data-page="1"><p>This code could be improved with exception handling:</p><pre><code>'+ codeStringOne +'</code></pre>'
+content: '<div class="pagination-container"><div data-page="1"><p>This code could be improved with exception handling:</p>'
++ '<table><tbody><tr><td class="voteCell_1"><div class="upvote" id="upvote1"></div><div class="voteSpacer"></div><div class="downvote" id="downvote1"></div></td>'
++ '<td class="codeCell_1"><pre><code>'+ codeStringOne +'</code></pre></td></tr></tbody></table>'
 + '<p>This pattern is used by 3370 snippets in 578 GitHub repositories</p>'
 + '<a href="https://www.google.com/">See this in a GitHub example</a></div>'
-+ '<div data-page="2" style="display:none;"><p>This code could be improved with exception handling:</p><pre><code>'+ codeStringTwo +'</code></pre>'
++ '<div data-page="2" style="display:none;"><p>This code could be improved with exception handling:</p>'
++ '<table><tbody><tr><td class="voteCell_2"><div class="upvote" id="upvote2"></div><div class="voteSpacer"></div><div class="downvote" id="downvote2"></div></td>'
++ '<td class="codeCell_2"><pre><code>'+ codeStringTwo +'</code></pre></td></tr></tbody></table>'
 + '<p>This pattern is used by 3370 snippets in 578 GitHub repositories</p>'
 + '<a href="https://www.google.com/">See this in a GitHub example</a></div>'
-+ '<div data-page="3" style="display:none;"><p>This code could be improved with exception handling:</p><pre><code>'+ codeStringOne +'</code></pre>'
++ '<div data-page="3" style="display:none;"><p>This code could be improved with exception handling:</p>'
++ '<table><tbody><tr><td class="voteCell_3"><div class="upvote" id="upvote3"></div><div class="voteSpacer"></div><div class="downvote" id="downvote3"></div></td>'
++ '<td class="codeCell_3"><pre><code>'+ codeStringOne +'</code></pre></td></tr></tbody></table>'
 + '<p>This pattern is used by 3370 snippets in 578 GitHub repositories</p>'
 + '<a href="https://www.google.com/">See this in a GitHub example</a></div>'
 + '<div class="pagination-container">'
@@ -173,4 +179,23 @@ $(document.body).on('shown.bs.popover', function () {
     });
   };
   $( document ).ready( paginationHandler );
+});
+
+$(document).on( "click", ".upvote", function () {
+	// make a JSON message
+	// should send server whether it's an up or downvote,
+	// plus its id to identify which pattern it belongs to
+	socket.send('{"vote":1, "id":"'+this.id+'"}');
+	
+	// change the color to green
+	$(this).css("border-bottom", "12px solid green");
+	
+	// disable the button so the user can't send more than one upvote
+	 this.disabled = true;
+});
+
+$(document).on( "click", ".downvote", function () {
+	socket.send('{"vote":-1, "id":"'+this.id+'"}');
+	$(this).css("border-top", "12px solid red");
+	this.disabled = true;
 });
