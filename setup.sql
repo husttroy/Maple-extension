@@ -1,7 +1,7 @@
 /* create database and table */
 create database maple; 
 use maple;
-create table patterns(id int auto_increment primary key, class varchar(256), method varchar(256), pattern varchar(256), support int, alternative int, description varchar(256)); 
+create table patterns(id int auto_increment primary key, class varchar(256), method varchar(256), pattern varchar(256), support int, alternative int, description varchar(256), votes int default 0); 
 
 /* populate the existing patterns for 30 Java and Android APIs */
 insert into patterns (class, method, pattern, support, description) values ('File', 'createNewFile', 'createNewFile(0)@!rcv.exists()', 5564, 'Check whether the file exists before creating it.'); 

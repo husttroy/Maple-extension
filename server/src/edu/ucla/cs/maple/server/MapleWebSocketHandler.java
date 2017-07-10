@@ -3,8 +3,6 @@ package edu.ucla.cs.maple.server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -20,129 +18,145 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
-import edu.ucla.cs.model.ControlConstruct;
-import edu.ucla.cs.model.MethodCall;
+import edu.ucla.cs.model.Pattern;
 import edu.ucla.cs.utils.PatternUtils;
-
 
 @WebSocket
 public class MapleWebSocketHandler {
 	Session session = null;
 	boolean _isFirstMessage = true;
-	
+
 	@OnWebSocketClose
-    public void onClose(int statusCode, String reason) {
+	public void onClose(int statusCode, String reason) {
 		this.session = null;
-        System.out.println("Close: statusCode=" + statusCode + ", reason=" + reason);
-    }
+		System.out.println("Close: statusCode=" + statusCode + ", reason="
+				+ reason);
+	}
 
-    @OnWebSocketError
-    public void onError(Throwable t) {
-        System.out.println("Error: " + t.getMessage());
-    }
+	@OnWebSocketError
+	public void onError(Throwable t) {
+		System.out.println("Error: " + t.getMessage());
+	}
 
-    @OnWebSocketConnect
-    public void onConnect(Session session) {
-    	this.session = session;
-        System.out.println("Connect: " + session.getRemoteAddress().getAddress());
-    }
+	@OnWebSocketConnect
+	public void onConnect(Session session) {
+		this.session = session;
+		System.out.println("Connect: "
+				+ session.getRemoteAddress().getAddress());
+	}
 
-    @OnWebSocketMessage
-    public void onMessage(String message) {
-        /* TEST */
-        System.out.println("Message: " + message);
-        
-        ObjectMapper mapper = new ObjectMapper();
-        MySQLAccess dbAccess = new MySQLAccess();
-        
-        PartialProgramAnalyzer analyzer = null;
-        HashMap<APISeqItem, HashMap<Integer, ArrayList<APISeqItem>>> patterns = 
-                new HashMap<APISeqItem, HashMap<Integer, ArrayList<APISeqItem>>>();
-        HashMap<Integer, ArrayList<APISeqItem>> newPatterns = 
-                new HashMap<Integer, ArrayList<APISeqItem>>();
-        
-        // the first message will always be the code from the HTML page
-        if (_isFirstMessage) {
-            _isFirstMessage = false;
-            
-            // parse the JSON objects out of the message
-            CodeSnippet[] snippets = null;
-            try {
-                // Convert JSON string to array of CodeSnippets
-                snippets = mapper.readValue(message, CodeSnippet[].class);
-                
-            } catch (JsonGenerationException e) {
-                e.printStackTrace();
-            } catch (JsonMappingException e) {
-                e.printStackTrace(); 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            
-            // analyze the code snippets and return patterns to the plugin
-            for (CodeSnippet cs : snippets) {
-                try {
-                    // parse and analyze the code snippets using Maple
-                    analyzer = new PartialProgramAnalyzer(cs.getSnippet());
-                    
-                    HashMap<String, ArrayList<APISeqItem>> callSeq = analyzer.retrieveAPICallSequences();
-                    dbAccess.connect();
-                    
-                    for (String key : callSeq.keySet()) {
-                        for (APISeqItem item : callSeq.get(key)) {
-                            // get matching patterns from the database and parse
-                            // into ArrayList<APISeqItem>
-                            HashMap<Integer, String> dbPatterns = dbAccess.getPatterns(((APICall) item).getName());
-                            
-                            for (Integer patternKey : dbPatterns.keySet()) {
-                                // parse the String pattern into an ArrayList<APISeqItem>
-                                ArrayList<APISeqItem> currentPattern = PatternUtils.convert(dbPatterns.get(patternKey));
-                                // put the new pattern and its id in newPatterns
-                                newPatterns.put(patternKey, currentPattern);
-                            }
-                          // add newPatterns to patterns using the corresponding
-                          // APISeqItem extracted from SO as its key
-                          patterns.put(item, newPatterns);
-                        }
-                    }
-                    
-                    dbAccess.close();
-                    
-                    // TODO compare patterns with original snippet to look for
-                    // API usage violations
-                    
-                    // TODO send patterns + ids back to the plugin, along with the
-                    // analyzed snippet so the plugin knows where to highlight
-                } catch (Exception e) {
-                    // if we get an exception, the code was not able to be
-                    // parsed/analyzed. So we do nothing and continue analysis.
-                }
-            }
-        }
-        else {
-            // any following messages will be up/downvotes. We know which pattern
-            // is being voted on based on the vote's id, whose index corresponds
-            // with the page of its pattern
-            
-            JsonNode voteMessage;
-            try {
-                voteMessage = mapper.readValue(message, JsonNode.class);
-                
-                /* TEST */
-                System.out.println("Vote:" + voteMessage.get("vote").asText() + ", ID:"
-                        + voteMessage.get("id").asText());
-                
-                //TODO: send to MySQL
-                //TODO: how to find corresponding pattern? database should send
-                // pattern + id when populating plugin
-                
-            } catch (JsonGenerationException e) {
-                e.printStackTrace();
-            } catch (JsonMappingException e) {
-                e.printStackTrace(); 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	@OnWebSocketMessage
+	public void onMessage(String message) {
+		/* TEST */
+		System.out.println("Message: " + message);
+
+		ObjectMapper mapper = new ObjectMapper();
+		MySQLAccess dbAccess = new MySQLAccess();
+
+		HashMap<String, ArrayList<Pattern>> patterns = new HashMap<String, ArrayList<Pattern>>();
+
+		// the first message will always be the code from the HTML page
+		if (_isFirstMessage) {
+			_isFirstMessage = false;
+
+			// parse the JSON objects out of the message
+			CodeSnippet[] snippets = null;
+			try {
+				// Convert JSON string to array of CodeSnippets
+				snippets = mapper.readValue(message, CodeSnippet[].class);
+
+			} catch (JsonGenerationException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			// only connect it once
+			dbAccess.connect();
+
+			// analyze the code snippets and return patterns to the plugin
+			for (CodeSnippet cs : snippets) {
+				try {
+					// parse and analyze a snippet using Maple
+					PartialProgramAnalyzer analyzer = new PartialProgramAnalyzer(
+							cs.getSnippet());
+
+					HashMap<String, ArrayList<APISeqItem>> seqs = analyzer
+							.retrieveAPICallSequences();
+					for (String method : seqs.keySet()) {
+						HashMap<Integer, ArrayList<APISeqItem>> newPatterns = new HashMap<Integer, ArrayList<APISeqItem>>();
+
+						// get the corresponding call sequence for a method
+						// in the snippet
+						ArrayList<APISeqItem> seq = seqs.get(method);
+
+						for (APISeqItem item : seq) {
+							if (!(item instanceof APICall)) {
+								continue;
+							}
+
+							String name = ((APICall) item).name;
+							
+							ArrayList<Pattern> ps; 
+							if (patterns.containsKey(name)) {
+								// the pattern of this API method exists
+								ps = patterns.get(name); 
+							} else {
+								// get patterns from the database
+								ps = dbAccess.getPatterns(name);
+								patterns.put(name, ps);
+							}
+							
+							// check for violation or alternative usage
+							for (Pattern p : ps) {
+								// parse the String pattern into an
+								// ArrayList<APISeqItem>
+								ArrayList<APISeqItem> parray = PatternUtils
+										.convert(p.pattern);
+								
+								// TODO: also parse the alternative usage patterns
+								
+								// TODO: integrate the anomaly detection module
+							}
+						}
+					}
+				} catch (Exception e) {
+					// do nothing if we get an exception when parsing and
+					// analyzing the snippet
+					continue;
+				}
+
+				// TODO send patterns + ids back to the plugin, along with the
+				// analyzed snippet so the plugin knows where to highlight
+			}
+			dbAccess.close();
+		} else {
+			// any following messages will be up/downvotes. We know which
+			// pattern
+			// is being voted on based on the vote's id, whose index corresponds
+			// with the page of its pattern
+
+			JsonNode voteMessage;
+			try {
+				voteMessage = mapper.readValue(message, JsonNode.class);
+
+				/* TEST */
+				System.out.println("Vote:" + voteMessage.get("vote").asText()
+						+ ", ID:" + voteMessage.get("id").asText());
+
+				// TODO: send to MySQL
+				// TODO: how to find corresponding pattern? database should send
+				// pattern + id when populating plugin
+
+			} catch (JsonGenerationException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
