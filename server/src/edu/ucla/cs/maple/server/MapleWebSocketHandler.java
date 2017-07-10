@@ -22,6 +22,7 @@ import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
 import edu.ucla.cs.model.ControlConstruct;
 import edu.ucla.cs.model.MethodCall;
+import edu.ucla.cs.utils.PatternUtils;
 
 
 @WebSocket
@@ -95,40 +96,13 @@ public class MapleWebSocketHandler {
                             
                             for (Integer patternKey : dbPatterns.keySet()) {
                                 // parse the String pattern into an ArrayList<APISeqItem>
-                                String[] strSeqItems = dbPatterns.get(patternKey).split(";");
-                                ArrayList<APISeqItem> currentPattern = new ArrayList<APISeqItem>();
-                                
-                                for (String strItem : strSeqItems) {
-                                    // instantiate either a ControlConstruct or
-                                    // an APICallItem and add to currentPattern
-                                    switch (strItem) {
-                                        case "try {":
-                                            currentPattern.add(ControlConstruct.TRY);
-                                            break;
-                                        case "catch {":
-                                            currentPattern.add(ControlConstruct.CATCH);
-                                            break;
-                                        case "finally {":
-                                            currentPattern.add(ControlConstruct.FINALLY);
-                                            break;
-                                        case "if {":
-                                            currentPattern.add(ControlConstruct.IF);
-                                            break;
-                                        case "else {":
-                                            currentPattern.add(ControlConstruct.ELSE);
-                                            break;
-                                        // TODO case LOOP and END_BLOCK
-                                        // default is APICallItem
-                                        default: 
-                                            //APICall(name, condition, args);                                            
-                                    }
-                                }
+                                ArrayList<APISeqItem> currentPattern = PatternUtils.convert(dbPatterns.get(patternKey));
                                 // put the new pattern and its id in newPatterns
-                                //newPatterns.put(patternKey, value);
+                                newPatterns.put(patternKey, currentPattern);
                             }
                           // add newPatterns to patterns using the corresponding
                           // APISeqItem extracted from SO as its key
-                          //patterns.put(item, newPatterns);
+                          patterns.put(item, newPatterns);
                         }
                     }
                     
