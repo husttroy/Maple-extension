@@ -3,6 +3,7 @@ package edu.ucla.cs.maple.server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -16,9 +17,11 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import edu.ucla.cs.maple.check.UseChecker;
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
 import edu.ucla.cs.model.Pattern;
+import edu.ucla.cs.model.Violation;
 import edu.ucla.cs.utils.PatternUtils;
 
 @WebSocket
@@ -86,8 +89,6 @@ public class MapleWebSocketHandler {
 					HashMap<String, ArrayList<APISeqItem>> seqs = analyzer
 							.retrieveAPICallSequences();
 					for (String method : seqs.keySet()) {
-						HashMap<Integer, ArrayList<APISeqItem>> newPatterns = new HashMap<Integer, ArrayList<APISeqItem>>();
-
 						// get the corresponding call sequence for a method
 						// in the snippet
 						ArrayList<APISeqItem> seq = seqs.get(method);
@@ -113,12 +114,22 @@ public class MapleWebSocketHandler {
 							for (Pattern p : ps) {
 								// parse the String pattern into an
 								// ArrayList<APISeqItem>
-								ArrayList<APISeqItem> parray = PatternUtils
+								HashSet<ArrayList<APISeqItem>> pset = new HashSet<ArrayList<APISeqItem>>();
+								
+								ArrayList<APISeqItem> pArray = PatternUtils
 										.convert(p.pattern);
+								pset.add(pArray);
 								
-								// TODO: also parse the alternative usage patterns
+								if(!p.alternative.isEmpty()) {
+									HashSet<ArrayList<APISeqItem>> pset2 = getAlternativePatterns(p);
+									pset.addAll(pset2);
+								}
 								
-								// TODO: integrate the anomaly detection module
+								// check for API misuse
+								UseChecker checker = new UseChecker();
+								ArrayList<Violation> vios = checker.validate(pset, seq);
+								
+								// TODO: Anastasia, please decide how you want to use the violation information
 							}
 						}
 					}
@@ -158,5 +169,16 @@ public class MapleWebSocketHandler {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private HashSet<ArrayList<APISeqItem>> getAlternativePatterns(Pattern p) {
+		HashSet<ArrayList<APISeqItem>> pset = new HashSet<ArrayList<APISeqItem>>();
+		for(Pattern alter : p.alternative) {
+			ArrayList<APISeqItem> pArray = PatternUtils.convert(p.pattern);
+			pset.add(pArray);
+			HashSet<ArrayList<APISeqItem>> pset2 = getAlternativePatterns(alter);
+			pset.addAll(pset2);
+		}
+		return pset;
 	}
 }
