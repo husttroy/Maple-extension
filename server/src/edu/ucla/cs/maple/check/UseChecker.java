@@ -16,6 +16,9 @@ public class UseChecker {
 	
 	private ArrayList<APISeqItem> common;
 	
+	// the violated pattern
+	public ArrayList<APISeqItem> pattern;
+	
 	public UseChecker() {
 		this.common = new ArrayList<APISeqItem>();
 	}
@@ -74,6 +77,7 @@ public class UseChecker {
 			if(violations.size() < num) {
 				num = violations.size();
 				min_vio = violations;
+				this.pattern = pattern;
 			}
 		}
 

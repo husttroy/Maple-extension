@@ -1,10 +1,12 @@
 package edu.ucla.cs.utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
 import edu.ucla.cs.model.ControlConstruct;
+import edu.ucla.cs.model.Pattern;
 
 public class PatternUtils {
 	public static ArrayList<APISeqItem> convert(String pattern) {
@@ -45,5 +47,33 @@ public class PatternUtils {
         }
 		
 		return patternArray;
+	}
+	
+
+	public static HashSet<ArrayList<APISeqItem>> getAlternativePatterns(Pattern p) {
+		HashSet<ArrayList<APISeqItem>> pset = new HashSet<ArrayList<APISeqItem>>();
+		for(Pattern alter : p.alternative) {
+			ArrayList<APISeqItem> pArray = PatternUtils.convert(p.pattern);
+			pset.add(pArray);
+			HashSet<ArrayList<APISeqItem>> pset2 = getAlternativePatterns(alter);
+			pset.addAll(pset2);
+		}
+		return pset;
+	}
+	
+	public static Pattern getThisOrAlternativePattern(Pattern p, ArrayList<APISeqItem> seq) {
+		ArrayList<APISeqItem> pArray = PatternUtils.convert(p.pattern);
+		if(pArray.equals(seq)) {
+			return p;
+		} else {
+			for(Pattern alter : p.alternative) {
+				Pattern p2 = getThisOrAlternativePattern(alter, seq);
+				if(p2 != null) {
+					return p2;
+				}
+			}
+		}
+		
+		return null;
 	}
 }

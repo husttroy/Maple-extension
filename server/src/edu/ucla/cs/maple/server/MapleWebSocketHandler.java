@@ -121,13 +121,14 @@ public class MapleWebSocketHandler {
 								pset.add(pArray);
 								
 								if(!p.alternative.isEmpty()) {
-									HashSet<ArrayList<APISeqItem>> pset2 = getAlternativePatterns(p);
+									HashSet<ArrayList<APISeqItem>> pset2 = PatternUtils.getAlternativePatterns(p);
 									pset.addAll(pset2);
 								}
 								
 								// check for API misuse
 								UseChecker checker = new UseChecker();
 								ArrayList<Violation> vios = checker.validate(pset, seq);
+								Pattern vioPattern = PatternUtils.getThisOrAlternativePattern(p, checker.pattern);
 								
 								// TODO: Anastasia, please decide how you want to use the violation information
 							}
@@ -169,16 +170,5 @@ public class MapleWebSocketHandler {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	private HashSet<ArrayList<APISeqItem>> getAlternativePatterns(Pattern p) {
-		HashSet<ArrayList<APISeqItem>> pset = new HashSet<ArrayList<APISeqItem>>();
-		for(Pattern alter : p.alternative) {
-			ArrayList<APISeqItem> pArray = PatternUtils.convert(p.pattern);
-			pset.add(pArray);
-			HashSet<ArrayList<APISeqItem>> pset2 = getAlternativePatterns(alter);
-			pset.addAll(pset2);
-		}
-		return pset;
 	}
 }
