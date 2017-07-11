@@ -15,7 +15,8 @@ import edu.ucla.cs.model.Pattern;
 public class MySQLAccess {
 	final String url = "jdbc:mysql://localhost:3306/maple?autoReconnect=true&useSSL=false";
 	final String username = "root";
-	final String password = "Password69";
+	//final String password = "Password69";
+	final String password = "5887526";
 	String table;
 	Connection connect = null;
 	Statement statement = null;
@@ -75,8 +76,22 @@ public class MySQLAccess {
 					patterns.put(id, p);
 				}
 				
-				// TODO: collapse alternative patterns
-								
+				// collapse alternative patterns
+				HashSet<Integer> collapsed = new HashSet<Integer>();
+				
+				for(Integer id : alterMap.keySet()) {
+					Pattern p = patterns.get(id);
+					for(int alterId : alterMap.get(id)) {
+						Pattern alter = patterns.get(alterId);
+						p.alternative.add(alter);
+						collapsed.add(alterId);
+					}
+				}
+				
+				for(Integer id : collapsed) {
+					patterns.remove(id);
+				}
+				
 				result.close();
 
 			} catch (SQLException e) {
@@ -89,24 +104,6 @@ public class MySQLAccess {
 		return pArray;
 	}
 	
-//	private HashSet<Integer> collapse(HashMap<Integer, ArrayList<Integer>> alterMap, HashMap<Integer, Pattern> patterns, int id, int alter) {
-//		HashSet<Integer> collapsed = new HashSet<Integer>();
-//		if()
-//		for(Integer id : alterMap.keySet()) {
-//			Pattern p = patterns.get(id);
-//			if(!collapsed.contains(id)) {
-//				for(int alterId : alterMap.get(id)) {
-//					Pattern alter = patterns.get(alterId);
-//					p.alternative.add(alter);
-//					collapse(alterMap, patterns, id);
-//					collapsed.add(alterId);
-//				}
-//			}
-//		}
-//		
-//		return collapsed;
-//	}
-
 	public void addVote(int vote, int patternID) {
 		if (connect != null) {
 			try {
