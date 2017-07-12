@@ -40,15 +40,6 @@ public class SAT {
 	/***** Check Equivalence *****/
 	
 	public boolean checkEquivalence(String p1, String p2) {
-		if(p1.equals("secondMap.containsKey(arg0,) && rcv.keySet()") || p2.equals("secondMap.containsKey(arg0,) && rcv.keySet()") || p1.equals("!(secondMap.containsKey(arg0,)) && rcv.keySet()") || p2.equals("!(secondMap.containsKey(arg0,)) && rcv.keySet()")) {
-			return true;
-		}
-		
-		if(p1.equals("true && !(arg0.charAt(0,)=='!')") || p2.equals("true && !(arg0.charAt(0,)=='!')") 
-				|| p1.equals("arg3 && !(arg0.containsKey(\"self\",))") || p2.equals("arg3 && !(arg0.containsKey(\"self\",))")
-				|| p1.equals("true||pageList.size()==arg0 && !rcv==null||rcv.size()==arg0 && true") || p2.equals("true||pageList.size()==arg0 && !rcv==null||rcv.size()==arg0 && true")) {
-			return false;
-		}
 		// clear previous maps
 		bool_symbol_map.clear();
 		int_symbol_map.clear();
