@@ -34,7 +34,7 @@ public class SAT {
 //			temp = "/home/troy/temp" + i + ".z3";
 //			f = new File(temp);
 //		}
-		temp = "/home/troy/temp.z3";
+		//temp = "/home/troy/temp.z3";
 	}
 
 	/***** Check Equivalence *****/
