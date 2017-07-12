@@ -2,6 +2,7 @@ package edu.ucla.cs.utils;
 
 import java.awt.Point;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -34,7 +35,8 @@ public class SAT {
 //			temp = "/home/troy/temp" + i + ".z3";
 //			f = new File(temp);
 //		}
-		//temp = "/home/troy/temp.z3";
+		temp = "/home/troy/temp.z3";
+		//temp = "C:\\Users\\ajrei_000\\temp.z3";
 	}
 
 	/***** Check Equivalence *****/
