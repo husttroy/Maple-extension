@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.ucla.cs.maple.check.UseChecker;
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
+import edu.ucla.cs.model.ControlConstruct;
 import edu.ucla.cs.model.Pattern;
 import edu.ucla.cs.model.Violation;
 import edu.ucla.cs.utils.PatternUtils;
@@ -81,10 +82,13 @@ public class MapleWebSocketHandler {
 			// TODO: send patterns + ids back to the plugin, along with the
             // analyzed snippet so the plugin knows where to highlight
 			for (Pattern p : vioMap.keySet()) {
-			    for (Violation v : vioMap.get(p)) {
-			        /* TEST */
-			        //System.out.println(v.getViolationMessage(p));
-			    }
+			    /*System.out.println("Pattern: " + p.className + " " + p.methodName);
+    			for (Violation v : vioMap.get(p)) {
+                    // TEST
+    			    System.out.println(v.item);
+                    System.out.println(v.getViolationMessage(p));
+    			} 
+    			System.out.println(); */
 			}
 		} else {
 			// any following messages will be up/downvotes. We know which
@@ -134,20 +138,13 @@ public class MapleWebSocketHandler {
                     // get the corresponding call sequence for a method
                     // in the snippet
                     ArrayList<APISeqItem> seq = seqs.get(method);
-                    
-                    //TEST
-                    System.out.println("Method" + method);
 
                     for (APISeqItem item : seq) {
                         if (!(item instanceof APICall)) {
                             continue;
                         }
 
-                        //String name = ((APICall) item).name;
                         String name = ((APICall) item).getName();
-                        
-                        //TEST
-                        System.out.println("APICall name: " + name);
                         
                         if (patterns.containsKey(name)) {
                             // the pattern of this API method exists
@@ -176,8 +173,40 @@ public class MapleWebSocketHandler {
                             // check for API misuse
                             UseChecker checker = new UseChecker();
                             // get violations and violating patterns
-                            ArrayList<Violation> vios = checker.validate(pset, seq);
+                            ArrayList<Violation> viosTemp = checker.validate(pset, seq);
                             Pattern vioPattern = PatternUtils.getThisOrAlternativePattern(p, checker.pattern);
+                            
+                            // remove redundant violations
+                            ArrayList<Violation> vios = new ArrayList<Violation>();
+                            for (int i = 0; i < viosTemp.size(); i++) {
+                                if (viosTemp.get(i).item instanceof APICall) {
+                                    vios.add(viosTemp.get(i));
+                                }
+                                // if this is a solo IF, save the IF
+                                // if this is part of an if-else, save the ELSE
+                                if (viosTemp.get(i).item == ControlConstruct.IF) {
+                                    if ((i+2 < viosTemp.size()) 
+                                            && viosTemp.get(i+2).item == ControlConstruct.ELSE) {
+                                        vios.add(viosTemp.get(i+2));
+                                    }
+                                    else {
+                                        vios.add(viosTemp.get(i));
+                                    }
+                                }
+                                // if this is a try-catch, save TRY
+                                // if this is a try-catch-finally, save FINALLY
+                                else if (viosTemp.get(i).item == ControlConstruct.TRY) {
+                                        vios.add(viosTemp.get(i));
+                                }
+                                else if (viosTemp.get(i).item == ControlConstruct.FINALLY) {
+                                    vios.add(viosTemp.get(i));
+                                }
+                                // if this is a LOOP, save it
+                                else if (viosTemp.get(i).item == ControlConstruct.LOOP) {
+                                    vios.add(viosTemp.get(i));
+                                }
+                            }
+                            
                             vioMap.put(vioPattern, vios);
                         }
                     }
