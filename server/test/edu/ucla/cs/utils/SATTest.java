@@ -264,7 +264,7 @@ public class SATTest {
 		SAT sat = new SAT();
 		String p1 = "(! (== 1 a0))";
 		String p2 = "(&& b0 b2)";
-		String query = "(assert (or (and (not (= 1 a0)) (not (and b0 b2))) (and (not (not (= 1 a0))) (and b0 b2))))\n(check-sat)";
+		String query = "(assert (or (and (not (= 1 a0)) (not (and b0 b2))) (and (not (not (= 1 a0))) (and b0 b2))))"+ System.lineSeparator() + "(check-sat)";
 		assertEquals(query, sat.generateEquvalenceQueryInZ3(p1, p2));
 	}
 	
