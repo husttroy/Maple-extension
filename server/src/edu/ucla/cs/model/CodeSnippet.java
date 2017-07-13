@@ -1,4 +1,4 @@
-package edu.ucla.cs.maple.server;
+package edu.ucla.cs.model;
 
 public class CodeSnippet {
     

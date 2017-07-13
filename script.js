@@ -1,111 +1,70 @@
-	// setup the websocket
-	var socket = new WebSocket('ws://127.0.0.1:8080/');
+// setup the websocket
+var socket = new WebSocket('ws://127.0.0.1:8080/');
 	  
-	// Handle any errors that occur.
-	socket.onerror = function(error) {
-		//alert('WebSocket Error: ' + error);
-	};	
+// Handle any errors that occur.
+socket.onerror = function(error) {
+	alert('WebSocket Error: ' + error);
+};	
 	
-	// Make sure we're connected to the WebSocket before trying to send anything to the server
-	socket.onopen = function(event) {
-		// parse HTML for <code> tags and send their content + post id + generated snippet id to server
-		// three classes: "question", "answer", and "answer accepted-answer"
-		var codeBlocks = document.getElementsByTagName("code");
-		var prevParentPost = null;
-		var parentPost;
-		var blockIndex;
-		
-		var message = {
-			snippets:[]
-		};
-		
-		// iterate through the code blocks and create JSON objects out of them
-		for (var i = 0; i < codeBlocks.length; i++)
-		{
-			// filter out code snippets from question post; we just want snippets from answers
-			parentPost = getParentPost(codeBlocks[i]);
-			if (parentPost != null)
-			{
-				if (parentPost != prevParentPost)
-				{
-					blockIndex = 0;
-				}
-				
-				message.snippets.push({
-					"id":getParentPost(codeBlocks[i]).getAttribute("data-answerid") + "-" + blockIndex,
-					"snippet":codeBlocks[i].innerText //note: textContent strips out newlines
-				});
-				blockIndex++;
-				
-				prevParentPost = parentPost;
-			}
-		}
-		
-		// send the code example to the backend for parsing and analysis
-		socket.send(JSON.stringify(message.snippets));
-  };
-
-	// Show a disconnected message when the WebSocket is closed.
-	socket.onclose = function(event) {
-		//alert('Disconnected from your IDE.', false);
+// Make sure we're connected to the WebSocket before trying to send anything to the server
+socket.onopen = function(event) {
+	// parse HTML for <code> tags and send their content + post id + generated snippet id to server
+	// three classes: "question", "answer", and "answer accepted-answer"
+	var codeBlocks = document.getElementsByTagName("code");
+	var prevParentPost = null;
+	var parentPost;
+	var blockIndex;
+	
+	var message = {
+		snippets:[]
 	};
 	
-	
-	// this function walks through the calling element's parents until it reaches
-	// the question/answer post div in which the code resides
-	function getParentPost(_child) {
-        var object = _child;
-        while (object.className != "question" 
-		&& object.className != "answer" 
-		&& object.className != "answer accepted-answer") 
+	// iterate through the code blocks and create JSON objects out of them
+	for (var i = 0; i < codeBlocks.length; i++)
+	{
+		// filter out code snippets from question post; we just want snippets from answers
+		parentPost = getParentPost(codeBlocks[i]);
+		if (parentPost != null)
 		{
-            object = object.parentNode;
-        }
-
-		if (object.className == "question")
-		{
-			object = null;
+			if (parentPost != prevParentPost)
+			{
+				blockIndex = 0;
+			}
+			
+			message.snippets.push({
+				"id":getParentPost(codeBlocks[i]).getAttribute("data-answerid") + "-" + blockIndex,
+				"snippet":codeBlocks[i].innerText //note: textContent strips out newlines
+			});
+			blockIndex++;
+			
+			prevParentPost = parentPost;
 		}
-        return object;
-    }
+	}
 	
-	//check if substring is the code we want
-	// (later: get substring that violates API usage)
-	// and highlight substring
-function doSearch(text) {
-	// if not IE, use window.find
-	// else, use TextRange for IE
-    if (window.find && window.getSelection) {
-        document.designMode = "on";
-        var sel = window.getSelection();
-        sel.collapse(document.body, 0);
+	// send the code example to the backend for parsing and analysis
+	socket.send(JSON.stringify(message.snippets));
+};
 
-        while (window.find(text)) {
-			//create link to dialog box
-			document.execCommand('insertHTML', false, '<a data-toggle="popover" id="popoverLink" data-title="Missing Exception Handling" data-container="body" data-html="true">' + text + '</a>');
-        }
-		
-		// get the selection back because inserting HTML closed it
-		var sel = window.getSelection();
-        sel.collapse(document.body, 0);
-		
-		while (window.find(text)) {
-			//hightlight text
-            document.execCommand("HiliteColor", false, "yellow");
-		}
-        document.designMode = "off";
-    } else if (document.body.createTextRange) {
-        var textRange = document.body.createTextRange();
-        while (textRange.findText(text)) {
-            textRange.execCommand("BackColor", false, "yellow");
-            textRange.collapse(false);
-        }
-    }
-}
+// Show a disconnected message when the WebSocket is closed.
+socket.onclose = function(event) {
+	//alert('Disconnected from your IDE.', false);
+};
+	
+// Handle messages sent by the backend.
+socket.onmessage = function(event) {
+    var message = event.data;
+	
+	var jsonData = JSON.parse(message);
+	for (var i = 0; i < jsonData.jsonMessage.length; i++) {
+		var guy = jsonData.jsonMessage[i];
+		//TODO: add pID & csID to doSearch params
+		doSearch(guy.apiCall);
+	}
+};
 
 // hard-coded for now: highlight violating code
-var myText = "out.write(myByteBuffer);";
-doSearch(myText);
+//var myText = "out.write(myByteBuffer);";
+//doSearch(myText);
 
 
 var codeStringOne = '<span style="background-color: #FFFF00">try {</span> \n\r out.write(myByteBuffer); \n\r<span style="background-color: #FFFF00">} catch (IOException e) { \n\rthrow new IllegalStateException(e); \n\r}</span>';
@@ -199,3 +158,54 @@ $(document).on( "click", ".downvote", function () {
 	$(this).css("border-top", "12px solid red");
 	this.disabled = true;
 });
+
+// this function walks through the calling element's parents until it reaches
+// the question/answer post div in which the code resides
+function getParentPost(_child) {
+    var object = _child;
+    while (object.className != "question" 
+	&& object.className != "answer" 
+	&& object.className != "answer accepted-answer") 
+	{
+		object = object.parentNode;
+    }
+
+	if (object.className == "question")
+	{
+		object = null;
+	}
+    return object;
+}
+	
+//check if substring is the code we want
+// (later: get substring that violates API usage) and highlight substring
+function doSearch(text) {
+	// if not IE, use window.find
+	// else, use TextRange for IE
+    if (window.find && window.getSelection) {
+        document.designMode = "on";
+        var sel = window.getSelection();
+        sel.collapse(document.body, 0);
+
+        while (window.find(text)) {
+			//create link to dialog box
+			document.execCommand('insertHTML', false, '<a data-toggle="popover" id="popoverLink" data-title="Missing Exception Handling" data-container="body" data-html="true">' + text + '</a>');
+        }
+		
+		// get the selection back because inserting HTML closed it
+		var sel = window.getSelection();
+        sel.collapse(document.body, 0);
+		
+		while (window.find(text)) {
+			//hightlight text
+            document.execCommand("HiliteColor", false, "yellow");
+		}
+        document.designMode = "off";
+    } else if (document.body.createTextRange) {
+        var textRange = document.body.createTextRange();
+        while (textRange.findText(text)) {
+            textRange.execCommand("BackColor", false, "yellow");
+            textRange.collapse(false);
+        }
+    }
+}

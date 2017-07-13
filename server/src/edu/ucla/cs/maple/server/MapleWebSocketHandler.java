@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -13,15 +14,16 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import edu.ucla.cs.maple.check.UseChecker;
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
+import edu.ucla.cs.model.CodeSnippet;
 import edu.ucla.cs.model.ControlConstruct;
 import edu.ucla.cs.model.Pattern;
 import edu.ucla.cs.model.Violation;
@@ -79,17 +81,28 @@ public class MapleWebSocketHandler {
 
 			vioMap = parseAndAnalyzeCodeSnippet(snippets);
 			
-			// TODO: send patterns + ids back to the plugin, along with the
-            // analyzed snippet so the plugin knows where to highlight
+			// create a JSON message composed of violation messages + ids
+			ArrayNode jsonMessage = mapper.createArrayNode();
 			for (Pattern p : vioMap.keySet()) {
-			    /*System.out.println("Pattern: " + p.className + " " + p.methodName);
     			for (Violation v : vioMap.get(p)) {
-                    // TEST
-    			    System.out.println(v.item);
-                    System.out.println(v.getViolationMessage(p));
+    			    // Add violation message, pattern example + ID, and codesnippetID to JSON
+    			    ObjectNode element = mapper.createObjectNode();
+    			    element.put("pExample", ""); // empty for now
+    			    element.put("vioMessage", v.getViolationMessage(p));
+    			    element.put("pID", p.id);
+    			    element.put("csID", v.id);
+    			    //element.put("apiCall", ((APICall) v.item).getName());
+    			    
+    			    jsonMessage.add(element);
     			} 
-    			System.out.println(); */
 			}
+			
+			// send the JSON message to the Chrome plugin
+            try {
+                session.getRemote().sendString(jsonMessage.asText());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 		} else {
 			// any following messages will be up/downvotes. We know which
 			// pattern
@@ -179,31 +192,29 @@ public class MapleWebSocketHandler {
                             // remove redundant violations
                             ArrayList<Violation> vios = new ArrayList<Violation>();
                             for (int i = 0; i < viosTemp.size(); i++) {
-                                if (viosTemp.get(i).item instanceof APICall) {
+                                // if this is an APICall, save it
+                                // if this is a try-catch, save TRY
+                                // if this is a try-catch-finally, save FINALLY
+                                // if this is a loop, save LOOP
+                                if (viosTemp.get(i).item instanceof APICall
+                                        || viosTemp.get(i).item == ControlConstruct.TRY
+                                        || viosTemp.get(i).item == ControlConstruct.FINALLY
+                                        || viosTemp.get(i).item == ControlConstruct.LOOP) {
+                                    viosTemp.get(i).id = cs.getId();
                                     vios.add(viosTemp.get(i));
                                 }
                                 // if this is a solo IF, save the IF
                                 // if this is part of an if-else, save the ELSE
-                                if (viosTemp.get(i).item == ControlConstruct.IF) {
+                                else if (viosTemp.get(i).item == ControlConstruct.IF) {
                                     if ((i+2 < viosTemp.size()) 
                                             && viosTemp.get(i+2).item == ControlConstruct.ELSE) {
+                                        viosTemp.get(i+2).id = cs.getId();
                                         vios.add(viosTemp.get(i+2));
                                     }
                                     else {
+                                        viosTemp.get(i).id = cs.getId();
                                         vios.add(viosTemp.get(i));
                                     }
-                                }
-                                // if this is a try-catch, save TRY
-                                // if this is a try-catch-finally, save FINALLY
-                                else if (viosTemp.get(i).item == ControlConstruct.TRY) {
-                                        vios.add(viosTemp.get(i));
-                                }
-                                else if (viosTemp.get(i).item == ControlConstruct.FINALLY) {
-                                    vios.add(viosTemp.get(i));
-                                }
-                                // if this is a LOOP, save it
-                                else if (viosTemp.get(i).item == ControlConstruct.LOOP) {
-                                    vios.add(viosTemp.get(i));
                                 }
                             }
                             
