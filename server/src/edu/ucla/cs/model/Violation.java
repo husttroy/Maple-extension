@@ -10,7 +10,6 @@ public class Violation {
 		this.item = item;
 	}
 	
-	// TODO: use vioPattern.methodName instead of item?
 	public String getViolationMessage(Pattern vioPattern) {
 	    String message = null;
 	    switch (type) {

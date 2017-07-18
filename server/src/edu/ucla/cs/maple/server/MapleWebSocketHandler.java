@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import edu.ucla.cs.maple.check.UseChecker;
@@ -82,16 +83,18 @@ public class MapleWebSocketHandler {
 			vioMap = parseAndAnalyzeCodeSnippet(snippets);
 			
 			// create a JSON message composed of violation messages + ids
-			ArrayNode jsonMessage = mapper.createArrayNode();
+			JsonNodeFactory factory = JsonNodeFactory.instance;
+			ArrayNode jsonMessage = factory.arrayNode();
 			for (Pattern p : vioMap.keySet()) {
     			for (Violation v : vioMap.get(p)) {
-    			    // Add violation message, pattern example + ID, and codesnippetID to JSON
-    			    ObjectNode element = mapper.createObjectNode();
-    			    element.put("pExample", ""); // empty for now
+    			    // Add violation message, pattern example + ID, codesnippetID,
+    			    // and original API call to JSON
+    			    ObjectNode element = factory.objectNode();
     			    element.put("vioMessage", v.getViolationMessage(p));
+    			    element.put("pExample", ""); // empty for now
     			    element.put("pID", p.id);
     			    element.put("csID", v.id);
-    			    //element.put("apiCall", ((APICall) v.item).getName());
+    			    element.put("apiCall", p.methodName);
     			    
     			    jsonMessage.add(element);
     			} 
@@ -99,7 +102,7 @@ public class MapleWebSocketHandler {
 			
 			// send the JSON message to the Chrome plugin
             try {
-                session.getRemote().sendString(jsonMessage.asText());
+                session.getRemote().sendString(jsonMessage.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
