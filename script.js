@@ -72,8 +72,8 @@ socket.onmessage = function(event) {
 		}
 		if (toContinue) {
 			tempAltSuppressor.push(jsonData[data].apiCall);
-			console.log(jsonData[data].apiCall);
-			var tempCodeString = '<span style="background-color: #FFFF00">try {</span> \n\r out.write(myByteBuffer); \n\r<span style="background-color: #FFFF00">} catch (IOException e) { \n\rthrow new IllegalStateException(e); \n\r}</span>';
+			//console.log(jsonData[data].apiCall);
+			var tempCodeString = '<span style="background-color: #FFFF00">try {</span> \n\r close \n\r<span style="background-color: #FFFF00">} catch (IOException e) { \n\rthrow new IllegalStateException(e); \n\r}</span>';
 			var tempVioMessage = "";
 		
 			var content = '<div class="pagination-container"><div data-page="1"><p>' + jsonData[data].vioMessage + '</p>'
@@ -100,7 +100,7 @@ socket.onmessage = function(event) {
 	}
 	
 	// TEST
-	//doSearch("close", "10506546-0", content);
+	//doSearch("like", "10506546-0", content);
 	//doSearch("write", "10506546-0", content);
 	//doSearch("read", "10506546-1", content);
 	
@@ -125,14 +125,19 @@ function doSearch(_apiCall, _csID, _content) {
 			// TODO: use csIndex to find the code snippet the text is in
 			var csIndex = _csID.substr(_csID.indexOf('-') + 1);
 			
-			// surround the text with a popover and highlight
-			var replaced = $('#answer-' + parentPostID).find(".post-text").html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span style="background-color: #FFFF00">' + _apiCall + '</span></a>');
-			$('#answer-' + parentPostID).find(".post-text").html(replaced);
-		
-			if (document.getElementById('popoverLink' + _csID) != null) {
-				document.getElementById('popoverLink' + _csID).setAttribute('data-content', _content);
-				console.log(document.getElementById('popoverLink' + _csID));
+			// If the text is in a span of class "pln" or "typ", surround the text with a popover and highlight
+			// else, the text we found is not in the SO code snippet proper or is not an exact match
+			if (($('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).html() === _apiCall)
+				|| ($('#answer-' + parentPostID).find($(".typ:contains(" + _apiCall + ")")).html() === _apiCall)) {
+					
+					var replaced = $('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + _apiCall + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span style="background-color: #FFFF00">' + _apiCall + '</span></a>');
+					$('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).html(replaced);
+					
+					if (document.getElementById('popoverLink' + _csID + _apiCall) != null) {
+						document.getElementById('popoverLink' + _csID + _apiCall).setAttribute('data-content', _content);
+					}		
 			}
+			
 		}
 		
 		// get the selection back because inserting HTML closed it
