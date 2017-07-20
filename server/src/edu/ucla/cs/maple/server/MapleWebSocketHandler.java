@@ -14,6 +14,7 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -83,26 +84,35 @@ public class MapleWebSocketHandler {
 			vioMap = parseAndAnalyzeCodeSnippet(snippets);
 			
 			// create a JSON message composed of violation messages + ids
-			JsonNodeFactory factory = JsonNodeFactory.instance;
-			ArrayNode jsonMessage = factory.arrayNode();
+			String jsonMessage;
+			HashMap<String, ArrayList<HashMap<String, Object>>> apiMap = 
+			        new HashMap<String, ArrayList<HashMap<String, Object>>>();
+			
 			for (Pattern p : vioMap.keySet()) {
     			for (Violation v : vioMap.get(p)) {
-    			    // Add violation message, pattern example + ID, codesnippetID,
-    			    // and original API call to JSON
-    			    ObjectNode element = factory.objectNode();
-    			    element.put("vioMessage", v.getViolationMessage(p));
-    			    element.put("pExample", ""); // empty for now
-    			    element.put("pID", p.id);
-    			    element.put("csID", v.id);
-    			    element.put("apiCall", p.methodName);
+    			    HashMap<String, Object> vMap = new HashMap<String, Object>();
+    			    vMap.put("vioMessage", v.getViolationMessage(p));
+    			    vMap.put("pExample", "");
+    			    vMap.put("pID", p.id);
+    			    vMap.put("csID", v.id);
     			    
-    			    jsonMessage.add(element);
+    			    if (!apiMap.containsKey(p.methodName)) {
+    			        apiMap.put(p.methodName, new ArrayList<HashMap<String, Object>>());
+    			    }
+    			    
+    			    apiMap.get(p.methodName).add(vMap);
     			} 
 			}
 			
 			// send the JSON message to the Chrome plugin
             try {
-                session.getRemote().sendString(jsonMessage.toString());
+                jsonMessage = mapper.writeValueAsString(apiMap);
+                System.out.println(jsonMessage);
+                session.getRemote().sendString(jsonMessage);
+            } catch (JsonGenerationException e) {
+                e.printStackTrace();
+            } catch (JsonMappingException e) {
+                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }

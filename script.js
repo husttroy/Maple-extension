@@ -56,49 +56,53 @@ socket.onmessage = function(event) {
     var message = event.data;
 	var jsonData = JSON.parse(message);
 	
-	var tempAltSuppressor = [];
-	
-	for (var data in jsonData) {
-		// TODO: I'll need the alternative guys as well, populate popover with them
-		// before calling doSearch()? Or create another method that would make this
-		// popover thing more dynamic
-		var toContinue = true;
-		if (tempAltSuppressor.length > 0) {
-			for (var i = 0; i < tempAltSuppressor.length; i++) {
-				if (tempAltSuppressor[i] == jsonData[data].apiCall) {
-					toContinue = false;
-				}	
-			}	
-		}
-		if (toContinue) {
-			tempAltSuppressor.push(jsonData[data].apiCall);
-			//console.log(jsonData[data].apiCall);
-			var tempCodeString = '<span style="background-color: #FFFF00">try {</span> \n\r close \n\r<span style="background-color: #FFFF00">} catch (IOException e) { \n\rthrow new IllegalStateException(e); \n\r}</span>';
-			var tempVioMessage = "";
+	// each API call has one or more required patterns + violations mapped to it
+	// this generates a single popover for the API call whose pages correspond to the different violations
+	for (var apiCall in jsonData) {
+		var content = "";
 		
-			var content = '<div class="pagination-container"><div data-page="1"><p>' + jsonData[data].vioMessage + '</p>'
-			+ '<table><tbody><tr><td class="voteCell_1"><div class="upvote" id="upvote1"></div><div class="voteSpacer"></div><div class="downvote" id="downvote1"></div></td>'
-			+ '<td class="codeCell_1"><pre><code>'+ tempCodeString +'</code></pre></td></tr></tbody></table>'
-			+ '<a href="https://www.google.com/">See this in a GitHub example</a></div>'
-			+ '<div data-page="2" style="display:none;"><p>' + tempVioMessage + '</p>'
-			+ '<table><tbody><tr><td class="voteCell_2"><div class="upvote" id="upvote2"></div><div class="voteSpacer"></div><div class="downvote" id="downvote2"></div></td>'
-			+ '<td class="codeCell_2"><pre><code>'+ tempCodeString +'</code></pre></td></tr></tbody></table>'
-			+ '<a href="https://www.google.com/">See this in a GitHub example</a></div>'
-			+ '<div data-page="3" style="display:none;"><p>' + tempVioMessage + '</p>'
-			+ '<table><tbody><tr><td class="voteCell_3"><div class="upvote" id="upvote3"></div><div class="voteSpacer"></div><div class="downvote" id="downvote3"></div></td>'
-			+ '<td class="codeCell_3"><pre><code>'+ tempCodeString +'</code></pre></td></tr></tbody></table>'
-			+ '<a href="https://www.google.com/">See this in a GitHub example</a></div>'
-			+ '<div class="pagination-container">'
-			+ '<ul class="pagination pagination-centered"><li class="active" data-page="1"><a href="#" >1</a></li>'
-			+ '<li data-page="2"><a href="#" >2</a></li>'
-			+ '<li data-page="3"><a href="#" >3</a></li>'
-			+ '</ul></div>'
-			+ '</div>';
+		for (var i=0; i < jsonData[apiCall].length; i++) {
+			// save an instance of this API call's csID
+			// this is kind of awkward but it would be more so to change the JSON message's structure
+			var csID = jsonData[apiCall][i].csID;
+			// the actual index of the alt pattern is off by one (e.g. jsonData[apicCall][0] should be in data-page 1, etc.)
+			var iOffset = i + 1;
+			// TODO: this will be pExample when that part is implemented
+			var tempCodeString = '<span style="background-color: #FFFF00">try {</span> \n\r close \n\r<span style="background-color: #FFFF00">} catch (IOException e) { \n\rthrow new IllegalStateException(e); \n\r}</span>';
 			
-			doSearch(jsonData[data].apiCall, jsonData[data].csID, content);
+			// if this is the first page, add outer div and make it visible
+			if (i == 0) {
+				content += '<div class="pagination-container"><div data-page="1">';
+			}
+			else {
+				content += '<div data-page="'+ iOffset +'" style="display:none;">';
+			}
+			
+			// add the rest of the data-page
+			// the pID is the id of the pattern in this page; we'll use it to keep track of voting
+			content += '<p>' + jsonData[apiCall][i].vioMessage + '</p>'
+			+ '<table><tbody><tr><td class="voteCell_'+ iOffset +'"><div class="upvote" id="' + jsonData[apiCall][i].pID +'"></div><div class="voteSpacer"></div>'
+			+ '<div class="downvote" id="' + jsonData[apiCall][i].pID +'"></div></td>'
+			+ '<td class="codeCell_'+ iOffset +'"><pre><code>'+ tempCodeString +'</code></pre></td></tr></tbody></table>'
+			+ '<a href="https://www.google.com/">See this in a GitHub example</a></div>';
 		}
-	}
-	
+		
+		content += '<div class="pagination-container"><ul class="pagination pagination-centered"><li class="active" data-page="1"><a href="#" >1</a></li>';
+				
+		// add any subsequent pagination buttons
+		if (jsonData[apiCall].length > 1) {
+			// the page offset is off by two since we've already added the first page
+			// add one to the length of the array for +2 offset, -1 page
+			for (var j=2; j < jsonData[apiCall].length + 1; j++) {
+				content += '<li data-page="'+ j +'"><a href="#" >'+ j +'</a></li>';
+			}
+		}
+		
+		content += '</ul></div></div>';
+				
+		doSearch(apiCall, csID, content);
+	}	
+
 	// TEST
 	//doSearch("like", "10506546-0", content);
 	//doSearch("write", "10506546-0", content);
@@ -108,7 +112,7 @@ socket.onmessage = function(event) {
 	$('[data-toggle="popover"]').popover({
 		container: 'body'
 	});
-};
+}
 
 // find the location of the API call, highlight it, and generate a popover on it
 function doSearch(_apiCall, _csID, _content) {
@@ -200,6 +204,20 @@ $(document.body).on('shown.bs.popover', function () {
   $( document ).ready( paginationHandler );
 });
 
+// Close the popover on any outside click
+$('html').on('click', function(e) {
+    $('[data-toggle="popover"]').each(function() {
+		//Check if the popover is active / contain an aria-describedby with a value
+        if ($(this).attr('aria-describedby') != null ) { 
+            var id = $(this).attr('aria-describedby');
+			//Look if the click is a child of the popover box or if it's the button itself or a child of the button
+            if (!$(e.target).closest(".popover-content").length && $(e.target).attr("aria-describedby") != id && !$(e.target).closest('[aria-describedby="'+id+'"').length) { 
+                //trigger a click as if you clicked the button
+				$('[aria-describedby="'+id+'"]').trigger( "click" );
+            }
+        }
+    });
+});
 
 $(document).on( "click", ".upvote", function () {
 	// make a JSON message
