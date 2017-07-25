@@ -3,13 +3,13 @@ package edu.ucla.cs.model;
 public class Violation {
 	public ViolationType type;
 	public APISeqItem item; 
+	public String id;
 	
 	public Violation(ViolationType type, APISeqItem item) {
 		this.type = type;
 		this.item = item;
 	}
 	
-	// TODO: use vioPattern.methodName instead of item?
 	public String getViolationMessage(Pattern vioPattern) {
 	    String message = null;
 	    switch (type) {
