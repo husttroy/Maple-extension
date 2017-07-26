@@ -134,8 +134,8 @@ function doSearch(_apiCall, _csID, _content) {
 			if (($('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).html() === _apiCall)
 				|| ($('#answer-' + parentPostID).find($(".typ:contains(" + _apiCall + ")")).html() === _apiCall)) {
 					
-					var replaced = $('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + _apiCall + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span style="background-color: #FFFF00">' + _apiCall + '</span></a>');
-					$('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).html(replaced);
+					var replaced = $('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).first().html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + _apiCall + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span style="background-color: #FFFF00">' + _apiCall + '</span></a>');
+					$('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).first().html(replaced);
 					
 					if (document.getElementById('popoverLink' + _csID + _apiCall) != null) {
 						document.getElementById('popoverLink' + _csID + _apiCall).setAttribute('data-content', _content);
