@@ -6,6 +6,7 @@ public class APICall implements APISeqItem{
 	public String name;
 	public String condition;
 	public String receiver;
+	public String receiver_type;
 	public ArrayList<String> arguments;
 	
 	public APICall(String name, String condition, int args) {
@@ -15,11 +16,12 @@ public class APICall implements APISeqItem{
 		this.arguments = null;
 	}
 	
-	public APICall(String name, String condition, String receiver, ArrayList<String> args) {
+	public APICall(String name, String condition, String receiver, String type, ArrayList<String> args) {
 		this.name = name + "(" + args.size() + ")";
 		this.condition = condition;
 		this.receiver = receiver;
 		this.arguments = args;
+		this.receiver_type = type;
 	}
 	
 	public String getName() {

@@ -12,6 +12,11 @@ import edu.ucla.cs.model.ControlConstruct;
 
 public class MethodVisitor extends ASTVisitor{
 	public HashMap<String, ArrayList<APISeqItem>> seqs = new HashMap<String, ArrayList<APISeqItem>>();
+	public HashMap<String, String> fields;
+	
+	public MethodVisitor(HashMap<String, String> fields) {
+		this.fields = fields;
+	}
 	
 	public boolean visit(MethodDeclaration node) {
 		String method = node.getName().toString();
@@ -22,7 +27,7 @@ public class MethodVisitor extends ASTVisitor{
 			flag = true;
 		}
 		
-		APICallVisitor cv = new APICallVisitor();
+		APICallVisitor cv = new APICallVisitor(fields);
 		node.accept(cv);
 		if(flag) {
 			// this method throws exception

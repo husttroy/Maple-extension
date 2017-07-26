@@ -34,7 +34,7 @@ public class MySQLAccess {
 		}
 	}
 
-	public ArrayList<Pattern> getPatterns(String _method) {
+	public ArrayList<Pattern> getPatterns(String _method, String _class) {
 		HashMap<Integer, Pattern> patterns = new HashMap<Integer, Pattern>();
 		// maintain the alternative relationship
 		HashMap<Integer, ArrayList<Integer>> alterMap = new HashMap<Integer, ArrayList<Integer>>();
@@ -42,8 +42,15 @@ public class MySQLAccess {
 		if (connect != null) {
 			try {
 				// construct the query
-				String query = "select * from patterns where method='"
-						+ _method + "';";
+				String query;
+				if(_class != null) {
+					query = "select * from patterns where method='"
+							+ _method + "' and class='"+ _class + "';";
+				} else {
+					query = "select * from patterns where method='"
+							+ _method + "';";
+				}
+				
 
 				prep = connect.prepareStatement(query);
 				result = prep.executeQuery();

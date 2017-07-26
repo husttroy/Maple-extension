@@ -37,7 +37,10 @@ public class PartialProgramAnalyzer {
 			return null;
 		}
 		
-		MethodVisitor mv = new MethodVisitor();
+		FieldVisitor fv = new FieldVisitor();
+		this.cu.accept(fv);
+		
+		MethodVisitor mv = new MethodVisitor(fv.fields);
 		this.cu.accept(mv);
 		return mv.seqs;
 	}
@@ -47,7 +50,10 @@ public class PartialProgramAnalyzer {
 			return null;
 		}
 		
-		MethodVisitor mv = new MethodVisitor();
+		FieldVisitor fv = new FieldVisitor();
+		this.cu.accept(fv);
+		
+		MethodVisitor mv = new MethodVisitor(fv.fields);
 		this.cu.accept(mv);
 		ArrayList<ArrayList<APISeqItem>> seqs = new ArrayList<ArrayList<APISeqItem>>();
 		for(String method : mv.seqs.keySet()) {

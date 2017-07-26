@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -14,14 +12,9 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import edu.ucla.cs.maple.check.UseChecker;
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
@@ -171,13 +164,18 @@ public class MapleWebSocketHandler {
                         }
 
                         String name = ((APICall) item).getName();
+                        String type = ((APICall) item).receiver_type;
+                        if(type.equals("unresolved")) {
+                        	// TODO: check against the oracle
+                        	type = null;
+                        }
                         
                         if (patterns.containsKey(name)) {
                             // the pattern of this API method exists
                             ps = patterns.get(name); 
                         } else {
                             // get patterns from the database
-                            ps = dbAccess.getPatterns(name);
+                            ps = dbAccess.getPatterns(name, type);
                             patterns.put(name, ps);
                         }
                         

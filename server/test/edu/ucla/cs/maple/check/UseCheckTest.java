@@ -55,8 +55,8 @@ public class UseCheckTest {
 	
 	@Test
 	public void testSameSequenceButDifferentPrecondition() {
-		APICall call1 = new APICall("createNewFile", "true", "f", new ArrayList<String>());
-		APICall call2 = new APICall("createNewFile", " flag && !f.exists()", "f", new ArrayList<String>());
+		APICall call1 = new APICall("createNewFile", "true", "f", "File", new ArrayList<String>());
+		APICall call2 = new APICall("createNewFile", " flag && !f.exists()", "f", "File", new ArrayList<String>());
 		APICall call3 = new APICall("createNewFile", "!rcv.exists()", 0);
 		
 		ArrayList<APISeqItem> seq1 = new ArrayList<APISeqItem>();
@@ -88,8 +88,8 @@ public class UseCheckTest {
 	public void testMultiplePatterns() {
 		ArrayList<String> args = new ArrayList<String>();
 		args.add("key");
-		APICall call1 = new APICall("get", "map.containsKey(key,)", "map", args);
-		APICall call2 = new APICall("get", "true", "map", args);
+		APICall call1 = new APICall("get", "map.containsKey(key,)", "map", "HashMap", args);
+		APICall call2 = new APICall("get", "true", "map", "HashMap", args);
 		APICall call3 = new APICall("get", "rcv.containsKey(arg0,)", 1);
 		APICall call4 = new APICall("get", "true", 1);
 		
@@ -124,8 +124,8 @@ public class UseCheckTest {
 	@Test
 	public void testMultiplePatternsWithMinimumDistance() {
 		ArrayList<String> args = new ArrayList<String>();
-		APICall call1 = new APICall("firstKey", "!map.isEmpty()", "map", args);
-		APICall call2 = new APICall("firstKey", "map.size() > 0", "map", args);
+		APICall call1 = new APICall("firstKey", "!map.isEmpty()", "map", "HashMap", args);
+		APICall call2 = new APICall("firstKey", "map.size() > 0", "map", "HashMap", args);
 		APICall call3 = new APICall("firstKey", "!rcv.isEmpty()", 0);
 		APICall call4 = new APICall("firstKey", "rcv.size() > 0", 0);
 		

@@ -1,9 +1,9 @@
 package edu.ucla.cs.maple.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.CatchClause;
@@ -13,12 +13,18 @@ import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.ParameterizedType;
+import org.eclipse.jdt.core.dom.QualifiedType;
 import org.eclipse.jdt.core.dom.ReturnStatement;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.SuperMethodInvocation;
 import org.eclipse.jdt.core.dom.ThrowStatement;
 import org.eclipse.jdt.core.dom.TryStatement;
+import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.WhileStatement;
 
 import edu.ucla.cs.model.APICall;
@@ -26,10 +32,71 @@ import edu.ucla.cs.model.APISeqItem;
 import edu.ucla.cs.model.ControlConstruct;
 
 public class APICallVisitor extends ASTVisitor {
-	public ArrayList<APISeqItem> seq = new ArrayList<APISeqItem>();
-	public String condition = "true";
-	public ArrayList<String> exits = new ArrayList<String>(); // remember the path conditions of all previous exits
-
+	public ArrayList<APISeqItem> seq;
+	public String condition;
+	public ArrayList<String> exits; // remember the path conditions of all previous exits
+	public HashMap<String, String> fields;
+	public HashMap<String, String> locals;
+	
+	public APICallVisitor(HashMap<String, String> fields) {
+		this.seq = new ArrayList<APISeqItem>();
+		this.condition = "true";
+		this.exits = new ArrayList<String>();
+		this.fields = fields;
+		this.locals = new HashMap<String, String>();
+	}
+	
+	// build the symbol table
+	@Override
+	public boolean visit(SingleVariableDeclaration node) {
+		Type t = node.getType();
+		String var = node.getName().toString();
+		String type = getType(t);
+		locals.put(var, type);
+		return true;
+	}
+	
+	@Override
+	public boolean visit(VariableDeclarationStatement node){
+		Type t = node.getType();
+		List<VariableDeclarationFragment> frags = node.fragments();
+		String type = getType(t);
+		for(VariableDeclarationFragment frag : frags) {
+			String var = frag.getName().toString();
+			locals.put(var, type);
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean visit(VariableDeclarationExpression node){
+		Type t = node.getType();
+		List<VariableDeclarationFragment> frags = node.fragments();
+		String type = getType(t);
+		for(VariableDeclarationFragment frag : frags) {
+			String var = frag.getName().toString();
+			locals.put(var, type);
+		}
+		return true;
+	}
+	
+	private String getType(Type node) {
+		String type = node.toString();
+		if(node.isNameQualifiedType()) {
+			QualifiedType qtype = (QualifiedType)node;
+			type = qtype.getName().toString();
+		} else if (node.isParameterizedType()) {
+			ParameterizedType ptype = (ParameterizedType)node;
+			type = ptype.getType().toString();
+//			List<Type> params = ptype.typeArguments();
+//			for(Type param : params) {
+//				getType(param);
+//			}
+		}
+		
+		return type;
+	}
+	
 	// visit method calls including regular method calls, calls to super
 	// methods, and class instantiation
 	public boolean visit(MethodInvocation node) {
@@ -39,9 +106,17 @@ public class APICallVisitor extends ASTVisitor {
 		// call
 		Expression expr = node.getExpression();
 		String receiver = null;
+		String type = null;
 		if (expr != null) {
 			receiver = expr.toString();
 			expr.accept(this);
+			if(locals.containsKey(receiver)) {
+				type = locals.get(receiver);
+			} else if (fields.containsKey(receiver)) {
+				type = fields.get(receiver);
+			} else {
+				type = "unresolved";
+			}
 		}
 
 		// visit arguments first to chain up any method calls in the argument
@@ -57,7 +132,7 @@ public class APICallVisitor extends ASTVisitor {
 		for(String exit : exits) {
 			path_condition += " && !(" + exit + ")";
 		}
-		seq.add(new APICall(node.getName().toString(), path_condition, receiver, arguments));
+		seq.add(new APICall(node.getName().toString(), path_condition, receiver, type, arguments));
 
 		return false;
 	}
@@ -78,7 +153,7 @@ public class APICallVisitor extends ASTVisitor {
 		for(String exit : exits) {
 			path_condition += " && !(" + exit + ")"; 
 		}
-		seq.add(new APICall("super." + node.getName().toString(), path_condition, null, arguments));
+		seq.add(new APICall("super." + node.getName().toString(), path_condition, null, null, arguments));
 
 		return false;
 	}
@@ -99,7 +174,7 @@ public class APICallVisitor extends ASTVisitor {
 		for(String exit : exits) {
 			path_condition += " && !(" + exit + ")";
 		}
-		seq.add(new APICall("new " + node.getType().toString(), path_condition, null, arguments));
+		seq.add(new APICall("new " + node.getType().toString(), path_condition, null, node.getType().toString(), arguments));
 
 		return false;
 	}

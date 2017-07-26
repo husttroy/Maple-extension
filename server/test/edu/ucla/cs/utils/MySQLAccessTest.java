@@ -15,7 +15,7 @@ public class MySQLAccessTest {
 	public void testGetPatternsWithAlternativePatterns() {
 		MySQLAccess access = new MySQLAccess();
 		access.connect();
-		ArrayList<Pattern> plist = access.getPatterns("createNewFile");
+		ArrayList<Pattern> plist = access.getPatterns("createNewFile", "File");
 		access.close();
 		assertEquals(1, plist.size());
 		assertEquals(1, plist.get(0).id);
