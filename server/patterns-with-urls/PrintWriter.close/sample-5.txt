@@ -1,0 +1,10 @@
+results[https://github.com/ftiasch/mithril/blob/6e522b5d38e67d8b267cf0774b0055e44e29a4ab/2012-11-30/G/Main.java][run] = -> TRY { -> out=new PrintWriter(System.out,)@ -> out.close()@ }
+results[https://github.com/moshangcheng/code/blob/267bc2571db6f7769eebbc462ea2db6707546010/Cpp/Eclipse/GCJ/GCJ2012/R2.1.java][main] = -> TRY { -> out=new PrintWriter("B.out",)@ -> out.close()@ }
+results[https://github.com/Ka6aSH/Study/blob/946b1b80ee411b8c2a14961e2ea5795638f58371/IdeaProjects/ComputationalGeometry/src/MakeMonotone/Controller.java][buttonOut] = -> TRY { -> writer=new PrintWriter("faces.txt",)@ -> writer.close()@ }
+results[https://github.com/mastersobg/contests/blob/76122c8edb190fe7d4b71a30dc76bafc9f7bd31f/yandex/trains/14.09.2013/H/H.java][run] = -> TRY { -> out=new PrintWriter(System.out,)@ -> out.close()@ }
+results[https://github.com/Ka6aSH/Study/blob/01481d75b4f68d5f1b9044482a1dba7f704a325e/IdeaProjects/ComputationalGeometry/src/MonotonePolygonTriangulation/Controller.java][buttonOut] = -> TRY { -> writer=new PrintWriter("faces.txt",)@ -> writer.close()@ }
+results[https://github.com/mastersobg/contests/blob/00b7a9e2fa9cc438813a62e9113caf0da3d65e13/ContestSFedU/2013/qualification/personal/A/src/Program.java][run] = -> TRY { -> out=new PrintWriter(System.out,)@ -> out.close()@ }
+results[https://github.com/mastersobg/contests/blob/76122c8edb190fe7d4b71a30dc76bafc9f7bd31f/yandex/trains/14.09.2013/E/E.java][run] = -> TRY { -> out=new PrintWriter(System.out,)@ -> out.close()@ }
+results[https://github.com/mastersobg/contests/blob/76122c8edb190fe7d4b71a30dc76bafc9f7bd31f/yandex/trains/14.09.2013/I/I.java][run] = -> TRY { -> out=new PrintWriter(System.out,)@ -> out.close()@ }
+results[https://github.com/ftiasch/mithril/blob/c289acf1e8a057c91978de43b3ccda3bf97c1d38/2012-09-05/F/Main.java][run] = -> TRY { -> out=new PrintWriter(System.out,)@ -> out.close()@ }
+results[https://github.com/ftiasch/mithril/blob/6e522b5d38e67d8b267cf0774b0055e44e29a4ab/2012-11-30/J/Main.java][run] = -> TRY { -> out=new PrintWriter(System.out,)@ -> out.close()@ }

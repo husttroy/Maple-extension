@@ -1,0 +1,10 @@
+results[https://github.com/orcc/orcc/blob/63c1f3ce631ef0cc6a6ac230081e54654ddc7379/libraries/Java/src/net/sf/orcc/runtime/source/Source.java][source_readNBytes] = -> TRY { -> in.read(b,)@ }
+results[https://github.com/y2k/Spectator/blob/79a5875c146cd26a756e5817f80eb007f912bddb/src/net/itwister/tools/widgets/drawable/DiskGifDecoder.java][readColorTable] = -> TRY { -> n=file.read(c,)@ }
+results[https://github.com/beerbong/com_beerbong_zipinst/blob/128f318b3c2321c5a08767ba3f0e94218625b806/src/net/lingala/zip4j/unzip/UnzipEngine.java][getAESPasswordVerifier] = -> TRY {  -> TRY { -> raf.read(pvBytes,)@ } } CATCH {}
+results[https://github.com/mstepan/incubator/blob/f4cf7b726ec78a6350f2f0b1910a4525f014f986/algorithms/src/main/java/com/max/algs/sorting/SortedFileSequenceIterator.java][readNextChunk] = -> TRY { -> readedBytes=randFile.read(buf,)@ }
+results[https://github.com/rmoore/cs3114/blob/c4bccfeb7e9273248fcf4c71dd79da2735e47704/Bindisk/LRUBuffer.java][readFromDisk] = -> TRY { -> disk.seek(offset,)@ -> disk.read(data,)@ }
+results[https://github.com/davros-/platform_frameworks_base/blob/4b50cc39b0518a04b16eb0f0b6286859b32373a3/tests/FrameworkPerf/src/com/android/frameworkperf/TestService.java][onRun] = -> TRY { -> mRAF.seek(0,)@ -> mRAF.read(mBuffer,)@ }
+results[https://github.com/rmoore/cs3114/blob/c4bccfeb7e9273248fcf4c71dd79da2735e47704/heapsort/LRUBuffer.java][readFromDisk] = -> TRY { -> disk.seek(offset,)@ -> disk.read(data,)@ }
+results[https://github.com/deegree/deegree3/blob/30b1796042ca7193655d7c0ff7b48be24d3b7fd4/deegree-3d-tools/src/main/java/org/deegree/tools/rendering/dem/builder/FileBlob.java][getBytes] = -> TRY {  -> TRY { -> file.seek(pos-1,)@ -> file.read(bytes,)@ } } CATCH {}
+results[https://github.com/astanway/cannon-torrent/blob/c289575e8f97333afdf210ae5f0713a03c1c18c8/utils/Helpers.java][readTorrent] = -> TRY { -> rFile=new RandomAccessFile(torrentFile,"rw",)@ -> rFile.read(fileBytes,)@ }
+results[https://github.com/iGio90/android_frameworks_base/blob/c2c778533288efb45107521eee9fcab82892fc9e/tests/FrameworkPerf/src/com/android/frameworkperf/TestService.java][onRun] = -> TRY { -> mRAF.seek(0,)@ -> mRAF.read(mBuffer,)@ }

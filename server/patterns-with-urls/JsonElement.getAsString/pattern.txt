@@ -1,0 +1,10 @@
+Total Count:870
+1:[IF, getAsString(0)@rcv!=null, END_BLOCK]:116
+2:[getAsString(0)@rcv!=null]:113
+3:[get(1)@true, getAsString(0)@rcv!=null]:103
+4:[getAsString(0)@rcv.isJsonPrimitive()]:52
+5:[IF, getAsString(0)@rcv.isJsonPrimitive(), END_BLOCK]:52
+6:[get(1)@true, getAsString(0)@rcv.isJsonPrimitive()]:35
+7:[get(1)@rcv!=null, getAsString(0)@rcv.isJsonPrimitive()]:23
+8:[get(1)@rcv!=null, getAsString(0)@rcv!=null]:23
+9:[IF, getAsString(0)@!(!(rcv instanceof JsonPrimitive)), END_BLOCK]:23

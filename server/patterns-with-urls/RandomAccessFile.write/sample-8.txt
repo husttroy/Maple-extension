@@ -1,0 +1,10 @@
+results[https://github.com/imsaguy/bitcoinj/blob/fb5915e4c4208686c540ebc84c8b4bcde39329b3/src/com/google/bitcoin/store/DiskBlockStore.java][put] = -> TRY {  -> TRY { -> file.write(bytes,)@ } } CATCH {}
+results[https://github.com/kframework/k/blob/4cf6d455195d42c9fa316c5e0b72ea695076b0bd/src/javasources/KTool/src/org/kframework/krun/ioserver/filesystem/portable/RandomAccessFileFile.java][write] = -> TRY {  -> TRY { -> raf.write(b,)@ } } CATCH {}
+results[https://github.com/hank/litecoinj/blob/fb5915e4c4208686c540ebc84c8b4bcde39329b3/src/com/google/bitcoin/store/DiskBlockStore.java][put] = -> TRY {  -> TRY { -> file.write(bytes,)@ } } CATCH {}
+results[https://github.com/hank/feathercoinj/blob/216deb2d35d1a128a7f617b91f2ca35438aae546/lib/src/com/google/bitcoin/store/DiskBlockStore.java][put] = -> TRY {  -> TRY { -> file.write(bytes,)@ } } CATCH {}
+results[https://github.com/imsaguy/bitcoinj/blob/216deb2d35d1a128a7f617b91f2ca35438aae546/lib/src/com/google/bitcoin/store/DiskBlockStore.java][put] = -> TRY {  -> TRY { -> file.write(bytes,)@ } } CATCH {}
+results[https://github.com/hank/feathercoinj/blob/b476e9073099718af750730ef70b174254a7fa12/core/src/main/java/com/google/feathercoin/store/DiskBlockStore.java][put] = -> TRY {  -> TRY { -> file.write(bytes,)@ } } CATCH {}
+results[https://github.com/hank/litecoinj/blob/216deb2d35d1a128a7f617b91f2ca35438aae546/lib/src/com/google/bitcoin/store/DiskBlockStore.java][put] = -> TRY {  -> TRY { -> file.write(bytes,)@ } } CATCH {}
+results[https://github.com/hank/feathercoinj/blob/1ed245952282082e0f28dca8c1a2fdb40a92084c/core/src/main/java/com/google/bitcoin/store/DiskBlockStore.java][put] = -> TRY {  -> TRY { -> file.write(bytes,)@ } } CATCH {}
+results[https://github.com/hank/litecoinj/blob/1ed245952282082e0f28dca8c1a2fdb40a92084c/core/src/main/java/com/google/bitcoin/store/DiskBlockStore.java][put] = -> TRY {  -> TRY { -> file.write(bytes,)@ } } CATCH {}
+results[https://github.com/dkomanov/fizteh-java-2013/blob/24181fc416b2c251dfd1ffe7b1891f09204b52cb/src/ru/fizteh/fivt/students/krivchansky/filemap/FileMapWritingUtils.java][writeValue] = -> TRY {  -> TRY { -> dataFile.write(bytes,)@ } } CATCH {}

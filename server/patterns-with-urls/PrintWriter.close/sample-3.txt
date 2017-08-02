@@ -1,0 +1,10 @@
+results[https://github.com/Eurymachus/WirelessRedstone/blob/6d0428ab3588bd97bcf01f5e568944899e5785a7/wificlient/net/minecraft/src/wifi/LoggerRedstoneWireless.java][finalize] = -> TRY { -> out.close()@ }
+results[https://github.com/hiuprocon/pve/blob/d84df97453654d4f14ef587ac7f124944c2474c0/src/samples/MySocket.java][close] = -> TRY { -> pw.close()@ }
+results[https://github.com/medrimonia/PFA-Nethack/blob/8e7fb58c6584f9c99fc6f60d5f10794835bc48f1/bots/java_sp/src/bot/InputOutputUnit.java][close] = -> TRY { -> output.close()@ }
+results[https://github.com/kiniry/KOA/blob/fcc9e57fb0fcacf643d1519419ccd378bdf64ee6/branches/split-projects/koa/src/main/ie/ucd/srg/koa/logging/FastLogServiceImpl.java][finalize] = -> TRY { -> out.close()@ }
+results[https://github.com/stianwe/DebtList/blob/7408f390a8ec2b59927bd987fe31e138b6c3ad36/DebtListServer/src/network/ServerConnectionHandler.java][close] = -> TRY { -> writer.close()@ }
+results[https://github.com/haneul/appfence_dalvik/blob/6cdbef55a948dffbeff211fb4e78066c053ecc2e/libcore/luni/src/test/java/tests/api/java/io/PrintWriterTest.java][tearDown] = -> TRY {  -> TRY { -> pw.close()@ } } CATCH {}
+results[https://github.com/witgo/CRF/blob/20f4adc997ec901119794fc971fadc1c716b5c0d/src/iitb/Segment/DataCruncher.java][close] = -> TRY { -> out.close()@ }
+results[https://github.com/jpverkamp/wombat-ide/blob/0dd7758341521a0be1ef6dd96e94f67fac6db615/ide/src/wombat/gui/text/sta/STAClient.java][run] = -> TRY { -> ToServer.close()@ }
+results[https://github.com/dCache/dcache/blob/2bd7d370b75f4d09641fa98b6033ae986fe8ebc8/modules/cells/src/main/java/dmg/cells/services/StreamLoginCell.java][cleanUp] = -> TRY { -> _out.close()@ }
+results[https://github.com/geeknbar/projet_msn/blob/e76a825fa3abd322b641404bb4fcf22f64f6ce97/workspace/projet_msn/src/dataLink/ProtocolTCP.java][close] = -> TRY { -> this.writer.close()@ }

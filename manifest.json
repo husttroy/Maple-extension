@@ -1,17 +1,21 @@
 {
-  "name": "Maple Prototype",
-  "description": "My prototype testing for Maple UI",
-  "version": "2.0",
-  "manifest_version": 2,
-  "web_accessible_resources": ["jquery.min.js"],
-  "content_scripts": [
-    {
-      "matches": ["https://stackoverflow.com/*"],
-	  "css": ["bootstrap.min.css", "style.css"],
-      "js": ["jquery.min.js", "bootstrap.min.js", "script.js"]
-    }
-  ],
-  "permissions": [
-	"tabs","http://localhost/","http://*/*"
+	"name": "Maple Prototype",
+	"description": "My prototype testing for Maple UI",
+	"version": "2.0",
+	"manifest_version": 2,
+	"web_accessible_resources": ["jquery.min.js"],
+	"content_scripts": [
+		{
+			"matches": ["https://stackoverflow.com/*"],
+			"css": ["bootstrap.min.css", "style.css"],
+			"js": ["jquery.min.js", "bootstrap.min.js", "script.js"]
+		},
+		{
+			"matches": ["https://github.com/*"],
+			"js": ["jquery.min.js", "ghScript.js"]
+		}
+	],
+	"permissions": [
+		"tabs", "storage", "http://localhost/","http://*/*", "https://*/*"
 	]
 }

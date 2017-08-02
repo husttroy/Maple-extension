@@ -14,7 +14,7 @@ public class ViolationTest {
         Violation vio = new Violation(ViolationType.MissingStructure, 
                 new APICall("write", "true", 1));
         Pattern p = new Pattern(0, "FileChannel", "write", "try {; write(1)@true; }; catch {; }",
-                        1231, new ArrayList<Pattern>(), "Handle the potential IOException thrown by write.", 10);
+                        1231, new ArrayList<Pattern>(), "Handle the potential IOException thrown by write.", 10, null);
         System.out.println(vio.getViolationMessage(p));
     }
 

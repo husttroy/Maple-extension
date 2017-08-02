@@ -1,0 +1,14 @@
+Total Count:3425
+1:[getString(1)@true, recycle(0)@true]:2206
+2:[getString(1)@true, IF, END_BLOCK]:1815
+3:[obtainStyledAttributes(2)@true, getString(1)@true]:1051
+4:[getString(1)@true, IF, END_BLOCK, recycle(0)@true]:959
+5:[obtainStyledAttributes(2)@true, getString(1)@true, recycle(0)@true]:956
+6:[TRY, getString(1)@true, END_BLOCK]:925
+7:[obtainStyledAttributes(4)@true, getString(1)@true]:848
+8:[obtainStyledAttributes(4)@true, getString(1)@true, recycle(0)@true]:848
+9:[TRY, getString(1)@true, recycle(0)@true, END_BLOCK]:754
+10:[obtainStyledAttributes(2)@true, getString(1)@true, IF, END_BLOCK]:754
+11:[getInt(2)@true, getString(1)@true]:733
+12:[TRY, getString(1)@true, IF, END_BLOCK, END_BLOCK]:719
+13:[getInt(2)@true, getString(1)@true, recycle(0)@true]:693

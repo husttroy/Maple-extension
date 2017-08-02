@@ -56,6 +56,9 @@ socket.onmessage = function(event) {
     var message = event.data;
 	var jsonData = JSON.parse(message);
 	
+	// hard-coded URL for testing
+	var tempURL = "https://github.com/coderplay/h2-bitmap/blob/833860f31d50cc060434340fb6226f913da5e7f5/h2/src/main/org/h2/store/fs/FilePathNio.java";
+	
 	// each API call has one or more required patterns + violations mapped to it
 	// this generates a single popover for the API call whose pages correspond to the different violations
 	for (var apiCall in jsonData) {
@@ -67,8 +70,10 @@ socket.onmessage = function(event) {
 			var csID = jsonData[apiCall][i].csID;
 			// the actual index of the alt pattern is off by one (e.g. jsonData[apicCall][0] should be in data-page 1, etc.)
 			var iOffset = i + 1;
+
 			// TODO: this will be pExample when that part is implemented
-			var tempCodeString = '<span style="background-color: #FFFF00">try {</span> \n\r close \n\r<span style="background-color: #FFFF00">} catch (IOException e) { \n\rthrow new IllegalStateException(e); \n\r}</span>';
+			var tempCodeString = '<span style="background-color: #FFFF00">try {</span> \n\r FileChannel.write(); \n\r<span style="background-color: #FFFF00">} catch (IOException e) { \n\rthrow new IllegalStateException(e); \n\r}</span>';
+			//var tempCodeString = 'FileChannel.write();                       \n<span style="background-color: #FFFF00">FileChannel.close();</span>';
 			
 			// if this is the first page, add outer div and make it visible
 			if (i == 0) {
@@ -83,8 +88,16 @@ socket.onmessage = function(event) {
 			content += '<p>' + jsonData[apiCall][i].vioMessage + '</p>'
 			+ '<table><tbody><tr><td class="voteCell_'+ iOffset +'"><div class="upvote" id="' + jsonData[apiCall][i].pID +'"></div><div class="voteSpacer"></div>'
 			+ '<div class="downvote" id="' + jsonData[apiCall][i].pID +'"></div></td>'
-			+ '<td class="codeCell_'+ iOffset +'"><pre><code>'+ tempCodeString +'</code></pre></td></tr></tbody></table>'
-			+ '<a href="https://www.google.com/">See this in a GitHub example</a></div>';
+			+ '<td class="codeCell_'+ iOffset +'"><pre><code>'+ tempCodeString +'</code></pre></td></tr></tbody></table>';
+			
+			if (jsonData[apiCall][i].hasOwnProperty('ex1')) {
+				content+= 'See this in a GitHub example: </br>'
+				+ '<a class="ghLink" id="'+jsonData[apiCall][i].ex1Method+'" target="_blank" href="'+jsonData[apiCall][i].ex1+'")">Example 1</a></br>'
+				+ '<a class="ghLink" id="'+jsonData[apiCall][i].ex2Method+'" target="_blank" href="'+jsonData[apiCall][i].ex2+'")">Example 2</a></br>'
+				+ '<a class="ghLink" id="'+jsonData[apiCall][i].ex3Method+'" target="_blank" href="'+jsonData[apiCall][i].ex3+'")">Example 3</a>';
+			}
+			
+			content += '</div>';
 		}
 		
 		content += '<div class="pagination-container"><ul class="pagination pagination-centered"><li class="active" data-page="1"><a href="#" >1</a></li>';
@@ -101,12 +114,7 @@ socket.onmessage = function(event) {
 		content += '</ul></div></div>';
 				
 		doSearch(apiCall, csID, content);
-	}	
-
-	// TEST
-	//doSearch("like", "10506546-0", content);
-	//doSearch("write", "10506546-0", content);
-	//doSearch("read", "10506546-1", content);
+	}
 	
 	// initialize all popovers
 	$('[data-toggle="popover"]').popover({
@@ -117,58 +125,33 @@ socket.onmessage = function(event) {
 // find the location of the API call, highlight it, and generate a popover on it
 function doSearch(_apiCall, _csID, _content) {
 	"use strict";
-	// if not IE, use window.find
-	// else, use TextRange for IE
-    if (window.find && window.getSelection) {
-        document.designMode = "on";
-        var sel = window.getSelection();
-        sel.collapse(document.body, 0);
-		
-		if (_csID != null) {
-			var parentPostID = _csID.substr(0, _csID.indexOf('-')); 
-			// TODO: use csIndex to find the code snippet the text is in
-			var csIndex = _csID.substr(_csID.indexOf('-') + 1);
+	if (_csID != null) {
+		var parentPostID = _csID.substr(0, _csID.indexOf('-')); 
+		// TODO: use csIndex to find the code snippet the text is in
+		var csIndex = _csID.substr(_csID.indexOf('-') + 1);
 			
-			// If the text is in a span of class "pln" or "typ", surround the text with a popover and highlight
-			// else, the text we found is not in the SO code snippet proper or is not an exact match
-			if (($('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).html() === _apiCall)
-				|| ($('#answer-' + parentPostID).find($(".typ:contains(" + _apiCall + ")")).html() === _apiCall)) {
+		// If the text is in a span of class "pln" or "typ", surround the text with a popover and highlight
+		// else, the text we found is not in the SO code snippet proper or is not an exact match
+		if (($('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).html() === _apiCall)
+			|| ($('#answer-' + parentPostID).find($(".typ:contains(" + _apiCall + ")")).html() === _apiCall)) {
 					
-					var replaced = $('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).first().html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + _apiCall + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span style="background-color: #FFFF00">' + _apiCall + '</span></a>');
-					$('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).first().html(replaced);
+				var replaced = $('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).first().html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + _apiCall + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span style="background-color: #FFFF00">' + _apiCall + '</span></a>');
+				$('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).first().html(replaced);
 					
-					if (document.getElementById('popoverLink' + _csID + _apiCall) != null) {
-						document.getElementById('popoverLink' + _csID + _apiCall).setAttribute('data-content', _content);
-					}		
-			}
-			
+				if (document.getElementById('popoverLink' + _csID + _apiCall) != null) {
+					document.getElementById('popoverLink' + _csID + _apiCall).setAttribute('data-content', _content);
+				}		
 		}
-		
-		// get the selection back because inserting HTML closed it
-		var sel = window.getSelection();
-        sel.collapse(document.body, 0);
-        document.designMode = "off";
-		
-	// TODO: change IE code to work too
-    } else if (document.body.createTextRange) {
-        var textRange = document.body.createTextRange();
-        while (textRange.findText(text)) {
-            textRange.execCommand("BackColor", false, "yellow");
-            textRange.collapse(false);
-        }
-    }
+			
+	}
 }
 
 // script for running the pagination
 $(document.body).on('shown.bs.popover', function () {
-  //console.log("shown");
   var paginationHandler = function(){
     // store pagination container so we only select it once
     var $paginationContainer = $(".pagination-container"),
         $pagination = $paginationContainer.find('.pagination');
-
-    //console.log($paginationContainer);
-    //console.log($pagination);
 
     // click event
     $pagination.find("li a").on('click.pageChange',function(e){
@@ -255,3 +238,7 @@ function getParentPost(_child) {
 	}
     return object;
 }
+
+$(document).on( "click", ".ghLink", function () {
+	chrome.storage.local.set({"methodName": this.id}, function() {});
+});

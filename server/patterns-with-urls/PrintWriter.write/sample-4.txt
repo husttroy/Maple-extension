@@ -1,0 +1,10 @@
+results[https://github.com/cityindex/JsTestDriver/blob/f82122887025b5fad79f4576e94a73d73dfdef47/JsTestDriver/src/com/google/jstestdriver/server/handlers/HelloHandler.java][handleIt] = -> writer.write("hello",)@ -> writer.flush()@
+results[https://github.com/PeterisP/LVTagger/blob/9c9784f08fbe6fad02b7116b2f4b733b1fe8f90b/src/edu/stanford/nlp/util/logging/Redwood.java][print] = -> printWriter.write(line,)@ -> printWriter.flush()@
+results[https://github.com/gosu-lang/gosu/blob/6a9b9dc2c26605dab48f69b1a16c7577c2b2ba05/gosu-process/src/main/java/gw/util/ShellProcess.java][write] = -> _stdin.write(text,)@ -> _stdin.flush()@
+results[https://github.com/openxc/openxc-android/blob/71e02556aceebd201cec40595b9c93d972085324/openxc/src/main/java/com/openxc/sources/bluetooth/BluetoothVehicleDataSource.java][write] = -> mOutStream.write(message,)@ -> mOutStream.flush()@
+results[https://github.com/pestt/PESTT/blob/47343a583038e0ce0e0ebc8b83ef5dc2a23a99f8/PESTT/src/domain/coverage/instrument/FileCreator.java][cleanFileContent] = -> writer.write("",)@ -> writer.flush()@
+results[https://github.com/Abnaxos/ch.raffael.util/blob/6a89294d839600cbfb43a1d554877b5aff17a999/cli/src/main/java/ch/raffael/util/cli/CliShell.java][prompt] = -> out.write("> ",)@ -> out.flush()@
+results[https://github.com/zyzzyplyx/secret-octo-cyril/blob/fe860d3555bbfe5f6ce7536ce2c2959008d8f794/src/player/request/modes/BounceServerMode.java][sendResponse] = -> writer.write(response,)@ -> writer.flush()@
+results[https://github.com/Mobicents/jss7/blob/0f1ad3c8f2e3a76199cbfa35c8ea7a6fc2c84862/management/shell/src/main/java/org/mobicents/protocols/ss7/management/console/Console.java][write] = -> pw.write(text,)@ -> pw.flush()@
+results[https://github.com/knuhlig/CS227B/blob/e8b88213208ac65d916f4d356d49812083d5893a/src/player/request/modes/BounceServerMode.java][sendResponse] = -> writer.write(response,)@ -> writer.flush()@
+results[https://github.com/KenMacD/ted-orig/blob/b943e10ef9d15a339a9d89bf1964a4f6200b2257/src/main/java/ted/TedLogWriter.java][addLine] = -> fileWriter.write(line,)@ -> fileWriter.flush()@

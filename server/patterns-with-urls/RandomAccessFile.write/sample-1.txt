@@ -1,0 +1,10 @@
+results[https://github.com/xiaomo/rvm/blob/325039bbbcf0e46dfce9e0ef800a1c962971e981/code/red5Server/1_0/src/org/red5/io/flv/impl/FLVWriter.java][writeStream] = -> TRY { -> dataFile.write(b,)@ }
+results[https://github.com/rfkrocktk/red5-server/blob/ef6de02a9373075ec901dc03ac56b0b2299c7197/src/org/red5/io/flv/impl/FLVWriter.java][writeStream] = -> TRY { -> dataFile.write(b,)@ }
+results[https://github.com/ritzalam/red5/blob/2db56140a6f52f46c8d46ee831f620798415beaa/src/org/red5/io/flv/impl/FLVWriter.java][writeStream] = -> TRY { -> dataFile.write(b,)@ }
+results[https://github.com/xored/f4/blob/82d3c126f014bec0b060a0a2d66793d45041c562/com.xored.f4.fantom/fantom/src/sys/java/fan/sys/FileBuf.java][w] = -> TRY { -> fp.write(v,)@ }
+results[https://github.com/Juliens/red5/blob/ef23056a327621658e1b3cfc05bcc19bb43a3b3f/src/org/red5/io/flv/impl/FLVWriter.java][writeStream] = -> TRY { -> dataFile.write(b,)@ }
+results[https://github.com/Juliens/red5/blob/9924bb92c3c4c043d6fdcf8f88d2e2185e8e845f/src/main/java/org/red5/io/flv/impl/FLVWriter.java][writeStream] = -> TRY { -> dataFile.write(b,)@ }
+results[https://github.com/olanto/MYCAT/blob/5dc5e6c732963894f519ce37837be54b15cf2a76/prog/coreidx/src/org/olanto/idxvli/util/BytesAndFiles.java][writeBytes] = -> TRY { -> r.seek(pos,)@ -> r.write(b,)@ }
+results[https://github.com/stupidsing/suite/blob/5207a97afb3a1cbac2a78f42652507ddc61eae0d/src/main/java/suite/btree/Allocator.java][saveAllocMap] = -> TRY { -> allocMapFile.seek(0,)@ -> allocMapFile.write(allocMap,)@ }
+results[https://github.com/prsebastian/gwt-issue8215/blob/73862cc8ceb81c29a669d573441e231e4b272842/dev/core/src/com/google/gwt/dev/util/DiskCache.java][writeByteArray] = -> TRY { -> file.writeInt(bytes.length,)@ -> file.write(bytes,)@ }
+results[https://github.com/conceptstailored/NCSU-GBS-Pipeline/blob/d16978268678f9fa8958e60cdd43d64937a912d5/TASSEL_20121011/maizegenetics/src/net/maizegenetics/gbs/tagdist/TagsByTaxaByteFileMap.java][saveCurrentBufferTagDist] = -> TRY { -> theRAF.seek(oldpos,)@ -> theRAF.write(bufferedTagDist,)@ }

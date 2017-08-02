@@ -1,0 +1,12 @@
+Total Count:1859
+1:[new Dimension(2)@true, setPreferredSize(1)@true]:1676
+2:[setPreferredSize(1)@true, setVisible(1)@true]:1421
+3:[new Dimension(2)@true, setPreferredSize(1)@true, setVisible(1)@true]:1330
+4:[setPreferredSize(1)@true, add(1)@true]:1166
+5:[setPreferredSize(1)@true, pack(0)@true]:1154
+6:[new Dimension(2)@true, setPreferredSize(1)@true, add(1)@true]:1104
+7:[new Dimension(2)@true, setPreferredSize(1)@true, pack(0)@true]:1100
+8:[setPreferredSize(1)@true, add(1)@true, setVisible(1)@true]:975
+9:[setPreferredSize(1)@true, pack(0)@true, setVisible(1)@true]:974
+10:[new Dimension(2)@true, setPreferredSize(1)@true, add(1)@true, setVisible(1)@true]:939
+11:[new Dimension(2)@true, setPreferredSize(1)@true, pack(0)@true, setVisible(1)@true]:938

@@ -1,0 +1,10 @@
+results[https://github.com/FreakyPenguin/elexis-hilotec-base/blob/be7fd9159b01d0165281a3cc6c695a9a573df08d/ch.elexis/src/ch/elexis/scripting/CSVWriter.java][close] = -> TRY {  -> pw.flush()@ -> pw.close()@ } CATCH {}
+results[https://github.com/jarodwen/hyracks/blob/59d505d019595a481750b237e5fcb233ff1e5292/fullstack/hyracks/hyracks-control/hyracks-control-common/src/main/java/edu/uci/ics/hyracks/control/common/logs/LogFile.java][close] = -> out.flush()@ -> out.close()@
+results[https://github.com/joa/apparat/blob/c6f89d10c3f4d6b8fb1445d23eca4ea646fbad8a/java/Apparat.Core/src/com/joa_ebert/apparat/tools/ToolLog.java][close] = -> writer.flush()@ -> writer.close()@
+results[https://github.com/mikaelsvensson/backup/blob/d0882d93591e57c8c0f1028b7144bf8876b4cfbe/backup-core/src/main/java/info/mikaelsvensson/ftpbackup/log/report/RemoteActionsLogFileReport.java][generate] = -> pw.flush()@ -> pw.close()@
+results[https://github.com/IanDarwin/darwinsys-api/blob/1217852705f7d61fee2c3471492ce804f2c60631/src/com/darwinsys/sql/SQLRunner.java][close] = -> TRY {  -> out.flush()@ -> out.close()@ } CATCH {}
+results[https://github.com/apache/tapestry4/blob/bb1e3b3ce23ca52e004d7a442b7f7d8fb7374220/framework/src/java/org/apache/tapestry/markup/JSONWriterImpl.java][close] = -> _writer.flush()@ -> _writer.close()@
+results[https://github.com/mikaelsvensson/backup/blob/e67b39893e76f3ad6272f94537cb762680e7a87d/src/main/java/info/mikaelsvensson/ftpbackup/log/report/LocalFileSetReport.java][generate] = -> pw.flush()@ -> pw.close()@
+results[https://github.com/cstamas/enunciate-old/blob/f828b91b9a22a8a126cfa7fdabf4145616f2b5b7/enunciate/xml/src/main/java/org/codehaus/enunciate/modules/xml/PrettyPrinter.java][endDocument] = -> TRY {  -> writer.flush()@ -> writer.close()@ } CATCH {}
+results[https://github.com/IanDarwin/javasrc/blob/3711ffd61e87fa712b54b7abf4349b8d53052661/src/main/java/spdf/PDF.java][writePDF] = -> out.flush()@ -> out.close()@
+results[https://github.com/bluesoft/commons-old/blob/f3bba2f7e242db9a85ac222f0aa0c8c8278bc7e2/src/main/java/br/com/bluesoft/commons/file/ZipFileTextWriter.java][close] = -> TRY {  -> pw.flush()@ -> pw.close()@ } CATCH {}

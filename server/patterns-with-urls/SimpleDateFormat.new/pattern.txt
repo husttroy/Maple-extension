@@ -1,0 +1,11 @@
+Total Count:53581
+1:[new SimpleDateFormat(1)@true]:44108
+2:[new SimpleDateFormat(1)@true, format(1)@true]:24647
+3:[new SimpleDateFormat(1)@true, IF, END_BLOCK]:11788
+4:[new SimpleDateFormat(1)@true, parse(1)@true]:9784
+5:[new SimpleDateFormat(2)@true]:8144
+6:[TRY, new SimpleDateFormat(1)@true, END_BLOCK]:8037
+7:[new SimpleDateFormat(1)@true, getTime(0)@true]:7051
+8:[new SimpleDateFormat(1)@true, format(1)@true, IF, END_BLOCK]:6430
+9:[new SimpleDateFormat(1)@true, new Date(0)@true]:6365
+10:[new SimpleDateFormat(1)@true, new Date(0)@true, format(1)@true]:5776
