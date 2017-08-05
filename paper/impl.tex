@@ -1,0 +1,24 @@
+% ==============================================
+% !TEX root = ./critics.tex
+% ==============================================
+% ==============================================
+\section{Implementation}
+\label{sec:implementation}
+% ==============================================
+This section describes the implementation details of the Maple plugin. It is implemented as an Chrome extension and consists of five components: (1) Stack Overflow code snippet extraction, (2) API misuse detection, (3) popup generation, (4) GitHub example alteration, and (5) a user feedback interface.
+
+{\bf Code Snippet Extraction.} When a user loads a page in the Stack Overflow domain, the plug-in side of the Maple interface extracts any text in answer posts that appears within {\tt <code>} tags, and sends them in a JSON message to the server, as seen in Figure 1.
+
+{\bf API Misuse Detection.} When the server receives a message from the plug-in, it parses the snippets into API call sequences, abstracting away irrelevant statements and syntactic details. An API call sequence consists of relevant control constructs and API calls, where the API calls are annotated with the number of arguments as well as any guard conditions associated with it.
+
+Once the code snippets are parsed, Maple searches a MySQL database for the API calls present in each API call sequence. It receives the required and alternative patterns associated with these calls, and checks whether the code snippet's call sequence satisfies one of the alternative patterns and all required patterns. A code snippet's call sequence satisfies a pattern if it is subsumed by it.
+
+Additionally, while this checking process is occurring, the guard conditions in the code snippets are generalized before checking their logical implications using the SMT solver Z3. Z3 is used to check the logical equivalence between two guard conditions so that Maple can merge logically-similar clusters of guard conditions, making it able to prove the semantic equivalence of conditions like {\tt arg0<arg1} and {\tt arg1>arg0} regardless of their syntactic similarity [much of this is lifted pretty directly from p4 of the Maple paper...].
+
+If Maple finds that an API call sequence does not satisfy the necessary patterns, it generates violations for each potential API misuse. The server collects these violations, along with the required pattern being violated, and maps them to the API call that generated the violation. This data is wrapped into a single JSON message and returned to the plug-in.
+
+{\bf Popup Generation.} Using the data from the server's JSON message, the plug-in searches the identified code snippet for the API call in question, highlights it, and generates a Bootstrap popover on it, as seen in Figure 3. The popover is populated with a violation message describing the pattern being violated and including the GitHub support for the required pattern, in terms of number of supporting projects as well as three links to relevant GitHub pages using that pattern correctly. The plug-in generates one popover for each API call, and generates pages of the popover for each different pattern being violated by that call. The provided example of the pattern is currently hard-coded.\todo{We need to provide more details about how to generate the text description of each violation, e.g., showing the templates in a table.}
+
+{\bf GitHub Example Alteration.} When the user clicks on a provided GitHub example in the popup, the plug-in's main script writes the name of the method call associated with that link to a shared storage space for the Chrome extension, using the chrome.storage API. When the GitHub page is loaded, the plug-in's secondary script is activated and checks the storage for any messages. If a method name has been written there, the secondary script searches the GitHub page for a method declaration of the same name. This is not necessarily the name of the API call the popup has been generated on; this is a method in a GitHub code file that uses that API call in a pattern that the Stack Overflow code snippet does not adhere to. The script highlights the entire method and scrolls the view down so the user is easily able to find it, as seen in Figure 4.
+
+{\bf User Feedback.} Users are able to give feedback on the patterns the popup shows them by voting "up" or "down" on them. When a vote is registered, the plug-in sends the server a message with the pattern's specific ID and a vote of +1 or -1, which the server uses to update the database. This will be used in the future to rank patterns that are sent to the plug-in, and learn which ones users find helpful or unhelpful.

@@ -1,0 +1,76 @@
+% =============================================
+% !TEX root = ./1critics.tex
+% =============================================
+\begin{figure*}[!t]
+\begin{minipage}[t]{0.5\linewidth}
+\begin{lstlisting}[style=MyJavaSmallStyle]
+int keyDownEvent (int wParam, int lParam) {
+*'\delCode{-}'* *'\delCode{ExpandItem item = items [focusIndex];}'*
+  switch (wParam) {
+  case OS.VK_SPACE:
+  case OS.VK_RETURN:
+    Event event = new Event ();
+*'\delCode{-}'*   *'\delCode{event.item = item;}'*
+*'\delCode{-}'*   *'\delCode{sendEvent(true, event);}'*
+*'\addCode{+}'*   *'\addCode{event.item = focusItem;}'*
+*'\addCode{+}'*   *'\addCode{sendEvent(focusItem.expanded ?~COLLAPSE:EXPAND, event);}'*
+*'\addCode{+}'*   *'\addCode{refreshItem(focusItem);}'*
+    ...
+}
+\end{lstlisting}
+\begin{scriptsize}(a) Code changes made by {\sf Alice}\end{scriptsize}
+\end{minipage}
+%
+\begin{minipage}[t]{0.5\linewidth}
+\begin{lstlisting}[style=MyJavaSmallStyle]
+int keyPressedEvent (int wParam, int lParam) {
+*'\delCode{-}'* *'\delCode{ExpandItem item = items [focusIndex];}'*
+  switch (wParam) {
+  case OS.GDK_RETURN:
+  case OS.GDK_SPACE:
+    KeyEvent kEvent = new Event ();
+*'\delCode{-}'*   *'\delCode{kEvent.item = item;}'*
+*'\delCode{-}'*   *'\delCode{sendEvent(true, kEvent);}'*
+*'\addCode{+}'*   *'\addCode{kEvent.item = focusItem;}'*
+*'\addCode{+}'*   *'\addCode{sendEvent(focusItem.expanded ?~COLLAPSE:EXPAND, kEvent);}'*
+*'\addCode{+}'*   *'\addCode{refresh(focusItem);}'*
+   ...
+}
+\end{lstlisting}
+\begin{scriptsize}(b) A similar but not identical change with a different type (\texttt{KeyEvent}), variable (\texttt{kEvent}), and method call (\texttt{refresh})\end{scriptsize}
+\end{minipage}
+%
+\begin{minipage}[t]{0.5\linewidth}
+\begin{lstlisting}[style=MyJavaSmallStyle]
+int buttonUpEvent (int wParam, int lParam) {
+*'\delCode{-}'* *'\delCode{ExpandItem item = items [focusIndex];}'*
+  if (lParam == HOVER) {
+    Event bEvent = new Event ();
+*'\delCode{-}'*   *'\delCode{bEvent.item = item;}'*
+*'\delCode{-}'*   *'\delCode{sendEvent(true, bEvent);}'*
+*'\addCode{+}'*   *'\addCode{bEvent.item = focusItem;}'*
+*'\addCode{+}'*   *'\addCode{sendEvent(focusItem.expanded ?~EXPAND:COLLAPSE, bEvent);}'*
+*'\addCode{+}'*   *'\addCode{refreshItem(focusItem);}'*
+    ...
+}
+\end{lstlisting}
+\begin{scriptsize}(c) Inconsistent change by mistakenly swapping two expressions, \texttt{EXPAND:COLLAPSE}\end{scriptsize}
+\end{minipage}
+%
+\begin{minipage}[t]{0.5\linewidth}
+\begin{lstlisting}[style=MyJavaSmallStyle]
+int buttonReleaseEvent (int wParam, int lParam) {
+  ExpandItem item = items [focusIndex];
+  if (lParam == HOVER) {
+    Event buttonEvent = new Event();
+    buttonEvent.item = focusItem;
+    sendEvent(true, buttonEvent);
+    ...
+}
+\end{lstlisting}
+\begin{scriptsize}(d) Missed update\end{scriptsize}
+\end{minipage}
+%
+\caption{Examples of systematic changes, inconsistent changes, and missed updates.}
+\label{fig:motiExample}
+\end{figure*}

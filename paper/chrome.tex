@@ -1,0 +1,72 @@
+% ==================================================
+% FSE demo paper
+%    4 pages in the ACM proceedings format, including all text, references and figures.
+%
+%   Accompanied by:
+%     1. a link to screencast of 5 to 10 minutes
+%     2. a link to the website for this tool
+%     3. information on tool availability and maturity 
+%
+%   Paper    submission  : Monday, June 30, 2014
+%   Author   notification   : Tuesday, 12 August 2014
+%   Camera-ready deadline : Monday, 15 September 2014
+% ==================================================
+\documentclass{sig-alternate}
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+\input{macros}
+\usepackage{caption}
+\usepackage{subcaption}
+\begin{document}
+
+\title{Augmenting Stack Overflow with API Usage Patterns Mined from GitHub}
+
+%\numberofauthors{1}
+%\author{\alignauthor Tianyi Zhang$^{\ast}$~~~Myoungkyu Song$^{\dag}$~~~Miryung Kim$^{\ast}$\\
+%	\affaddr{$^{\ast}$University of California, Los Angeles, USA \hspace*{3em} $^{\dag}$University of Texas at Austin, USA}\\
+%	\email{tianyi.zhang@cs.ucla.edu, mksong1117@utexas.edu, miryung@cs.ucla.edu}
+%}
+
+\maketitle
+
+% ==================================================
+% abstract
+% ==================================================
+\input{abstract}
+
+\category{D.2.6}{Software Engineering}{Programming Environme-\\nts---Integrated Environments}
+
+\terms{}
+
+\keywords{}
+
+% ==================================================
+% Introduction
+% ==================================================
+\input{intro}
+
+% ==================================================
+% Motivating Example and Tool Features
+% ==================================================
+\input{motive}
+
+% ==================================================
+% Approach and Evaluation
+% ==================================================
+\input{impl}
+
+% ==================================================
+% Summary
+% ==================================================
+\input{summary}
+
+\section{Acknowledgement} 
+
+\section{REFERENCES} 
+\balance
+\bibliographystyle{abbrv}
+%\bibliographystyle{unsrt}
+\renewcommand{\refname}{}
+\vspace{-.35in}
+\bibliography{chrome}
+\end{document}
