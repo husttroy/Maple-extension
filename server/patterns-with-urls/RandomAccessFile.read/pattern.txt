@@ -1,0 +1,12 @@
+Total Count:2391
+1:[TRY, read(1)@true, END_BLOCK]:1076
+2:[read(1)@true, IF, END_BLOCK]:1028
+3:[new RandomAccessFile(2)@true, read(1)@true]:957
+4:[read(1)@true, close(0)@true]:793
+5:[seek(1)@true, read(1)@true]:772
+6:[new RandomAccessFile(2)@true, read(1)@true, close(0)@true]:643
+7:[TRY, new RandomAccessFile(2)@true, read(1)@true, END_BLOCK]:622
+8:[new RandomAccessFile(2)@true, read(1)@true, IF, END_BLOCK]:526
+9:[seek(1)@true, read(1)@true, IF, END_BLOCK]:526
+10:[TRY, read(1)@true, IF, END_BLOCK, END_BLOCK]:526
+11:[TRY, read(1)@true, close(0)@true, END_BLOCK]:478

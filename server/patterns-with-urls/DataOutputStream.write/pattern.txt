@@ -1,0 +1,12 @@
+Total Count:14171
+1:[new DataOutputStream(1)@true, write(1)@true]:7618
+2:[write(1)@true, close(0)@true]:5476
+3:[TRY, write(1)@true, END_BLOCK]:5102
+4:[new ByteArrayOutputStream(0)@true, write(1)@true]:3945
+5:[write(1)@true, toByteArray(0)@true]:3904
+6:[new ByteArrayOutputStream(0)@true, new DataOutputStream(1)@true, write(1)@true]:3889
+7:[new DataOutputStream(1)@true, write(1)@true, toByteArray(0)@true]:3849
+8:[new DataOutputStream(1)@true, write(1)@true, close(0)@true]:3650
+9:[new ByteArrayOutputStream(0)@true, write(1)@true, toByteArray(0)@true]:3500
+10:[new ByteArrayOutputStream(0)@true, new DataOutputStream(1)@true, write(1)@true, toByteArray(0)@true]:3472
+11:[writeInt(1)@true, write(1)@true]:2837

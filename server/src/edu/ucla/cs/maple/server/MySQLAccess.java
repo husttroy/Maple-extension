@@ -64,9 +64,10 @@ public class MySQLAccess {
 					int alternative = result.getInt("alternative");
 					String description = result.getString("description");
 					int vote = result.getInt("votes");
+					String links = result.getString("links");
 					Pattern p = new Pattern(id, className, methodName, pattern,
 							support, new ArrayList<Pattern>(), description,
-							vote);
+							vote, links);
 
 					if (alternative != 0) {
 						ArrayList<Integer> a;
@@ -114,18 +115,86 @@ public class MySQLAccess {
 	public void addVote(int vote, int patternID) {
 		if (connect != null) {
 			try {
-				// construct the query
-				String query = "UPDATE patterns SET votes = votes +" + vote
+				// construct the update
+				String update = "UPDATE patterns SET votes = votes +" + vote
 						+ " WHERE id = " + patternID + ";";
 
-				prep = connect.prepareStatement(query);
-				result = prep.executeQuery();
+				prep = connect.prepareStatement(update);
+				prep.executeUpdate();
 
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 	}
+	
+	// for LinkExtractor
+	public void addColumn(String columnName) {
+	    if (connect != null) {
+            try {
+                // construct the update
+                String update = "ALTER TABLE patterns ADD " + columnName + ""
+                        + " TEXT";
+    
+                prep = connect.prepareStatement(update);
+                prep.executeUpdate();
+    
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+	    }
+	}
+	
+	// for LinkExtractor
+	public boolean patternExists(String _class, String _method, String _pattern) {
+        result = null;
+        
+        if (connect != null) {
+            try {
+                // construct the query
+                String query;
+                query = "select * from patterns where method='"
+                        + _method + "' and class='"+ _class + "' and pattern='" + _pattern + "';";
+                prep = connect.prepareStatement(query);
+                result = prep.executeQuery();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        try {
+            return result.next();
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+	
+	// for LinkExtractor
+	public void addValueToColumn(String _class, String _method, String _pattern, 
+	        String _columnName, String _val) {
+        if (connect != null) {
+            try {
+                // construct the update
+                //String update = "UPDATE patterns SET " + _columnName + ""
+                        //+ "='"+ _val + "' WHERE method='"  + _method 
+                        //+ "' and class='"+ _class + "' and pattern='" + _pattern + "';";
+            
+                PreparedStatement ps = connect.prepareStatement("UPDATE patterns SET links=? WHERE method=? and class=? and pattern=?");
+                
+                //ps.setString(1, _columnName);
+                ps.setString(1, _val);
+                ps.setString(2, _method);
+                ps.setString(3, _class);
+                ps.setString(4, _pattern);
+                
+                ps.executeUpdate();
+                ps.close();
+    
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 	public void close() {
 		try {

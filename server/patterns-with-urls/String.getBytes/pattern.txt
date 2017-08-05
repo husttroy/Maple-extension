@@ -1,0 +1,9 @@
+Total Count:122343
+1:[getBytes(0)@true]:70910
+2:[getBytes(1)@true]:40080
+3:[TRY, getBytes(1)@true, END_BLOCK]:24469
+4:[TRY, getBytes(0)@true, END_BLOCK]:24469
+5:[getBytes(0)@true, IF, END_BLOCK]:17128
+6:[getBytes(0)@true, write(1)@true]:14950
+7:[getBytes(0)@true, new ByteArrayInputStream(1)@true]:13800
+8:[getBytes(0)@true, close(0)@true]:13213

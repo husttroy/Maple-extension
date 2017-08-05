@@ -1,0 +1,9 @@
+Total Count:9290
+1:[TRY, write(1)@true, END_BLOCK]:3437
+2:[write(1)@true, close(0)@true]:3390
+3:[getWriter(0)@true, write(1)@true]:2822
+4:[write(1)@true, flush(0)@true]:2735
+5:[write(1)@true, IF, END_BLOCK]:2415
+6:[new PrintWriter(1)@true, write(1)@true]:2270
+7:[TRY, write(1)@true, close(0)@true, END_BLOCK]:2044
+8:[toString(0)@true, write(1)@true]:1775

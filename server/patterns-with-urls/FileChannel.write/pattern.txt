@@ -1,0 +1,6 @@
+Total Count:2776
+1:[TRY, write(1)@true, END_BLOCK]:1277
+2:[write(1)@true, close(0)@true]:1063
+3:[getChannel(0)@true, write(1)@true]:883
+4:[allocate(1)@true, write(1)@true]:834
+5:[flip(0)@true, write(1)@true]:687

@@ -1,0 +1,44 @@
+Total Count:1107
+1:[doFinal(1)@true, new String(1)@true]:723
+2:[getInstance(1)@true, doFinal(1)@true, new String(1)@true]:526
+3:[TRY, doFinal(1)@true, new String(1)@true, END_BLOCK]:432
+4:[init(2)@true, doFinal(1)@true, new String(1)@true]:379
+5:[new SecretKeySpec(2)@true, doFinal(1)@true, new String(1)@true]:340
+6:[getBytes(0)@true, doFinal(1)@true, new String(1)@true]:323
+7:[doFinal(1)@true, new String(2)@true]:322
+8:[TRY, getInstance(1)@true, doFinal(1)@true, new String(1)@true, END_BLOCK]:321
+9:[TRY, init(2)@true, doFinal(1)@true, new String(1)@true, END_BLOCK]:277
+10:[getInstance(1)@true, init(2)@true, doFinal(1)@true, new String(1)@true]:258
+11:[TRY, doFinal(1)@true, new String(2)@true, END_BLOCK]:244
+12:[init(1)@true, doFinal(1)@true, new String(1)@true]:231
+13:[TRY, getBytes(0)@true, doFinal(1)@true, new String(1)@true, END_BLOCK]:221
+14:[getInstance(1)@true, init(1)@true, doFinal(1)@true, new String(1)@true]:219
+15:[getInstance(1)@true, doFinal(1)@true, new String(2)@true]:215
+16:[getInstance(1)@true, getBytes(0)@true, doFinal(1)@true, new String(1)@true]:208
+17:[TRY, getInstance(1)@true, init(2)@true, doFinal(1)@true, new String(1)@true, END_BLOCK]:199
+18:[new SecretKeySpec(2)@true, init(1)@true, doFinal(1)@true, new String(1)@true]:198
+19:[getBytes(0)@true, new SecretKeySpec(2)@true, doFinal(1)@true, new String(1)@true]:165
+20:[new SecretKeySpec(2)@true, getInstance(1)@true, doFinal(1)@true, new String(1)@true]:163
+21:[getBytes(0)@true, getInstance(1)@true, doFinal(1)@true, new String(1)@true]:154
+22:[TRY, getInstance(1)@true, getBytes(0)@true, doFinal(1)@true, new String(1)@true, END_BLOCK]:144
+23:[doFinal(1)@true, new String(1)@true, IF, END_BLOCK]:144
+24:[TRY, new SecretKeySpec(2)@true, doFinal(1)@true, new String(1)@true, END_BLOCK]:144
+25:[new SecretKeySpec(2)@true, getBytes(0)@true, doFinal(1)@true, new String(1)@true]:143
+26:[getBytes(1)@true, doFinal(1)@true, new String(1)@true]:143
+27:[getBytes(0)@true, init(2)@true, doFinal(1)@true, new String(1)@true]:141
+28:[new String(1)@true, doFinal(1)@true]:141
+29:[TRY, getInstance(1)@true, doFinal(1)@true, new String(2)@true, END_BLOCK]:133
+30:[getInstance(1)@true, new SecretKeySpec(2)@true, doFinal(1)@true, new String(1)@true]:128
+31:[getBytes(1)@true, doFinal(1)@true, new String(2)@true]:127
+32:[doFinal(1)@true, encode(1)@true, new String(1)@true]:124
+33:[doFinal(1)@true, encodeBase64(1)@true, new String(1)@true]:121
+34:[TRY, getBytes(0)@true, getInstance(1)@true, doFinal(1)@true, new String(1)@true, END_BLOCK]:111
+35:[getBytes(0)@true, new SecretKeySpec(2)@true, getInstance(1)@true, doFinal(1)@true, new String(1)@true]:110
+36:[init(3)@true, doFinal(1)@true, new String(1)@true]:108
+37:[init(2)@true, doFinal(1)@true, new String(2)@true]:105
+38:[init(2)@true, getBytes(0)@true, doFinal(1)@true, new String(1)@true]:103
+39:[new SecretKeySpec(2)@true, init(2)@true, doFinal(1)@true, new String(1)@true]:103
+40:[new SecretKeySpec(2)@true, getInstance(1)@true, init(1)@true, doFinal(1)@true, new String(1)@true]:99
+41:[init(1)@true, getBytes(0)@true, doFinal(1)@true, new String(1)@true]:99
+42:[getInstance(1)@true, doFinal(1)@true, encodeBase64(1)@true, new String(1)@true]:99
+43:[new SecretKeySpec(2)@true, doFinal(1)@true, new String(2)@true]:96

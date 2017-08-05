@@ -1,0 +1,17 @@
+Total Count:35621
+1:[new PrintWriter(1)@true, close(0)@true]:20097
+2:[println(1)@true, close(0)@true]:16713
+3:[TRY, close(0)@true, END_BLOCK]:16029
+4:[new PrintWriter(1)@true, println(1)@true, close(0)@true]:11142
+5:[TRY, new PrintWriter(1)@true, close(0)@true, END_BLOCK]:9261
+6:[TRY, println(1)@true, close(0)@true, END_BLOCK]:8193
+7:[TRY, println(1)@true, END_BLOCK, close(0)@true]:7480
+8:[flush(0)@true, close(0)@true]:7292
+9:[print(1)@true, close(0)@true]:6483
+10:[TRY, new PrintWriter(1)@true, END_BLOCK, close(0)@true]:6412
+11:[getWriter(0)@true, close(0)@true]:5753
+12:[new FileWriter(1)@true, close(0)@true]:5642
+13:[new FileWriter(1)@true, new PrintWriter(1)@true, close(0)@true]:5642
+14:[TRY, IF, close(0)@rcv!=null, END_BLOCK, END_BLOCK]:4723
+15:[LOOP, close(0)@rcv!=null, END_BLOCK]:4616
+16:[FINALLY, close(0)@rcv!=null, END_BLOCK]:4602

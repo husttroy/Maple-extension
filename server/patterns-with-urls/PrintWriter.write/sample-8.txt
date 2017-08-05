@@ -1,0 +1,10 @@
+results[https://github.com/ansell/oldrepo-owlapi/blob/1408adbe6a5568ae2173202979f281da6754c705/latexrenderer/src/main/java/org/coode/owl/latex/LatexWriter.java][write] = -> writer.write(o.toString(),)@
+results[https://github.com/ghxiao/drew-rl/blob/88627d6b2cffe5e6383f012a6f16c0a6781e54e7/owlapi-src/org/coode/owlapi/latex/LatexWriter.java][write] = -> writer.write(o.toString(),)@
+results[https://github.com/gxa/gxa/blob/ebb40fdb678150a7484014379c0de4420e7b609b/src/html/TableWriter.java][writeRow] = -> pw.write("<tr><td>"+elt.toString()+"</td></tr>\n",)@
+results[https://github.com/nburns/freezing-avenger/blob/24ba5ba8fb11d10ee641136beaa6774af2daadb3/Secret Archer/secretarcher/core/common/bridge/ClientBridge.java][sendPerceptionPacket] = -> out.write("0\n"+packet.toString(),)@
+results[https://github.com/ansell/oldrepo-owlapi/blob/4d3baf0d4015e27363eb54e2d794fb1e920e4948/parsers/src/main/java/org/coode/owlapi/latex/LatexWriter.java][write] = -> writer.write(o.toString(),)@
+results[https://github.com/yangjiandong/sshapp/blob/c80aca6ce50c951a2f6903f8effd51452029ddc8/application/ekapp/src/main/java/com/ekingsoft/core/json/JSONUtil.java][buildJSONResponse] = -> printWriter.write(data.toString(),)@
+results[https://github.com/gxa/gxa/blob/9ae4a66f0c61840594d46b8e203a80f6c80b99f0/src/output/TableWriter.java][writeRow] = -> pw.write("<tr><td>"+elt.toString()+"</td></tr>\n",)@
+results[https://github.com/exbluesbreaker/csu-code-analysis/blob/2cb8034aa7011f827f8078acaaabab2dcdc5ec46/java-xml/javac/src/com/sun/tools/javac/tree/Pretty.java][print] = -> out.write(Convert.escapeUnicode(s.toString(),),)@
+results[https://github.com/deric/clueminer/blob/31a43a4b1a0b2f248ff949c74f978c9d573fae34/dataset-io/src/main/java/au/com/bytecode/opencsv/CSVWriter.java][writeLine] = -> sb.append(lineEnd,)@ -> pw.write(sb.toString(),)@
+results[https://github.com/apache/maven-doxia/blob/a61df7de5b3482bcfd521f6b8f1918ee2ab477c5/doxia-modules/doxia-module-twiki/src/main/java/org/apache/maven/doxia/module/twiki/TWikiSink.java][close] = -> out.write(writer.toString(),)@ -> out.close()@

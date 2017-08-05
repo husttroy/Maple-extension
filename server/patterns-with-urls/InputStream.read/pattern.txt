@@ -1,0 +1,8 @@
+Total Count:17755
+1:[TRY, read(1)@true, END_BLOCK]:9233
+2:[read(1)@true, IF, END_BLOCK]:7280
+3:[read(1)@true, close(0)@true]:6697
+4:[TRY, read(1)@true, close(0)@true, END_BLOCK]:5504
+5:[read(1)@true, write(3)@true]:4847
+6:[TRY, read(1)@true, END_BLOCK, close(0)@true]:4794
+7:[TRY, read(1)@true, IF, END_BLOCK, END_BLOCK]:4261

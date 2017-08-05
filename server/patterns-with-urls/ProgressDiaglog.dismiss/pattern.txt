@@ -1,0 +1,9 @@
+Total Count:12661
+1:[dismiss(0)@rcv!=null]:2912
+2:[IF, dismiss(0)@rcv!=null, END_BLOCK]:2841
+3:[TRY, dismiss(0)@rcv!=null, END_BLOCK]:2659
+4:[TRY, dismiss(0)@rcv!=null&&rcv.isShowing(), END_BLOCK]:691
+5:[IF, dismiss(0)@rcv!=null&&rcv.isShowing(), END_BLOCK]:669
+6:[dismiss(0)@rcv!=null&&rcv.isShowing()]:633
+7:[TRY, dismiss(0)@rcv.isShowing(), END_BLOCK]:558
+8:[IF, dismiss(0)@rcv.isShowing(), END_BLOCK]:557

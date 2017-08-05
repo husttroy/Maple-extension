@@ -1,0 +1,9 @@
+Total Count:10810
+1:[query(7)@true, IF, END_BLOCK]:5946
+2:[query(7)@true, close(0)@true]:5682
+3:[query(7)@true, IF, END_BLOCK, close(0)@true]:4756
+4:[query(7)@true, FINALLY, close(0)@true, END_BLOCK]:4216
+5:[query(7)@true, getString(1)@true]:4021
+6:[query(7)@true, TRY, close(0)@true, END_BLOCK]:3675
+7:[query(7)@true, getLong(1)@true]:3083
+8:[query(7)@true, getString(1)@true, close(0)@true]:2800

@@ -1,0 +1,10 @@
+results[https://github.com/MiniSEC/adito_reload/blob/bfd05079e493d99e86af0611d0af1616c2b48881/adito/branches/openvpn-als/maverick-util/src/com/maverick/util/TextConversionStream.java][<init>] = -> lineEnding=systemNL.getBytes()@
+results[https://github.com/genepi/pig-gene/blob/773153198b005b6a763b026849e479116fe0c830/AuswertTestdat/lib/src/org/apache/pig/builtin/Utf8StorageConverter.java][toBytes] = -> return s.getBytes()@
+results[https://github.com/lantunes/mojave/blob/8534db9244fd87de0eb8f293b07a8195148e5222/mojave-core/src/main/java/org/mojavemvc/views/AbstractResponse.java][withContent] = -> this.content=content.getBytes()@
+results[https://github.com/bleujin/aradon/blob/cf61e72fedef7c08eef71ac3cef683a3efbab7f3/src/net/ion/nradon/stub/StubHttpRequest.java][bodyAsBytes] = -> return body.getBytes()@
+results[https://github.com/ritzalam/red5/blob/9ee670e56005014257199daa85942b1bbee7be28/src/org/red5/io/utils/HexDump.java][stringToHexString] = -> ba=in.getBytes()@
+results[https://github.com/arielalvarez88/QuizManiaFruits/blob/5406399bc6c9d4a23c99481b0e19611c6cce683c/src/com/google/inAppBilling/Base64.java][decode] = -> bytes=s.getBytes()@
+results[https://github.com/aospX/platform_libcore/blob/21643b11ea824e0e4e65a5437a57abed2052ff7a/luni/src/test/java/libcore/java/io/OldInputStreamTest.java][<init>] = -> input=testString.getBytes()@
+results[https://github.com/ShenduOS/android_packages_apps_ShenduPermission/blob/adad0337df171fb6eb4893f2193b9e2eb3d29d61/src/com/noshufou/android/su/util/Base64.java][decode] = -> bytes=s.getBytes()@
+results[https://github.com/Slayjay78/android_libcore/blob/38fc00ddece5f7d8941fecb01c7bcc2b45208496/luni/src/test/java/libcore/java/io/OldInputStreamTest.java][<init>] = -> input=testString.getBytes()@
+results[https://github.com/aldaris/openam/blob/f19ff3ca241e9dc8a9fc3c46478dc5a82ee2a0b2/opensso/products/amserver/source/com/sun/identity/authentication/modules/radius/client/UserNameAttribute.java][getValue] = -> return _name.getBytes()@

@@ -27,9 +27,9 @@ public class PatternUtilsTest {
 	@Test
 	public void testGetTheRightPatternFromSeqArray() {
 		String pattern = "try {; new FileInputStream(1)@true; }; catch {; }";
-		Pattern p = new Pattern(0, null, null, pattern, 0, new ArrayList<Pattern>(), null, 0);
+		Pattern p = new Pattern(0, null, null, pattern, 0, new ArrayList<Pattern>(), null, 0, null);
 		String pattern2 = "new FileInputStream(1)@arg0.exists()";
-		Pattern p2 = new Pattern(0, null, null, pattern2, 0, new ArrayList<Pattern>(), null, 0);
+		Pattern p2 = new Pattern(0, null, null, pattern2, 0, new ArrayList<Pattern>(), null, 0, null);
 		p.alternative.add(p2);
 		
 		ArrayList<APISeqItem> pArray = PatternUtils.convert(pattern2);

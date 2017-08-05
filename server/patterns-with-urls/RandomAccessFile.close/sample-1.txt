@@ -1,0 +1,10 @@
+results[https://github.com/donnchadh/jMathLib/blob/60ce452686f86ebcc3eb203ccc76909dd3d40030/JMathLib/trunk/src/jmathlib/core/interpreter/ErrorLogger.java][finalize] = -> TRY {  -> TRY { -> output.close()@ } } CATCH {}
+results[https://github.com/syapse/bigdata/blob/6e277a1c7239e9758a9fdb456e585970904abb90/bigdata/src/test/com/bigdata/io/TestWriteCache.java][destroy] = -> TRY { -> raf.close()@ }
+results[https://github.com/artclarke/humble-video/blob/cb857b044f485d57a4b0399fe3e406c2eec6e679/src/main/java/io/humble/video/io/FileProtocolHandler.java][close] = -> TRY { -> stream.close()@ }
+results[https://github.com/hank/feathercoinj/blob/8910ebaae33256f60a601880ff736c7663565562/core/src/main/java/com/google/litecoin/store/DiskBlockStore.java][close] = -> TRY {  -> TRY { -> file.close()@ } } CATCH {}
+results[https://github.com/hank/feathercoinj/blob/9de6dca8c1e2fbaf170e3397419bc1ce42b9dd41/core/src/main/java/com/google/bitcoin/store/SPVBlockStore.java][close] = -> TRY {  -> TRY { -> randomAccessFile.close()@ } } CATCH {}
+results[https://github.com/saces/jgit/blob/5e33a1de831fcbac4ff53cadacfdfc8e7b204ffe/org.eclipse.jgit.http.server/src/org/eclipse/jgit/http/server/FileSender.java][close] = -> TRY { -> source.close()@ }
+results[https://github.com/eclipse/jgit/blob/14164e040c5b2bb31ba68754516045253be81506/org.eclipse.jgit.http.server/src/org/eclipse/jgit/http/server/FileSender.java][close] = -> TRY { -> source.close()@ }
+results[https://github.com/SumiTomohiko/fsyscall2/blob/cf9040380df01617d5ffc0f24c210513135f2538/java/src/jp/gr/java_conf/neko_daisuki/fsyscall/slave/Slave.java][doClose] = -> TRY {  -> TRY { -> mFile.close()@ } } CATCH {}
+results[https://github.com/ds10git/TV-Browser/blob/e6b78893e36a5904cec837970113f5f8eb1a5b94/primarydatamanager/tvdatastarterkit/src/main/java/primarydatamanager/PrimaryDataManager.java][deleteLockFile] = -> TRY { -> mLockFile.close()@ }
+results[https://github.com/TheCollective/android_frameworks_base/blob/c02d1a855a882e77ef855f36eb9eda40eb35b214/tests/FrameworkPerf/src/com/android/frameworkperf/TestService.java][onTerm] = -> TRY { -> mRAF.close()@ }

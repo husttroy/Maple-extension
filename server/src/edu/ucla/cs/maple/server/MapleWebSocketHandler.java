@@ -89,6 +89,21 @@ public class MapleWebSocketHandler {
     			    vMap.put("pID", p.id);
     			    vMap.put("csID", v.id);
     			    
+    			    if (p.links != null) {
+        			    String[] linkArray = p.links.split("\\\\");
+                        
+        			    int count = 0;
+        			    for (int i=0; i < linkArray.length; i+=2) {
+        			        if (i%4 == 0) { 
+        			            count++; 
+        			            vMap.put("ex"+count, linkArray[i]);
+        			        }
+        			        else {
+        			            vMap.put("ex"+count+"Method", linkArray[i]);
+        			        }
+        			    }
+    			    }
+    			    
     			    if (!apiMap.containsKey(p.methodName)) {
     			        apiMap.put(p.methodName, new ArrayList<HashMap<String, Object>>());
     			    }
@@ -123,8 +138,6 @@ public class MapleWebSocketHandler {
 						+ ", ID:" + voteMessage.get("id").asText());
 
 				// TODO: send to MySQL
-				// TODO: how to find corresponding pattern? database should send
-				// pattern + id when populating plugin
 
 			} catch (JsonGenerationException e) {
 				e.printStackTrace();

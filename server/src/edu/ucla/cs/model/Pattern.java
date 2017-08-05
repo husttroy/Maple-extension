@@ -11,9 +11,11 @@ public class Pattern {
 	public ArrayList<Pattern> alternative;
 	public String description;
 	public int vote;
+	public String links;
 
 	public Pattern(int id, String className, String methodName, String pattern,
-			int support, ArrayList<Pattern> alternative, String description, int vote) {
+			int support, ArrayList<Pattern> alternative, String description, int vote,
+			String links) {
 		this.id = id;
 		this.className = className;
 		this.methodName = methodName;
@@ -22,5 +24,6 @@ public class Pattern {
 		this.alternative = alternative;
 		this.description = description;
 		this.vote = vote;
+		this.links = links;
 	}
 }
