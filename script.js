@@ -72,8 +72,8 @@ socket.onmessage = function(event) {
 			var iOffset = i + 1;
 
 			// TODO: this will be pExample when that part is implemented
-			var tempCodeString = '<span style="background-color: #FFFF00">try {</span> \n\r FileChannel.write(); \n\r<span style="background-color: #FFFF00">} catch (IOException e) { \n\rthrow new IllegalStateException(e); \n\r}</span>';
-			//var tempCodeString = 'FileChannel.write();                       \n<span style="background-color: #FFFF00">FileChannel.close();</span>';
+			//var tempCodeString = '<span style="background-color: #FFFF00">try {</span> \n\r FileChannel.write(); \n\r<span style="background-color: #FFFF00">} catch (IOException e) { \n\rthrow new IllegalStateException(e); \n\r}</span>';
+			var tempCodeString = 'if (jsonElement != null){\n    jsonElement.getAsString();\n}';
 			
 			// if this is the first page, add outer div and make it visible
 			if (i == 0) {

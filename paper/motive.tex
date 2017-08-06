@@ -5,23 +5,23 @@
 \section{Motivating Examples and Tool Features}
 \label{sec:motivation}
 % ==============================================
-\begin{figure}
-\includegraphics[width=0.48\textwidth]{json_ex1.PNG}
-\vspace{.1in}
-\caption{A code snippet that does not properly check {\tt JsonElement.getAsString}.\protect\footnotemark\todo{This code example is verbose and hard to read (font too small). Can you replace it with a more concise one?}\todo{Can you also merge Figure~\ref{fig:so_example} and Figure~\ref{fig:features}. These figures take too much space.}}
-\label{fig:so_example}
-\end{figure}
-
-\footnotetext{https://stackoverflow.com/questions/34120882/gson-jsonelement-getasstring-vs-jsonelement-tostring}
-
-Consider Alice, a software developer who needs to convert java objects to their json representations using Google's Gson library\footnote{https://github.com/google/gson/blob/master/UserGuide.md}, which she is unfamiliar with. Alice finds a Stack Overflow post that demonstrates how to get the string value of a json element, as shown in Figure 2. However, this example does not use the {\tt JsonElement} API properly. 
+Consider Alice, a software developer who needs to convert Java objects to their JSON representations using Google's Gson library\footnote{https://github.com/google/gson/blob/master/UserGuide.md}, which she is unfamiliar with. Alice finds a Stack Overflow post that demonstrates how to get the string value of a json element, as shown in Figure 2. However, this example does not use the {\tt JsonElement} API properly. 
 
 {\bf Detecting and Highlighting Potential API Misuse.}
-\todo{Describe briefly the patterns of JsonElement.getAsString like ``The pattern mining technique learns two patterns that are commonly practiced by GitHub developers...'' You can refer to the last paragraph of the motivating example section of our ASE draft.}
-The extension highlights the potential API misuse in the code snippet, as seen in Figure 2. Note that the extension only highlights the first instance of this misuse although it occurs multiple times in the code snippet, to eliminate redundancy and avoid confusion. Alice is interested in learning more about the API and what specifically the code snippet did not include, so she clicks on the highlighted text.
+%\todo{Describe briefly the patterns of JsonElement.getAsString like ``The pattern mining technique learns two patterns that are commonly practiced by GitHub developers...'' You can refer to the last paragraph of the motivating example section of our ASE draft.}
+\todo{Should I include the patterns themselves, like "getAsString(0)rcv!=null", or use pseudocode?}
+The pattern mining technique learns two {\tt JsonElement.getAsString} patterns that are commonly practiced by GitHub developers: (1) a check to make sure that the {\tt JsonElement} object is of the type {\tt JsonPrimitive} by using {\tt JsonElement.isJsonPrimitive} before calling {\tt getAsString}, and (2) a check to make sure that the {\tt JsonElement} object is not null before calling {\tt getAsString}.
+
+The extension highlights the potential API misuse in the code snippet, as seen in Figure 2. Alice is interested in learning more about the API and what specifically the code snippet did not include, so she clicks on the highlighted text.
 
 \begin{figure}
 \centering
+  \begin{subfigure}
+  \includegraphics[width=0.48\textwidth]{json_ex1.PNG}
+  \vspace{.1in}
+  \caption{A code snippet that does not properly check {\tt JsonElement.getAsString}.\protect\footnotemark}
+  \label{fig:so_example}
+  \end{subfigure}
   \begin{subfigure}[a]{0.48\textwidth}
   \includegraphics[width=\textwidth]{json_ex2.PNG}
   \caption{A page describing a way to avoid a {\tt ClassCastException} by checking whether the {\tt JsonElement} object is a primitive.} 
@@ -40,10 +40,13 @@ The extension highlights the potential API misuse in the code snippet, as seen i
 \label{fig:features}
 \end{figure}
 
+\footnotetext{https://stackoverflow.com/questions/34120882/gson-jsonelement-getasstring-vs-jsonelement-tostring}
+
 {\bf Stack Overflow Popup View.}
 Clicking on the highlighted text reveals a popup, as seen in Figure 3. The popup is populated with information about any required patterns in {\soa}'s database this particular API call does not adhere to. Alice notices that there are two pages of the popup, indicating two different usage patterns that this call does not follow, as shown in Figure~\ref{fig:page1} and Figure~\ref{fig:page2}. 
 
-Alice inspects the first page (Figure~\ref{fig:page1}) and learns that she should check whether the {\tt JsonElement} object is a primitive before calling {\tt getAsString} in order to avoid a {\tt ClassCastException}.\todo{We should also emphasize that our tool automatically generates this descriptive warning message and that our tool generates a fixed example based on the context of the SO example.} She notices that 52 other GitHub code examples use this pattern, which gives her a qualitative measurement of how prevalent this pattern is in real-world projects.
+Alice inspects the first page (Figure~\ref{fig:page1}) and sees a warning message, automatically generated by {\soa} for that particular API misuse. She learns that she should check whether the {\tt JsonElement} object is a primitive before calling {\tt getAsString} in order to avoid a {\tt ClassCastException}. She notices that 52 other GitHub code examples use this pattern, which gives her a quantitative measurement of how prevalent this pattern is in real-world projects. Below this is a code example following the required pattern, generated by {\soa} based on the context of the SO example.
+
 Alice then inspects the second page (Figure~\ref{fig:page2}), and finds that it suggests a null check before calling {\tt getAsString}. She notices that this pattern has more than double the support of the previous pattern.\todo{Should we render the pages based on the prevalence of patterns?}
 
 Curious to see the first pattern in context, Alice returns to the first page of the popup and clicks on the first link provided to her under "See this in a GitHub example."
