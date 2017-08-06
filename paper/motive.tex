@@ -8,16 +8,17 @@
 \begin{figure}
 \includegraphics[width=0.48\textwidth]{json_ex1.PNG}
 \vspace{.1in}
-\caption{A code snippet that does not properly check {\tt JsonElement.getAsString}.\protect\footnotemark}
-\label{fig:arch}
+\caption{A code snippet that does not properly check {\tt JsonElement.getAsString}.\protect\footnotemark\todo{This code example is verbose and hard to read (font too small). Can you replace it with a more concise one?}\todo{Can you also merge Figure~\ref{fig:so_example} and Figure~\ref{fig:features}. These figures take too much space.}}
+\label{fig:so_example}
 \end{figure}
 
 \footnotetext{https://stackoverflow.com/questions/34120882/gson-jsonelement-getasstring-vs-jsonelement-tostring}
 
-Consider Alice, a software developer who needs to develop a feature for a program using Google's Gson library for Java\footnote{https://github.com/google/gson/blob/master/UserGuide.md}, which she is unfamiliar with. Alice uses an Internet search engine to look up how to use Gson's {\tt JsonElement}'s {\tt getAsString()} method and finds a post on Stack Overflow, as shown in Figure 2. However, this example does not use the {\tt JsonElement} API completely correctly. 
+Consider Alice, a software developer who needs to convert java objects to their json representations using Google's Gson library\footnote{https://github.com/google/gson/blob/master/UserGuide.md}, which she is unfamiliar with. Alice finds a Stack Overflow post that demonstrates how to get the string value of a json element, as shown in Figure 2. However, this example does not use the {\tt JsonElement} API properly. 
 
-{\bf Stack Overflow Post View.}
-Alice is running Maple's Chrome extension when she finds this post, and the extension highlights the potential API misuse in the code snippet, as seen in Figure 2. Note that the extension only highlights the first instance of this misuse although it occurs multiple times in the code snippet, to eliminate redundancy and avoid confusion. Alice is interested in learning more about the API and what specifically the code snippet did not include, so she clicks on the highlighted text.
+{\bf Detecting and Highlighting Potential API Misuse.}
+\todo{Describe briefly the patterns of JsonElement.getAsString like ``The pattern mining technique learns two patterns that are commonly practiced by GitHub developers...'' You can refer to the last paragraph of the motivating example section of our ASE draft.}
+The extension highlights the potential API misuse in the code snippet, as seen in Figure 2. Note that the extension only highlights the first instance of this misuse although it occurs multiple times in the code snippet, to eliminate redundancy and avoid confusion. Alice is interested in learning more about the API and what specifically the code snippet did not include, so she clicks on the highlighted text.
 
 \begin{figure}
 \centering
@@ -25,24 +26,25 @@ Alice is running Maple's Chrome extension when she finds this post, and the exte
   \includegraphics[width=\textwidth]{json_ex2.PNG}
   \caption{A page describing a way to avoid a {\tt ClassCastException} by checking whether the {\tt JsonElement} object is a primitive.} 
   \vspace{.1in}
-  \label{fig:arch}
+  \label{fig:page1}
   \end{subfigure}
   \hfill
   \begin{subfigure}[b]{0.48\textwidth}
   \includegraphics[width=\textwidth]{json_ex3.PNG}
   \caption{A page describing a way to avoid a {\tt NullPointerException} by checking whether the {\tt JsonElement} object is null.}
   \vspace{.1in}
-  \label{fig:arch}
+  \label{fig:page2}
   \end{subfigure}
   \hfill
-\caption{The two pages of a popup generated on {\tt JsonElement.getAsString}.}
+\caption{The two pages of a popup generated on {\tt JsonElement.getAsString}.\todo{Can we also show how many users like or dislike the violations in the popup window? Since we don't have any real users, maybe we need to create some artificial numbers for the demonstration purpose.}}
+\label{fig:features}
 \end{figure}
 
 {\bf Stack Overflow Popup View.}
-Clicking on the highlighted text reveals a popup, as seen in Figure 3. The popup is populated with information about any required patterns in Maple's database this particular API call does not adhere to. Alice notices that there are two pages of the popup, indicating two different usage patterns that this call does not follow, as shown in Figures 3a and 3b. 
+Clicking on the highlighted text reveals a popup, as seen in Figure 3. The popup is populated with information about any required patterns in {\soa}'s database this particular API call does not adhere to. Alice notices that there are two pages of the popup, indicating two different usage patterns that this call does not follow, as shown in Figure~\ref{fig:page1} and Figure~\ref{fig:page2}. 
 
-Alice inspects the first page (Fig. 3a) and learns that she should check whether the {\tt JsonElement} object is a primitive before calling {\tt getAsString} in order to avoid a {\tt ClassCastException}. She notices that 52 other GitHub code examples use this pattern, which gives her a qualitative measurement of how prevalent this pattern is in compiled, "real world" code.
-Alice then inspects the second page (Fig. 3b), and finds that it suggests a null check before calling {\tt getAsString}. She notices that this pattern has more than double the support of the previous pattern.
+Alice inspects the first page (Figure~\ref{fig:page1}) and learns that she should check whether the {\tt JsonElement} object is a primitive before calling {\tt getAsString} in order to avoid a {\tt ClassCastException}.\todo{We should also emphasize that our tool automatically generates this descriptive warning message and that our tool generates a fixed example based on the context of the SO example.} She notices that 52 other GitHub code examples use this pattern, which gives her a qualitative measurement of how prevalent this pattern is in real-world projects.
+Alice then inspects the second page (Figure~\ref{fig:page2}), and finds that it suggests a null check before calling {\tt getAsString}. She notices that this pattern has more than double the support of the previous pattern.\todo{Should we render the pages based on the prevalence of patterns?}
 
 Curious to see the first pattern in context, Alice returns to the first page of the popup and clicks on the first link provided to her under "See this in a GitHub example."
 
@@ -52,20 +54,21 @@ Curious to see the first pattern in context, Alice returns to the first page of 
   \includegraphics[width=\textwidth]{json_primitive_gh1.PNG}
   \caption{The first GitHub example for Figure 3a.} 
   \vspace{.1in}
-  \label{fig:arch}
+  \label{fig:github1}
   \end{subfigure}
   \hfill
   \begin{subfigure}[b]{0.48\textwidth}
   \includegraphics[width=\textwidth]{json_null_gh2.PNG}
   \caption{The second GitHub example for Figure 3b.}
   \vspace{.1in}
-  \label{fig:arch}
+  \label{fig:github2}
   \end{subfigure}
   \hfill
-\caption{The highlighted GitHub examples redirected to from the links provided in the popup.}
+\caption{The highlighted GitHub examples redirected to from the links provided in the popup.\todo{The snapshot only shows the highlighted code. Is there a better way to give paper reviewers some context that the highlighted code is from GitHub and that the code is selectively highlighted by our tool instead of by GitHub?}}
+\label{fig:github_examples}
 \end{figure}
 
-{\bf GitHub Example View.} When Alice clicks on one of the GitHub links, the file opens in a new tab and the view scrolls to where the API is called in the file, and the method in which this occurs is highlighted so Alice can easily find it, as seen in Figure 4. The addition of a compilable code example that demonstrates the pattern in context can aid Alice in understanding how to use the pattern if it is unfamiliar to her. In this case, Alice finds herself redirected the method in a GitHub project seen in Figure 4a. She notices that the example uses a null check in conjunction with the primitive check, which makes sense to her after seeing that both were missing from the Stack Overflow code snippet.
+{\bf GitHub Example View.} When Alice clicks on one of the GitHub links, the file opens in a new tab and the view scrolls to where the API is called in the file, and the method in which this occurs is highlighted so Alice can easily find it, as seen in Figure~\ref{fig:github_examples}. The addition of a compilable code example that demonstrates the pattern in context can aid Alice in understanding how to use the pattern if it is unfamiliar to her. In this case, Alice finds herself redirected the method in a GitHub project seen in Figure 4a. She notices that the example uses a null check in conjunction with the primitive check, which makes sense to her after seeing that both were missing from the Stack Overflow code snippet.
 
 Returning to the popup in Stack Overflow, Alice clicks on the second link provided for the second page to compare usage patterns in context. This link opens up to the GitHub method seen in Figure 4b. Unlike the one in Figure 4a, this example does not use the null check in conjunction with the primitive check. 
 
