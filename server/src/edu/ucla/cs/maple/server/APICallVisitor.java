@@ -29,6 +29,7 @@ import org.eclipse.jdt.core.dom.WhileStatement;
 
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
+import edu.ucla.cs.model.CATCH;
 import edu.ucla.cs.model.ControlConstruct;
 
 public class APICallVisitor extends ASTVisitor {
@@ -210,7 +211,7 @@ public class APICallVisitor extends ASTVisitor {
 
 	public boolean visit(CatchClause node) {
 		// System.out.println("catch");
-		seq.add(ControlConstruct.CATCH);
+		seq.add(new CATCH(node.getException().getType().toString()));
 		return true;
 	}
 

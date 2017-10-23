@@ -44,7 +44,7 @@ public class Violation {
 	
 	private String getControlStructureType() {
 	    String structure;
-        if (item == ControlConstruct.TRY || item == ControlConstruct.CATCH) {
+        if (item == ControlConstruct.TRY || item instanceof CATCH) {
             structure = "a try-catch block";
         }
         else if (item == ControlConstruct.FINALLY) {

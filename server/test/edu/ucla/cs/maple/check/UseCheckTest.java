@@ -16,11 +16,11 @@ import edu.ucla.cs.utils.CheckerUtils;
 public class UseCheckTest {
 	@Test
 	public void testLCS() {
-		APICall call1 = new APICall("createNewFile", "", 0);
-		APICall call2 = new APICall("new File", "", 1);
-		APICall call3 = new APICall("exists", "", 0);
-		APICall call4 = new APICall("foo", "", 0);
-		APICall call5 = new APICall("bar", "", 0);
+		APICall call1 = new APICall("createNewFile", null, null, null, null);
+		APICall call2 = new APICall("new File", null, null, null, null);
+		APICall call3 = new APICall("exists", null, null, null, null);
+		APICall call4 = new APICall("foo", null, null, null, null);
+		APICall call5 = new APICall("bar", null, null, null, null);
 		
 		ArrayList<APISeqItem> pattern = new ArrayList<APISeqItem>();
 		pattern.add(ControlConstruct.IF);
@@ -57,7 +57,7 @@ public class UseCheckTest {
 	public void testSameSequenceButDifferentPrecondition() {
 		APICall call1 = new APICall("createNewFile", "true", "f", "File", new ArrayList<String>());
 		APICall call2 = new APICall("createNewFile", " flag && !f.exists()", "f", "File", new ArrayList<String>());
-		APICall call3 = new APICall("createNewFile", "!rcv.exists()", 0);
+		APICall call3 = new APICall("createNewFile", "!rcv.exists()", null, "File", new ArrayList<String>());
 		
 		ArrayList<APISeqItem> seq1 = new ArrayList<APISeqItem>();
 		seq1.add(ControlConstruct.IF);
@@ -90,8 +90,8 @@ public class UseCheckTest {
 		args.add("key");
 		APICall call1 = new APICall("get", "map.containsKey(key,)", "map", "HashMap", args);
 		APICall call2 = new APICall("get", "true", "map", "HashMap", args);
-		APICall call3 = new APICall("get", "rcv.containsKey(arg0,)", 1);
-		APICall call4 = new APICall("get", "true", 1);
+		APICall call3 = new APICall("get", "rcv.containsKey(arg0,)", null, "HashMap", new ArrayList<String>());
+		APICall call4 = new APICall("get", "true", null, "HashMap", new ArrayList<String>());
 		
 		ArrayList<APISeqItem> seq1 = new ArrayList<APISeqItem>();
 		seq1.add(ControlConstruct.IF);
@@ -126,8 +126,8 @@ public class UseCheckTest {
 		ArrayList<String> args = new ArrayList<String>();
 		APICall call1 = new APICall("firstKey", "!map.isEmpty()", "map", "HashMap", args);
 		APICall call2 = new APICall("firstKey", "map.size() > 0", "map", "HashMap", args);
-		APICall call3 = new APICall("firstKey", "!rcv.isEmpty()", 0);
-		APICall call4 = new APICall("firstKey", "rcv.size() > 0", 0);
+		APICall call3 = new APICall("firstKey", "!rcv.isEmpty()", null, "HashMap", new ArrayList<String>());
+		APICall call4 = new APICall("firstKey", "rcv.size() > 0", null, "HashMap", new ArrayList<String>());
 		
 		ArrayList<APISeqItem> seq1 = new ArrayList<APISeqItem>();
 		seq1.add(ControlConstruct.IF);

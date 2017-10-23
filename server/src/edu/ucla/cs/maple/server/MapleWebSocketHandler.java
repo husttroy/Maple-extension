@@ -150,7 +150,7 @@ public class MapleWebSocketHandler {
 	}
 	
 	private HashMap<Pattern, ArrayList<Violation>> parseAndAnalyzeCodeSnippet(CodeSnippet[] snippets) {
-        HashMap<String, ArrayList<Pattern>> patterns = new HashMap<String, ArrayList<Pattern>>();
+        HashMap<String, HashSet<Pattern>> patterns = new HashMap<String, HashSet<Pattern>>();
 	    HashMap<Pattern, ArrayList<Violation>> vioMap = new HashMap<Pattern, ArrayList<Violation>>();
 	    MySQLAccess dbAccess = new MySQLAccess();
 	    
@@ -163,7 +163,7 @@ public class MapleWebSocketHandler {
                 // parse and analyze a snippet using Maple
                 PartialProgramAnalyzer analyzer = new PartialProgramAnalyzer(
                         cs.getSnippet());
-                ArrayList<Pattern> ps; 
+                HashSet<Pattern> ps; 
                 HashMap<String, ArrayList<APISeqItem>> seqs = analyzer
                         .retrieveAPICallSequences();
                 for (String method : seqs.keySet()) {
@@ -192,28 +192,43 @@ public class MapleWebSocketHandler {
                             patterns.put(name, ps);
                         }
                         
-                        // check for violation or alternative usage
-                        for (Pattern p : ps) {
-                            // parse the String pattern into an
-                            // ArrayList<APISeqItem>
-                            HashSet<ArrayList<APISeqItem>> pset = new HashSet<ArrayList<APISeqItem>>();
-                            
-                            ArrayList<APISeqItem> pArray = PatternUtils
+                        // organize the patterns
+                        HashSet<HashSet<ArrayList<APISeqItem>>> pset = new HashSet<HashSet<ArrayList<APISeqItem>>>();
+                        HashSet<ArrayList<APISeqItem>> alterPatterns = new HashSet<ArrayList<APISeqItem>>();
+                        for(Pattern p : ps) {
+                        	ArrayList<APISeqItem> pArray = PatternUtils
                                     .convert(p.pattern);
-                            pset.add(pArray);
-                            
-                            if(!p.alternative.isEmpty()) {
-                                HashSet<ArrayList<APISeqItem>> pset2 = PatternUtils.getAlternativePatterns(p);
-                                pset.addAll(pset2);
-                            }
-                            
-                            // check for API misuse
-                            UseChecker checker = new UseChecker();
-                            // get violations and violating patterns
-                            ArrayList<Violation> viosTemp = checker.validate(pset, seq);
-                            Pattern vioPattern = PatternUtils.getThisOrAlternativePattern(p, checker.pattern);
-                            
-                            // remove redundant violations
+                        	if(p.isRequired) {
+                        		HashSet<ArrayList<APISeqItem>> newP = new HashSet<ArrayList<APISeqItem>>();
+            					newP.add(pArray);
+            					pset.add(newP);
+                        	} else {
+                        		alterPatterns.add(pArray);
+                        	}
+                        }
+                        
+                        if(!alterPatterns.isEmpty()) {
+                        	pset.add(alterPatterns);
+                        }
+                        
+                        // check for violation or alternative usage
+                        for(HashSet<ArrayList<APISeqItem>> s : pset) {
+                        	UseChecker checker = new UseChecker();
+                        	ArrayList<Violation> viosTemp = checker.validate(s, seq);
+                        	Pattern vioPattern = null;
+                        	for(Pattern p : ps) {
+                        		ArrayList<APISeqItem> list = PatternUtils.convert(p.pattern);
+                        		if(list.equals(checker.pattern)) {
+                        			vioPattern = p;
+                        			break;
+                        		}
+                        	}
+                        	
+                        	if(vioPattern == null) {
+                        		continue;
+                        	}
+                        	
+                        	// remove redundant violations
                             ArrayList<Violation> vios = new ArrayList<Violation>();
                             for (int i = 0; i < viosTemp.size(); i++) {
                                 // if this is an APICall, save it

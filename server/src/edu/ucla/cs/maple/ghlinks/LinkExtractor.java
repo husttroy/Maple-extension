@@ -2,7 +2,6 @@ package edu.ucla.cs.maple.ghlinks;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -10,9 +9,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import edu.ucla.cs.maple.server.MySQLAccess;
-import edu.ucla.cs.model.APICall;
-import edu.ucla.cs.model.APISeqItem;
-import edu.ucla.cs.model.ControlConstruct;
 
 public class LinkExtractor {
 
@@ -21,7 +17,8 @@ public class LinkExtractor {
         // add "links" column to the patterns table in database
         MySQLAccess dbAccess = new MySQLAccess();
         dbAccess.connect();
-        dbAccess.addColumn("links");
+        // Tianyi: no long need to alter the table to add the links column
+//        dbAccess.addColumn("links");
         
         // walk through folder names in patterns-with-urls directory 
         // and check database for the API/method
@@ -69,7 +66,9 @@ public class LinkExtractor {
             while ((line = br.readLine()) != null)
             {
                 p = line.substring(line.indexOf("[")+1, line.indexOf("]"));
-                patterns.add(convertPattern(p));
+                // Tianyi: no longer need to convert the pattern format
+//                patterns.add(convertPattern(p));
+                patterns.add(p);
             }
         } catch (IOException e) {
             e.printStackTrace();

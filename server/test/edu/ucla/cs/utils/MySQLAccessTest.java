@@ -2,7 +2,7 @@ package edu.ucla.cs.utils;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.junit.Test;
 
@@ -15,10 +15,11 @@ public class MySQLAccessTest {
 	public void testGetPatternsWithAlternativePatterns() {
 		MySQLAccess access = new MySQLAccess();
 		access.connect();
-		ArrayList<Pattern> plist = access.getPatterns("createNewFile", "File");
+		HashSet<Pattern> plist = access.getPatterns("createNewFile", "File");
 		access.close();
-		assertEquals(1, plist.size());
-		assertEquals(1, plist.get(0).id);
-		assertEquals(2, plist.get(0).alternative.size());
+		assertEquals(3, plist.size());
+		for(Pattern p : plist) {
+			System.out.println(p.pattern);
+		}
 	}
 }

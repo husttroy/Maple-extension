@@ -21,6 +21,7 @@ public class PartialAnalysisTest {
 		ArrayList<APISeqItem> seq = seqs.get("foo");
 		APICall iteratorNext = (APICall)seq.get(2);
 		assertEquals("Iterator", iteratorNext.receiver_type);
+		System.out.println(seq);
 	}
 	
 	@Test
@@ -32,6 +33,7 @@ public class PartialAnalysisTest {
 		ArrayList<APISeqItem> seq = seqs.get("onTouchEvent");
 		APICall call = (APICall)seq.get(1);
 		assertEquals("ViewPager", call.receiver_type);
+		System.out.println(seq);
 	}
 	
 	@Test
@@ -43,5 +45,6 @@ public class PartialAnalysisTest {
 		ArrayList<APISeqItem> seq = seqs.get("foo");
 		APICall close = (APICall)seq.get(seq.size() - 1);
 		assertEquals("BufferedReader", close.receiver_type);
+		System.out.println(seq);
 	}
 }

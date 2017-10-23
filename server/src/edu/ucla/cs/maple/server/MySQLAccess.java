@@ -34,11 +34,9 @@ public class MySQLAccess {
 		}
 	}
 
-	public ArrayList<Pattern> getPatterns(String _method, String _class) {
-		HashMap<Integer, Pattern> patterns = new HashMap<Integer, Pattern>();
-		// maintain the alternative relationship
-		HashMap<Integer, ArrayList<Integer>> alterMap = new HashMap<Integer, ArrayList<Integer>>();
-
+	public HashSet<Pattern> getPatterns(String _method, String _class) {
+		HashSet<Pattern> patterns = new HashSet<Pattern>();
+		
 		if (connect != null) {
 			try {
 				// construct the query
@@ -61,55 +59,23 @@ public class MySQLAccess {
 					String methodName = result.getString("method");
 					String pattern = result.getString("pattern");
 					int support = result.getInt("support");
-					int alternative = result.getInt("alternative");
+					boolean isRequired = result.getBoolean("isRequired");
 					String description = result.getString("description");
 					int vote = result.getInt("votes");
 					String links = result.getString("links");
 					Pattern p = new Pattern(id, className, methodName, pattern,
-							support, new ArrayList<Pattern>(), description,
+							support, isRequired, description,
 							vote, links);
-
-					if (alternative != 0) {
-						ArrayList<Integer> a;
-						if (alterMap.containsKey(alternative)) {
-							a = alterMap.get(alternative);
-						} else {
-							a = new ArrayList<Integer>();
-						}
-
-						a.add(id);
-						alterMap.put(alternative, a);
-					}
-
-					patterns.put(id, p);
-				}
-				
-				// collapse alternative patterns
-				HashSet<Integer> collapsed = new HashSet<Integer>();
-				
-				for(Integer id : alterMap.keySet()) {
-					Pattern p = patterns.get(id);
-					for(int alterId : alterMap.get(id)) {
-						Pattern alter = patterns.get(alterId);
-						p.alternative.add(alter);
-						collapsed.add(alterId);
-					}
-				}
-				
-				for(Integer id : collapsed) {
-					patterns.remove(id);
+					patterns.add(p);
 				}
 				
 				result.close();
-
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		
-		ArrayList<Pattern> pArray = new ArrayList<Pattern>();
-		pArray.addAll(patterns.values());
-		return pArray;
+		return patterns;
 	}
 	
 	public void addVote(int vote, int patternID) {

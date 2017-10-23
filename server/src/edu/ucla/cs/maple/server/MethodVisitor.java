@@ -6,8 +6,10 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
+import org.eclipse.jdt.core.dom.Type;
 
 import edu.ucla.cs.model.APISeqItem;
+import edu.ucla.cs.model.CATCH;
 import edu.ucla.cs.model.ControlConstruct;
 
 public class MethodVisitor extends ASTVisitor{
@@ -21,7 +23,7 @@ public class MethodVisitor extends ASTVisitor{
 	public boolean visit(MethodDeclaration node) {
 		String method = node.getName().toString();
 		
-		List excpts = node.thrownExceptionTypes();
+		List<Type> excpts = node.thrownExceptionTypes();
 		boolean flag = false;
 		if(excpts != null && !excpts.isEmpty()) {
 			flag = true;
@@ -33,8 +35,10 @@ public class MethodVisitor extends ASTVisitor{
 			// this method throws exception
 			cv.seq.add(0, ControlConstruct.TRY);
 			cv.seq.add(ControlConstruct.END_BLOCK);
-			cv.seq.add(ControlConstruct.CATCH);
-			cv.seq.add(ControlConstruct.END_BLOCK);
+			for(Type t : excpts) {
+				cv.seq.add(new CATCH(t.toString()));
+				cv.seq.add(ControlConstruct.END_BLOCK);
+			}
 		}
 		seqs.put(method, cv.seq);
 		

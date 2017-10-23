@@ -7,17 +7,12 @@ public class APICall implements APISeqItem{
 	public String condition;
 	public String receiver;
 	public String receiver_type;
+	// If this is in a pattern, arguments list is a list of argument types. 
+	// If this is in a method call sequence, arguments list is a list of real arguments.
 	public ArrayList<String> arguments;
 	
-	public APICall(String name, String condition, int args) {
-		this.name = name + "(" + args + ")";
-		this.condition = condition;
-		this.receiver = null;
-		this.arguments = null;
-	}
-	
 	public APICall(String name, String condition, String receiver, String type, ArrayList<String> args) {
-		this.name = name + "(" + args.size() + ")";
+		this.name = name;
 		this.condition = condition;
 		this.receiver = receiver;
 		this.arguments = args;
@@ -32,7 +27,17 @@ public class APICall implements APISeqItem{
 	
 	@Override
 	public String toString() {
-		return name + "@" + condition;
+		String s = name + "(";
+		for(int i = 0; i < arguments.size(); i++) {
+			if (i == arguments.size() - 1) {
+				s += arguments.get(i);
+			} else {
+				s += arguments.get(i) + ",";
+			}
+			
+		}
+		s += ")@" + condition;
+		return s;
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import java.util.HashSet;
 
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
+import edu.ucla.cs.model.CATCH;
 import edu.ucla.cs.model.ControlConstruct;
 import edu.ucla.cs.model.Violation;
 import edu.ucla.cs.model.ViolationType;
@@ -44,7 +45,7 @@ public class UseChecker {
 		HashMap<ArrayList<APISeqItem>, ArrayList<APISeqItem>> closest_pattern_common = new HashMap<ArrayList<APISeqItem>, ArrayList<APISeqItem>>();
 		int diff = Integer.MAX_VALUE;
 		for(ArrayList<APISeqItem> pattern : patterns) {
-			// compute the longest common subseqeunce
+			// compute the longest common sub-sequence
 			ArrayList<APISeqItem> lcs = LCS(pattern, seq);
 			
 			// find the most similar pattern
@@ -89,7 +90,7 @@ public class UseChecker {
 		
 		// compute the violation
 		for(APISeqItem item : pattern) {
-			if(item instanceof ControlConstruct) {
+			if(item instanceof ControlConstruct ||item instanceof CATCH) {
 				if(!lcs.contains(item) && !seq.contains(item)) {
 					violations.add(new Violation(ViolationType.MissingStructure, item));
 					continue;

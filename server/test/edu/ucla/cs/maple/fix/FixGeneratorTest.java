@@ -8,6 +8,7 @@ import org.junit.Test;
 import edu.ucla.cs.maple.server.PartialProgramAnalyzer;
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
+import edu.ucla.cs.model.CATCH;
 import edu.ucla.cs.model.ControlConstruct;
 import edu.ucla.cs.utils.FileUtils;
 
@@ -15,11 +16,13 @@ public class FixGeneratorTest {
 	
 	@Test
 	public void testTryCatch() throws Exception {
+		ArrayList<String> args = new ArrayList<String>();
+		args.add("String");
 		ArrayList<APISeqItem> pattern = new ArrayList<APISeqItem>();
 		pattern.add(ControlConstruct.TRY);
-		pattern.add(new APICall("new FileInputStream", "true", 1));
+		pattern.add(new APICall("new FileInputStream", "true", null, "FileInputStream", args));
 		pattern.add(ControlConstruct.END_BLOCK);
-		pattern.add(ControlConstruct.CATCH);
+		pattern.add(new CATCH("FileNotFoundException"));
 		pattern.add(ControlConstruct.END_BLOCK);
 		
 		String path = "test/snippet_with_normal_type.txt";
