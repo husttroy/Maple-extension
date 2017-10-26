@@ -17,8 +17,6 @@ public class LinkExtractor {
         // add "links" column to the patterns table in database
         MySQLAccess dbAccess = new MySQLAccess();
         dbAccess.connect();
-        // Tianyi: no long need to alter the table to add the links column
-//        dbAccess.addColumn("links");
         
         // walk through folder names in patterns-with-urls directory 
         // and check database for the API/method
@@ -26,24 +24,31 @@ public class LinkExtractor {
         
         for (final File folder : pwuDir.listFiles()) {
             folderName = folder.getName();
+//            if(!folderName.equals("ByteBuffer.get")) {
+//            	continue;
+//            }
             
             // convert the patterns in pattern.txt to strings of the same
             // format as the ones in the database
             ArrayList<String> filePatterns = extractPatterns(folder);
                 
             // query the database for each pattern
-            for (int i=0; i < filePatterns.size()-1; i++) {
+            for (int i=0; i < filePatterns.size(); i++) {
                 // if this pattern related to this API is in the database, then use
                 // the file pattern's index+1 to locate its corresponding links,
                 // and add those to the database
-                String className = folderName.substring(0, folderName.indexOf("."));
-                String methodName = folderName.substring(folderName.indexOf(".")+1);
+            	String[] ss = folderName.split("\\.");
+                String className = ss[0];
+                String methodName = ss[1];
                 
                 if (dbAccess.patternExists(className, methodName, filePatterns.get(i))) {
-                    // extract the links from the sample.txt file and add as a single string
+                    // extract the links from the sample-(i+1).txt file and add as a single string
                     // to the database
-                    dbAccess.addValueToColumn(className, methodName, filePatterns.get(i),
-                            "links", extractLinks(folder.listFiles()[i+1]));
+                	File sampleFile = new File(folder.getAbsolutePath() + File.separator + "sample-" + (i+1) + ".txt");
+                	if(sampleFile.exists()) {
+                		dbAccess.addValueToColumn(className, methodName, filePatterns.get(i),
+                                "links", extractLinks(sampleFile));
+                	}
                 }
              }           
          }
@@ -57,73 +62,34 @@ public class LinkExtractor {
         String p;
         
         try {
-            // just read the first file, which is pattern.txt
-            br = new BufferedReader(new FileReader(_folder.listFiles()[0]));
-            
-            // skip the first line
-            br.readLine();
-            // convert each pattern to an API call sequence and add to the ArrayList
-            while ((line = br.readLine()) != null)
-            {
-                p = line.substring(line.indexOf("[")+1, line.indexOf("]"));
-                // Tianyi: no longer need to convert the pattern format
-//                patterns.add(convertPattern(p));
-                patterns.add(p);
+            File pFile  = new File(_folder.getAbsolutePath() + File.separator + "pattern.txt");
+            if(!pFile.exists()) {
+            	// patterns.txt does not even exist
+            	return patterns;
+            } else {
+            	br = new BufferedReader(new FileReader(pFile));
+                
+                // skip the first line
+                br.readLine();
+                // convert each pattern to an API call sequence and add to the ArrayList
+                while ((line = br.readLine()) != null)
+                {
+                    p = line.substring(line.indexOf("[")+1, line.lastIndexOf("]"));
+                    patterns.add(p);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
-            br.close();
+            	if(br != null) {
+                	br.close();
+            	}
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         return patterns;
-    }
-    
-    // convert the patterns from pattern.txt to the same format as used in 
-    // the database
-    public static String convertPattern(String pattern) {
-        String[] seqItems = pattern.split(",");
-        StringBuilder callSeq = new StringBuilder();
-        
-        for (String str : seqItems) {
-            switch(str) {
-                case "TRY":
-                    callSeq.append("try {;");
-                    break;
-                case "CATCH":
-                    callSeq.append("catch {;");
-                    break;
-                case "FINALLY":
-                    callSeq.append("finally {;");
-                    break;
-                case "IF":
-                    callSeq.append("if {;");
-                    break;
-                case "ELSE":
-                    callSeq.append("else {;");
-                    break;
-                case "LOOP":
-                    callSeq.append("loop {;");
-                    break;
-                case "END_BLOCK":
-                    callSeq.append("}");
-                    break;
-                
-                // this is an APICall
-                default: 
-                    callSeq.append(str + ";");
-            }
-        }
-        
-        // the last character shouldn't be a semicolon
-        if (callSeq.substring(callSeq.length() - 1).equals(";")) {
-            callSeq.setLength(callSeq.length()-1);
-        }
-        
-        return callSeq.toString();
     }
     
     private static String extractLinks(File samples) {
@@ -152,7 +118,8 @@ public class LinkExtractor {
                     count++;
                     // add the corresponding method (i.e. the one that the
                     // API call occurs in)
-                    method = line.substring(line.lastIndexOf("[")+1, line.lastIndexOf("]"));
+                    // note: the format of each sampled example is changed to 'results[url][method][frequency] = ...' where 'frequency' indicate the number of duplicated examples.
+                    method = line.substring(line.indexOf("[", line.indexOf('[') + 1)+1, line.indexOf("]", line.indexOf(']') + 1));
                     // use a backslash as a delimiter between urls
                     sb.append(url + "\\\\" + method + "\\\\");
                 }

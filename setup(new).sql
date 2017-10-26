@@ -20,7 +20,7 @@ insert into patterns (id, class, method, pattern, support, isRequired, descripti
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (13, 'SimpleDateFormat', 'SimpleDateFormat', 'TRY, new SimpleDateFormat(String)@true, END_BLOCK, CATCH(Exception), END_BLOCK', 17961, TRUE, '');
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (14, 'SimpleDateFormat', 'SimpleDateFormat', 'new SimpleDateFormat(String)@true, parse(String)@true', 9783, FALSE, '');
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (15, 'Pattern', 'compile', 'compile(String)@true, matcher(String)@true', 24889, TRUE, '');
-insert into patterns (id, class, method, pattern, support, isRequired, description) values (16, 'Activity', 'setContentView', '[onCreate(1)@true, setContentView(1)@true]', 96848, TRUE, '');
+insert into patterns (id, class, method, pattern, support, isRequired, description) values (16, 'Activity', 'setContentView', 'onCreate(Bundle)@true, setContentView(View)@true', 96848, TRUE, '');
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (17, 'URLEncoder', 'encode', 'TRY, encode(String,String)@true, END_BLOCK, CATCH(Exception), END_BLOCK', 14113, TRUE, '');
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (18, 'Intent', 'putExtra', 'new Intent(String,Uri)@true, putExtra(String,String)@true', 15583, FALSE, '');
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (19, 'Intent', 'putExtra', 'new Intent(String)@true, putExtra(String,String)@true', 12467, FALSE, '');
@@ -86,7 +86,7 @@ insert into patterns (id, class, method, pattern, support, isRequired, descripti
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (79, 'JsonElement', 'getAsString', 'TRY, getAsString()@rcv!=null, END_BLOCK, CATCH(Exception), END_BLOCK', 117, TRUE, '');
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (80, 'JsonElement', 'getAsString', 'getAsString()@rcv.isJsonPrimitive()', 51, TRUE, '');
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (81, 'JsonElement', 'getAsString', 'TRY, getAsString()@rcv.isJsonPrimitive(), END_BLOCK, CATCH(Exception), END_BLOCK', 48, TRUE, '');
-insert into patterns (id, class, method, pattern, support, isRequired, description) values (82, 'ByteBuffer', 'get', 'flip(), get(byte[])@true', 356, FALSE, '');
+insert into patterns (id, class, method, pattern, support, isRequired, description) values (82, 'ByteBuffer', 'get', 'flip()@true, get(byte[])@true', 356, FALSE, '');
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (83, 'ByteBuffer', 'get', 'LOOP, get()@rcv.hasRemaining(), END_BLOCK', 191, FALSE, '');
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (84, 'ByteBuffer', 'get', 'get()@rcv.hasRemaining()', 187, FALSE, '');
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (85, 'String', 'substring', 'substring(int,int)@arg1>=arg0', 9458, FALSE, '');

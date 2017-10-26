@@ -16,7 +16,7 @@ SimpleDateFormat	SimpleDateFormat	56127	TRY, new SimpleDateFormat(String)@true, 
 SimpleDateFormat	SimpleDateFormat	56127	new SimpleDateFormat(String)@true, parse(String)@true	9783	1	0	incomplete
 Pattern	compile	57881	compile(String)@true, matcher(String)@true	24889	1	1	incomplete
 PreferenceManager	getDefaultSharedPreferences						
-Activity	setContentView	119566	[onCreate(1)@true, setContentView(1)@true]	96848	1	1	incomplete
+Activity	setContentView	119566	onCreate(Bundle)@true, setContentView(View)@true	96848	1	1	incomplete
 URLEncoder	encode	18033	TRY, encode(String,String)@true, END_BLOCK, CATCH(Exception), END_BLOCK	14113	1	1	exception
 Intent	putExtra	64259	new Intent(String,Uri)@true, putExtra(String,String)@true	15583	1	0	incomplete
 Intent	putExtra	64259	new Intent(String)@true, putExtra(String,String)@true	12467	1	0	incomplete
@@ -27,7 +27,7 @@ Iterator	next	290246	next()@rcv.hasNext()	253385	1	0	exception
 Iterator	next	290246	iterator()@true, next()@rcv.hasNext()	219572	1	1	incomplete
 Iterator	next	290246	iterator()@true, LOOP, next()@rcv.hasNext(), END_BLOCK	218962	1	0	incomplete
 JSONObject	getString	34526	TRY, getString(String)@true, END_BLOCK, CATCH(Exception), END_BLOCK	29500	1	0	exception
-JSONObject	getString	34526	TRY, getString(String)@true, END_BLOCK, CATCH(JSONException), END_BLOCK	21061	1	0	exception
+JSONObject	getString	34526	iterator()@true, LOOP, next()@rcv.hasNext(), END_BLOCK	21061	1	0	exception
 LayoutInflater	inflate						
 List	get	103454	LOOP, get(int)@arg0<rcv.size(), END_BLOCK	31254	1	1	exception
 JFrame	setDefaultCloseOperation	9484	setDefaultCloseOperation(int)@true, setVisible(boolean)@true	6971	1	1	incomplete
@@ -87,7 +87,7 @@ JsonElement	getAsString	865	getAsString()@rcv!=null	119	1	1	exception
 JsonElement	getAsString	865	TRY, getAsString()@rcv!=null, END_BLOCK, CATCH(Exception), END_BLOCK	117	1	1	exception
 JsonElement	getAsString	865	getAsString()@rcv.isJsonPrimitive()	51	1	1	exception
 JsonElement	getAsString	865	TRY, getAsString()@rcv.isJsonPrimitive(), END_BLOCK, CATCH(Exception), END_BLOCK	48	1	1	exception
-ByteBuffer	get	2826	flip(), get(byte[])@true	356	1	0	exception
+ByteBuffer	get	2826	flip()@true, get(byte[])@true	356	1	0	exception
 ByteBuffer	get	2826	LOOP, get()@rcv.hasRemaining(), END_BLOCK	191	1	0	exception
 ByteBuffer	get	2826	get()@rcv.hasRemaining()	187	1	0	exception
 String	substring	450358	substring(int,int)@arg1>=arg0	9458	1	0	exception
