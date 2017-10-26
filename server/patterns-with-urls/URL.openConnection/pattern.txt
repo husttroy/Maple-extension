@@ -1,0 +1,6 @@
+Total Count:33998
+1:[TRY, openConnection()@true, getInputStream()@true, END_BLOCK, CATCH(Exception), END_BLOCK]:16125
+2:[TRY, openConnection()@true, END_BLOCK, CATCH(Exception), END_BLOCK]:30680
+3:[TRY, new URL(String)@true, openConnection()@true, END_BLOCK, CATCH(Exception), END_BLOCK]:19056
+4:[new URL(String)@true, openConnection()@true]:19056
+5:[openConnection()@true, getInputStream()@true]:16125

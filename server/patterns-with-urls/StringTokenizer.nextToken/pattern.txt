@@ -1,9 +1,6 @@
-Total Count:58949
-1:[LOOP, nextToken(0)@rcv.hasMoreTokens(), END_BLOCK]:37244
-2:[nextToken(0)@rcv.hasMoreTokens()]:36973
-3:[nextToken(0)@rcv.hasMoreTokens(), IF, END_BLOCK]:34190
-4:[IF, nextToken(0)@rcv.hasMoreTokens(), END_BLOCK]:33601
-5:[LOOP, nextToken(0)@rcv.hasMoreTokens(), IF, END_BLOCK, END_BLOCK]:27117
-6:[new StringTokenizer(2)@true, nextToken(0)@rcv.hasMoreTokens()]:25289
-7:[new StringTokenizer(2)@true, LOOP, nextToken(0)@rcv.hasMoreTokens(), END_BLOCK]:25254
-8:[nextToken(0)@true, IF, END_BLOCK]:20856
+Total Count:57682
+1:[nextToken()@rcv.hasMoreTokens()]:36178
+2:[IF, nextToken()@rcv.hasMoreTokens(), END_BLOCK]:29418
+3:[new StringTokenizer(String,String)@true, LOOP, nextToken()@rcv.hasMoreTokens(), END_BLOCK]:24711
+4:[LOOP, nextToken()@rcv.hasMoreTokens(), END_BLOCK]:35976
+5:[new StringTokenizer(String,String)@true, nextToken()@rcv.hasMoreTokens()]:24746

@@ -1,13 +1,2 @@
-Total Count:2949
-1:[findViewById(1)@true, IF, END_BLOCK]:324
-2:[getActivity(0)@true, findViewById(1)@true]:147
-3:[findViewById(1)@true, setOnClickListener(1)@true]:114
-4:[findViewById(1)@true, setText(1)@true]:107
-5:[findViewById(1)@true, setVisibility(1)@true]:93
-6:[getWindow(0)@true, findViewById(1)@true]:88
-7:[getDecorView(0)@true, findViewById(1)@true]:87
-8:[getWindow(0)@true, getDecorView(0)@true, findViewById(1)@true]:87
-9:[findViewById(1)@true, getResources(0)@true]:87
-10:[getResources(0)@true, findViewById(1)@true]:84
-11:[findViewById(1)@true, getString(1)@true]:83
-12:[IF, IF, findViewById(1)@rcv!=null, IF, END_BLOCK, END_BLOCK, END_BLOCK]:36
+Total Count:2945
+1:[TRY, findViewById(int)@true, END_BLOCK, CATCH(Exception), END_BLOCK]:589

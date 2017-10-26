@@ -1,12 +1,9 @@
-Total Count:1859
-1:[new Dimension(2)@true, setPreferredSize(1)@true]:1676
-2:[setPreferredSize(1)@true, setVisible(1)@true]:1421
-3:[new Dimension(2)@true, setPreferredSize(1)@true, setVisible(1)@true]:1330
-4:[setPreferredSize(1)@true, add(1)@true]:1166
-5:[setPreferredSize(1)@true, pack(0)@true]:1154
-6:[new Dimension(2)@true, setPreferredSize(1)@true, add(1)@true]:1104
-7:[new Dimension(2)@true, setPreferredSize(1)@true, pack(0)@true]:1100
-8:[setPreferredSize(1)@true, add(1)@true, setVisible(1)@true]:975
-9:[setPreferredSize(1)@true, pack(0)@true, setVisible(1)@true]:974
-10:[new Dimension(2)@true, setPreferredSize(1)@true, add(1)@true, setVisible(1)@true]:939
-11:[new Dimension(2)@true, setPreferredSize(1)@true, pack(0)@true, setVisible(1)@true]:938
+Total Count:536
+1:[setPreferredSize(Dimension)@true, setVisible(boolean)@true]:390
+2:[new Dimension(int,int)@true, setPreferredSize(Dimension)@true, pack()@true, setVisible(boolean)@true]:334
+3:[setPreferredSize(Dimension)@true, pack()@true, setVisible(boolean)@true]:341
+4:[new JFrame(String)@true, setPreferredSize(Dimension)@true]:273
+5:[new Dimension(int,int)@true, setPreferredSize(Dimension)@true]:467
+6:[new Dimension(int,int)@true, setPreferredSize(Dimension)@true, setVisible(boolean)@true]:359
+7:[new Dimension(int,int)@true, setPreferredSize(Dimension)@true, pack()@true]:378
+8:[setPreferredSize(Dimension)@true, pack()@true]:394

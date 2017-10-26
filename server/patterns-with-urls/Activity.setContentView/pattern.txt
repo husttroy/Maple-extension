@@ -1,19 +1,2 @@
-Total Count:62776
-1:[onCreate(1)@true, setContentView(1)@true]:61527
-2:[setContentView(1)@true, IF, END_BLOCK]:2511
-3:[onCreate(1)@true, setContentView(1)@true, IF, END_BLOCK]:2511
-4:[onCreate(1)@true, setOrientation(1)@true, setContentView(1)@true]:628
-5:[onCreate(1)@true, addView(1)@true, setContentView(1)@true]:628
-6:[setOrientation(1)@true, setContentView(1)@true]:628
-7:[onCreate(1)@true, IF, END_BLOCK, setContentView(1)@true]:628
-8:[setText(1)@true, setContentView(1)@true]:628
-9:[onCreate(1)@true, setContentView(1)@true, findViewById(1)@true]:628
-10:[new SampleView(1)@true, setContentView(1)@true]:628
-11:[onCreate(1)@true, setText(1)@true, setContentView(1)@true]:628
-12:[setContentView(1)@true, findViewById(1)@true]:628
-13:[addView(1)@true, setContentView(1)@true]:628
-14:[onCreate(1)@true, new SampleView(1)@true, setContentView(1)@true]:628
-15:[onCreate(1)@true, setContentView(1)@true, IF, getString(1)@rcv!=null, END_BLOCK]:483
-16:[setContentView(1)@true, IF, getString(1)@rcv!=null, END_BLOCK]:483
-17:[onCreate(1)@true, setContentView(1)@true, getString(1)@rcv!=null]:370
-18:[setContentView(1)@true, getString(1)@rcv!=null]:370
+Total Count:119566
+1:[onCreate(Bundle)@true, setContentView(View)@true]:117187

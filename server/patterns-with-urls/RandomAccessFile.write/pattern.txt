@@ -1,11 +1,9 @@
-Total Count:3687
-1:[TRY, write(1)@true, END_BLOCK]:3285
-2:[write(1)@true, close(0)@true]:1730
-3:[TRY, write(1)@true, close(0)@true, END_BLOCK]:1730
-4:[new RandomAccessFile(2)@true, write(1)@true]:1475
-5:[TRY, new RandomAccessFile(2)@true, write(1)@true, END_BLOCK]:1475
-6:[seek(1)@true, write(1)@true]:1342
-7:[TRY, seek(1)@true, write(1)@true, END_BLOCK]:1342
-8:[TRY, TRY, write(1)@true, END_BLOCK, END_BLOCK]:1180
-9:[TRY, new RandomAccessFile(2)@true, write(1)@true, close(0)@true, END_BLOCK]:1107
-10:[new RandomAccessFile(2)@true, write(1)@true, close(0)@true]:1107
+Total Count:4636
+1:[TRY, write(byte[])@true, END_BLOCK, CATCH(Exception), END_BLOCK]:2745
+2:[TRY, write(byte[],int,int)@true, END_BLOCK, CATCH(Exception), END_BLOCK]:1578
+3:[TRY, write(byte[])@true, close()@true, END_BLOCK, CATCH(Exception), END_BLOCK]:1407
+4:[TRY, write(byte[])@true, END_BLOCK, CATCH(IOException), END_BLOCK]:2318
+5:[TRY, write(byte[],int,int)@true, END_BLOCK, CATCH(IOException), END_BLOCK]:1590
+6:[write(byte[])@true, close()@true]:1407
+7:[write(byte[])@true]:2745
+8:[write(byte[],int,int)@true]:1578

@@ -1,10 +1,3 @@
-Total Count:783
-1:[loadIcon(1)@true, IF, END_BLOCK]:619
-2:[TRY, loadIcon(1)@true, END_BLOCK]:470
-3:[getPackageManager(0)@true, loadIcon(1)@true, IF, END_BLOCK]:373
-4:[getPackageManager(0)@true, loadIcon(1)@true]:370
-5:[getPackageManager(0)@true, TRY, loadIcon(1)@true, END_BLOCK]:329
-6:[getPackageManager(0)@true, IF, END_BLOCK, loadIcon(1)@true]:321
-7:[getPackageManager(0)@true, IF, END_BLOCK, loadIcon(1)@true, IF, END_BLOCK]:313
-8:[loadIcon(1)@true, getResources(0)@true]:229
-9:[loadIcon(1)@true, getResources(0)@true, IF, END_BLOCK]:226
+Total Count:780
+1:[getPackageManager()@true, loadIcon(PackageManager)@true]:400
+2:[TRY, loadIcon(PackageManager)@true, END_BLOCK, CATCH(Exception), END_BLOCK]:452

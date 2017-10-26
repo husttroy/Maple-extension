@@ -1,9 +1,6 @@
-Total Count:9290
-1:[TRY, write(1)@true, END_BLOCK]:3437
-2:[write(1)@true, close(0)@true]:3390
-3:[getWriter(0)@true, write(1)@true]:2822
-4:[write(1)@true, flush(0)@true]:2735
-5:[write(1)@true, IF, END_BLOCK]:2415
-6:[new PrintWriter(1)@true, write(1)@true]:2270
-7:[TRY, write(1)@true, close(0)@true, END_BLOCK]:2044
-8:[toString(0)@true, write(1)@true]:1775
+Total Count:7990
+1:[TRY, write(String)@true, END_BLOCK, CATCH(Exception), END_BLOCK]:5034
+2:[TRY, write(String)@true, close()@true, END_BLOCK, CATCH(Exception), END_BLOCK]:2472
+3:[TRY, getWriter()@true, write(String)@true, END_BLOCK, CATCH(Exception), END_BLOCK]:2584
+4:[getWriter()@true, write(String)@true]:2584
+5:[write(String)@true, close()@true]:2461

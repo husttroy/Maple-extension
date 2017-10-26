@@ -1,0 +1,7 @@
+Total Count:2826
+1:[flip()@flip(), get(byte[])@true]:356
+2:[LOOP, get()@rcv.hasRemaining(), END_BLOCK]:191
+3:[get()@rcv.hasRemaining()]:187
+4:[get()@true]:569
+5:[get(int)@true]:560
+6:[get(byte[])@true]:396
