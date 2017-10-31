@@ -12,7 +12,7 @@
 		},
 		{
 			"matches": ["https://github.com/*"],
-			"js": ["jquery.min.js", "ghScript.js"]
+			"js": ["jquery.min.js", "ghscript.js"]
 		}
 	],
 	"permissions": [
