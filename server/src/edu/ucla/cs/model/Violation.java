@@ -14,27 +14,29 @@ public class Violation {
 	    String message = null;
 	    switch (type) {
 	        case IncorrectPrecondition:
-	            message = "You may want to check whether a condition is true before calling "
-	                    + ((APICall) item).getName() + "(). " + vioPattern.support 
+	            message = "You may want to check whether " + findGuardCondition(vioPattern) + ". " + vioPattern.support 
 	                    + " GitHub code examples also do this.\n"
 	                    + vioPattern.description;
 	            break;
 	        case MissingMethodCall:
-	            message = "You may want to call " + ((APICall) item).getName() + "() here. " + vioPattern.support +
-	                " Github code examples also do this.\n" + vioPattern.description;
+	            message = "You may want to call " + ((APICall) item).getName() + "() " + 
+                    missingAPIBeforeFocal(vioPattern) + " calling "  + vioPattern.support +
+	                "(). Github code examples also do this.\n" + vioPattern.description;
 	            break;
 	        case MissingStructure:
-	            message = "You may want to use " + getControlStructureType() + " here. " 
+	            message = "You may want to " + getControlStructureType(vioPattern) + " here. " 
 	                    + vioPattern.support + " Github code examples also do this.\n" 
 	                    + vioPattern.description;
 	            break;
 	        case DisorderMethodCall:
-    	        message = "You may want to call " + ((APICall) item).getName() + "() in a different order. "
-        	        + vioPattern.support + "GitHub code examples also do this.\n"
-        	        + vioPattern.description;
+	            //TODO: make sure this is right
+    	        message = "You may want to call " + ((APICall) item).getName() + "() " + 
+                        missingAPIBeforeFocal(vioPattern) + " calling "  + vioPattern.support +
+                        "(). Github code examples also do this.\n" + vioPattern.description;
                 break;
 	        case DisorderStructure:
-	            message = "You may want to call " + getControlStructureType() + " in a different order. "
+	            // TODO: find out what order
+	            message = "You may want to call " + getControlStructureType(vioPattern) + " in a different order. "
 	                + vioPattern.support + "GitHub code examples also do this.\n"
 	                + vioPattern.description;
 	            break;
@@ -42,31 +44,80 @@ public class Violation {
 	    return message;
 	}
 	
-	private String getControlStructureType() {
+	private String getControlStructureType(Pattern vioPattern) {
 	    String structure;
-        if (item == ControlConstruct.TRY || item instanceof CATCH) {
-            structure = "a try-catch block";
+        if (item == ControlConstruct.TRY) {
+            structure = "handle the potential exception thrown by " 
+                + vioPattern.methodName + "() by using a try-catch block";
+        }
+        else if (item instanceof CATCH) {
+            structure = "handle the potential exception " + ((CATCH) item).type 
+                    + " thrown by " + vioPattern.methodName + "() by using a try-catch block";
         }
         else if (item == ControlConstruct.FINALLY) {
-            //TODO: is it necessary to separate this from try-catch?
-            structure = "a try-catch-finally block";
+            structure = "call " + vioPattern.methodName + "() in a finally block to ensure it is "
+                + "always called at the end in case of potential exceptions";
         }
         else if (item == ControlConstruct.IF) {
-            structure = "an if-statement";
+            // TODO: find guard condition
+            structure = "use an if-statement";
         }
         // I would like to use an else violation for if-else clauses
         // to keep them distinct from solo if-statements
         else if (item == ControlConstruct.ELSE) {
-            structure = "an if-else statement";
+            // TODO: find guard condition
+            structure = "use an if-else statement";
         }
         else if (item == ControlConstruct.LOOP) {
-            structure = "a loop";
+            // TODO: find guard condition
+            structure = "use a loop";
         }
         else {
             // I'm not sure what the default should be.
-            structure = "a control structure";
+            structure = "use a control structure";
         }
         
         return structure;
+	}
+	
+	private String missingAPIBeforeFocal(Pattern vioPattern) {
+	    // missing API call: ((APICall) item)
+	    // focal API call: vioPattern.className + vioPattern.methodName
+	    // find if missing API is before focal in vioPattern.pattern
+	    String ret;
+	    if (vioPattern.pattern.indexOf(((APICall) item).getName()) 
+	        < vioPattern.pattern.indexOf(vioPattern.methodName)) {
+	        ret = "before";
+	    }
+	    else {
+	        ret = "after";
+	    }
+	        
+	    return ret;
+	}
+	
+	private String findGuardCondition(Pattern vioPattern) {
+	    String guard = "";
+	    String[] p = vioPattern.pattern.split(",");
+	    for (String str : p) {
+	        System.out.println(str);
+	        if (str.contains("@")) {
+	            guard = str.substring(str.indexOf("@"));
+	            System.out.println(guard);
+	            break;
+	        }
+	    }
+	    
+	    String ret = "";
+	    switch (guard) {
+	        //TODO: make this more dynamic
+	        case "@rcv!=null": ret = "the receiver of " + ((APICall) item).name + " is not null";
+	            break;
+	        case "@rcv.exists()": ret = ((APICall) item).name + " exists";
+	            break;
+	        default: ret = "a condition is true";
+	    }
+	    
+	    return ret;
 	}
 }

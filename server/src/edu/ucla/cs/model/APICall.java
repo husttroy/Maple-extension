@@ -21,7 +21,7 @@ public class APICall implements APISeqItem{
 	
 	public String getName() {
 	    String str = name;
-	    str = str.substring(0, str.length() - 3);
+	    //str = str.substring(0, str.length() - 3);
         return str;
 	}
 	
