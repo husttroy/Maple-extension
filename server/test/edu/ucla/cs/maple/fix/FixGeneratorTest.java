@@ -11,6 +11,7 @@ import edu.ucla.cs.model.APISeqItem;
 import edu.ucla.cs.model.CATCH;
 import edu.ucla.cs.model.ControlConstruct;
 import edu.ucla.cs.utils.FileUtils;
+import edu.ucla.cs.utils.PatternUtils;
 
 public class FixGeneratorTest {
 	
@@ -34,5 +35,19 @@ public class FixGeneratorTest {
 		FixGenerator fixGen = new FixGenerator();
 		String fix = fixGen.generate(pattern, seq);
 		System.out.println(fix);
+	}
+	
+	@Test
+	public void testIfGuard() throws Exception {
+		ArrayList<APISeqItem> pattern = PatternUtils.convert("IF, replaceAll(String,String)@rcv!=null, END_BLOCK");
+		String path = "test/snippet_replaceAll.txt";
+		String snippet = FileUtils.readFileToString(path);
+		PartialProgramAnalyzer ppa = new PartialProgramAnalyzer(snippet);
+		HashMap<String, ArrayList<APISeqItem>> seqs = ppa.retrieveAPICallSequences();
+		ArrayList<APISeqItem> seq = seqs.get("foo");
+		
+		FixGenerator fixGen = new FixGenerator();
+		String fix = fixGen.generate(pattern, seq);
+		System.out.println(fix);	
 	}
 }

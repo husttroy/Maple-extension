@@ -53,11 +53,11 @@ socket.onclose = function(event) {
 // Handle messages sent by the backend.
 socket.onmessage = function(event) {
 	"use strict";
-    var message = event.data;
+    	var message = event.data;
 	var jsonData = JSON.parse(message);
 	
 	// hard-coded URL for testing
-	var tempURL = "https://github.com/coderplay/h2-bitmap/blob/833860f31d50cc060434340fb6226f913da5e7f5/h2/src/main/org/h2/store/fs/FilePathNio.java";
+	// var tempURL = "https://github.com/coderplay/h2-bitmap/blob/833860f31d50cc060434340fb6226f913da5e7f5/h2/src/main/org/h2/store/fs/FilePathNio.java";
 	
 	// each API call has one or more required patterns + violations mapped to it
 	// this generates a single popover for the API call whose pages correspond to the different violations
@@ -73,7 +73,7 @@ socket.onmessage = function(event) {
 
 			// TODO: this will be pExample when that part is implemented
 			//var tempCodeString = '<span style="background-color: #FFFF00">try {</span> \n\r FileChannel.write(); \n\r<span style="background-color: #FFFF00">} catch (IOException e) { \n\rthrow new IllegalStateException(e); \n\r}</span>';
-			var tempCodeString = 'if (jsonElement != null){\n    jsonElement.getAsString();\n}';
+			// var tempCodeString = 'if (jsonElement != null){\n    jsonElement.getAsString();\n}';
 			
 			// if this is the first page, add outer div and make it visible
 			if (i == 0) {
@@ -88,7 +88,7 @@ socket.onmessage = function(event) {
 			content += '<p>' + jsonData[apiCall][i].vioMessage + '</p>'
 			+ '<table><tbody><tr><td class="voteCell_'+ iOffset +'"><div class="upvote" id="' + jsonData[apiCall][i].pID +'"></div><div class="voteSpacer"></div>'
 			+ '<div class="downvote" id="' + jsonData[apiCall][i].pID +'"></div></td>'
-			+ '<td class="codeCell_'+ iOffset +'"><pre><code>'+ tempCodeString +'</code></pre></td></tr></tbody></table>';
+			+ '<td class="codeCell_'+ iOffset +'"><pre><code>'+ jsonData[apiCall][i].pExample +'</code></pre></td></tr></tbody></table>';
 			
 			if (jsonData[apiCall][i].hasOwnProperty('ex1')) {
 				content+= 'See this in a GitHub example: </br>'

@@ -103,7 +103,7 @@ public class FixGenerator {
 				
 				// contextualize the receiver name in the API call
 				if(guard.contains("rcv")) {
-					guard.replaceAll("rcv", counterpart.receiver);
+					guard = guard.replaceAll("rcv", counterpart.receiver);
 				}
 				
 				// TODO: contextualize the argument names in the API call

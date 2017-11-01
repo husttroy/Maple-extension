@@ -4,6 +4,7 @@ public class Violation {
 	public ViolationType type;
 	public APISeqItem item; 
 	public String id;
+	public String fix = "";
 	
 	public Violation(ViolationType type, APISeqItem item) {
 		this.type = type;
@@ -55,7 +56,7 @@ public class Violation {
                     + " thrown by " + vioPattern.methodName + "() by using a try-catch block";
         }
         else if (item == ControlConstruct.FINALLY) {
-            structure = "call " + vioPattern.methodName + "() in a finally block to ensure it is "
+            structure = "call " + vioPattern.methodName + "()ï¿½in a finally block to ensureï¿½itï¿½is "
                 + "always called at the end in case of potential exceptions";
         }
         else if (item == ControlConstruct.IF) {

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -15,7 +16,9 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.ucla.cs.maple.check.UseChecker;
+import edu.ucla.cs.maple.fix.FixGenerator;
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
 import edu.ucla.cs.model.CodeSnippet;
@@ -85,7 +88,8 @@ public class MapleWebSocketHandler {
     			for (Violation v : vioMap.get(p)) {
     			    HashMap<String, Object> vMap = new HashMap<String, Object>();
     			    vMap.put("vioMessage", v.getViolationMessage(p));
-    			    vMap.put("pExample", "");
+    			    // generate the fix suggestion
+    			    vMap.put("pExample", v.fix);
     			    vMap.put("pID", p.id);
     			    vMap.put("csID", v.id);
     			    
@@ -255,6 +259,13 @@ public class MapleWebSocketHandler {
                                         vios.add(viosTemp.get(i));
                                     }
                                 }
+                            }
+                            
+                            // generate fix suggestions for the remaining violations
+                            FixGenerator fg = new FixGenerator();
+                            for(Violation v : vios) {
+                            	String fix = fg.generate(PatternUtils.convert(vioPattern.pattern), seq);
+                            	v.fix = fix;
                             }
                             
                             vioMap.put(vioPattern, vios);
