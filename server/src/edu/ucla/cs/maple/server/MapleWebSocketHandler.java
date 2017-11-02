@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.eclipse.jetty.util.StringUtil;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -89,7 +91,7 @@ public class MapleWebSocketHandler {
     			for (Violation v : vioMap.get(p)) {
     			    HashMap<String, Object> vMap = new HashMap<String, Object>();
     			    vMap.put("vioMessage", v.getViolationMessage(p));
-    			    vMap.put("pExample", v.fix);
+    			    vMap.put("pExample", StringEscapeUtils.escapeHtml4(v.fix));
     			    vMap.put("pID", p.id);
     			    vMap.put("csID", v.id);
     			    

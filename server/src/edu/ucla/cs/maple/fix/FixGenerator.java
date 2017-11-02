@@ -1,6 +1,8 @@
 package edu.ucla.cs.maple.fix;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
@@ -131,6 +133,23 @@ public class FixGenerator {
 		}
 		
 		// TODO: contextualize the argument names in the API call
+		String regex = "arg\\d";
+		Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(contextualizedGuard);
+		while(matcher.find()) {
+			String group = matcher.group();
+			String indexS = group.substring(3);
+			try {
+				int index = Integer.parseInt(indexS);
+				if(index < counterpartCall.arguments.size()) {
+					String arg = counterpartCall.arguments.get(index);
+					contextualizedGuard = contextualizedGuard.replaceAll(group, arg);
+				}
+			} catch (NumberFormatException e) {
+				System.err.println("Cannot match the abstracted argument name " + indexS);
+				continue;
+			}
+		}
 		
 		return contextualizedGuard;
 	}
