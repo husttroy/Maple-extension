@@ -88,7 +88,7 @@ socket.onmessage = function(event) {
 			content += '<p>' + jsonData[apiCall][i].vioMessage + '</p>'
 			+ '<table><tbody><tr><td class="voteCell_'+ iOffset +'"><div class="upvote" id="' + jsonData[apiCall][i].pID +'"></div><div class="voteSpacer"></div>'
 			+ '<div class="downvote" id="' + jsonData[apiCall][i].pID +'"></div></td>'
-			+ '<td class="codeCell_'+ iOffset +'"><pre><code>'+ jsonData[apiCall][i].pExample +'</code></pre></td></tr></tbody></table>';
+			+ '<td class="codeCell_'+ iOffset +'"><pre class="fix"><code>'+ jsonData[apiCall][i].pExample +'</code></pre></td></tr></tbody></table>';
 			
 			if (jsonData[apiCall][i].hasOwnProperty('ex1')) {
 				content+= 'See this in a GitHub example: </br>'
