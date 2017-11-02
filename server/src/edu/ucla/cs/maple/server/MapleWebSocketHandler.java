@@ -25,6 +25,7 @@ import edu.ucla.cs.model.CodeSnippet;
 import edu.ucla.cs.model.ControlConstruct;
 import edu.ucla.cs.model.Pattern;
 import edu.ucla.cs.model.Violation;
+import edu.ucla.cs.model.ViolationType;
 import edu.ucla.cs.utils.PatternUtils;
 
 @WebSocket
@@ -88,7 +89,6 @@ public class MapleWebSocketHandler {
     			for (Violation v : vioMap.get(p)) {
     			    HashMap<String, Object> vMap = new HashMap<String, Object>();
     			    vMap.put("vioMessage", v.getViolationMessage(p));
-    			    // generate the fix suggestion
     			    vMap.put("pExample", v.fix);
     			    vMap.put("pID", p.id);
     			    vMap.put("csID", v.id);
@@ -235,36 +235,65 @@ public class MapleWebSocketHandler {
                         	// remove redundant violations
                             ArrayList<Violation> vios = new ArrayList<Violation>();
                             for (int i = 0; i < viosTemp.size(); i++) {
-                                // if this is an APICall, save it
-                                // if this is a try-catch, save TRY
-                                // if this is a try-catch-finally, save FINALLY
-                                // if this is a loop, save LOOP
                                 if (viosTemp.get(i).item instanceof APICall
                                         || viosTemp.get(i).item == ControlConstruct.TRY
                                         || viosTemp.get(i).item == ControlConstruct.FINALLY
                                         || viosTemp.get(i).item == ControlConstruct.LOOP) {
+                                    // if this is an APICall, save it
+                                    // if this is a try-catch, save TRY
+                                    // if this is a try-catch-finally, save FINALLY
+                                    // if this is a loop, save LOOP
                                     viosTemp.get(i).id = cs.getId();
                                     vios.add(viosTemp.get(i));
-                                }
-                                // if this is a solo IF, save the IF
-                                // if this is part of an if-else, save the ELSE
-                                else if (viosTemp.get(i).item == ControlConstruct.IF) {
+                                } else if (viosTemp.get(i).item == ControlConstruct.IF) {
+                                	// if this is a solo IF, save the IF
+                                    // if this is part of an if-else, save the ELSE
                                     if ((i+2 < viosTemp.size()) 
                                             && viosTemp.get(i+2).item == ControlConstruct.ELSE) {
                                         viosTemp.get(i+2).id = cs.getId();
                                         vios.add(viosTemp.get(i+2));
-                                    }
-                                    else {
+                                    } else {
                                         viosTemp.get(i).id = cs.getId();
                                         vios.add(viosTemp.get(i));
                                     }
                                 }
                             }
                             
+                            // if we have one missing-if-construct violation and also an incorrect-precondition violation,
+                            // and if the if construct occurs before the focal API, only keep the incorrect-precondition violation
+                            ArrayList<APISeqItem> pattern = PatternUtils.convert(vioPattern.pattern);
+                            int ifIndex = -1;
+                            int focalIndex = -1;
+                            for(int j = 0; j < pattern.size(); j++) {
+                            	APISeqItem item2 = pattern.get(j);
+                            	if(item2 instanceof APICall && ((APICall) item2).getName().equals(name)) {
+                            		focalIndex = j;
+                            	} else if (item instanceof ControlConstruct && item == ControlConstruct.IF) {
+                            		ifIndex = j;
+                            	}
+                            }
+                            
+                            boolean hasMissingIf = false;
+                            int missingIfIndex = -1;
+                            boolean hasIncorrectPrecondition = false;
+                            for(int j = 0; j < vios.size(); j++) {
+                            	Violation v = vios.get(j);
+                            	if(v.type == ViolationType.MissingStructure && v.item instanceof ControlConstruct && v.item == ControlConstruct.IF) {
+                            		hasMissingIf = true;
+                            		missingIfIndex = j;
+                            	} else if (v.type == ViolationType.IncorrectPrecondition) {
+                            		hasIncorrectPrecondition = true;
+                            	}
+                            }
+                            
+                            if(ifIndex < focalIndex && hasMissingIf && hasIncorrectPrecondition) {
+                            	vios.remove(missingIfIndex);
+                            }
+                            
                             // generate fix suggestions for the remaining violations
                             FixGenerator fg = new FixGenerator();
                             for(Violation v : vios) {
-                            	String fix = fg.generate(PatternUtils.convert(vioPattern.pattern), seq);
+                            	String fix = fg.generate(pattern, seq);
                             	v.fix = fix;
                             }
                             
