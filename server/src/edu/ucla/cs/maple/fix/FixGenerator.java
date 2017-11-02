@@ -11,6 +11,7 @@ public class FixGenerator {
 	
 	public String generate(ArrayList<APISeqItem> pattern, ArrayList<APISeqItem> mSeq) {
 		String fix = "";
+		boolean hasSynthesizedGuard = false;
 		for(int i = 0; i < pattern.size(); i++) {
 			APISeqItem item = pattern.get(i);
 			if(item instanceof ControlConstruct) {
@@ -20,6 +21,7 @@ public class FixGenerator {
 					if(guard != null) {
 						fix += "if (" + guard + ") {";
 					}
+					hasSynthesizedGuard = true;
 				} else if (item.equals(ControlConstruct.ELSE)) {
 					fix += "else {";
 				} else if (item.equals(ControlConstruct.TRY)) {
@@ -30,6 +32,7 @@ public class FixGenerator {
 					if(guard != null) {
 						fix += "while (" + guard + ") {";
 					}
+					hasSynthesizedGuard = true;
 				} else if (item.equals(ControlConstruct.FINALLY)) {
 					fix += "finally {";
 				} else if (item.equals(ControlConstruct.END_BLOCK)) {
@@ -41,6 +44,13 @@ public class FixGenerator {
 			} else {
 				APICall call = (APICall)item;
 				APICall counterpart = findCounterpartCall(call, mSeq);
+
+				if(!hasSynthesizedGuard && !call.condition.equals("true")) {
+					// synthesize an if guard
+					String guard = getContextualizedGuardCondition(call.condition, counterpart);
+					fix += "if (" + guard + ") {" + System.lineSeparator();
+				}
+				
 				if(counterpart != null) {
 					if(counterpart.receiver != null) {
 						fix += counterpart.receiver + ".";
@@ -75,6 +85,10 @@ public class FixGenerator {
 					}
 					fix += ");";
 				}
+				
+				if(!hasSynthesizedGuard && !call.condition.equals("true")) {
+					fix += System.lineSeparator() + "}";
+				}
 			}
 			
 			fix += System.lineSeparator();
@@ -102,15 +116,23 @@ public class FixGenerator {
 				guard = theCall.condition;
 				
 				// contextualize the receiver name in the API call
-				if(guard.contains("rcv")) {
-					guard = guard.replaceAll("rcv", counterpart.receiver);
-				}
-				
-				// TODO: contextualize the argument names in the API call
+				guard = getContextualizedGuardCondition(guard, counterpart);
 			}
 		}
 		
 		return guard;
+	}
+	
+	private String getContextualizedGuardCondition(String guard, APICall counterpartCall) {
+		String contextualizedGuard = guard;
+		// contextualize the receiver name in the API call
+		if(contextualizedGuard.contains("rcv")) {
+			contextualizedGuard = contextualizedGuard.replaceAll("rcv", counterpartCall.receiver);
+		}
+		
+		// TODO: contextualize the argument names in the API call
+		
+		return contextualizedGuard;
 	}
 	
 	private APICall findCounterpartCall(APICall call, ArrayList<APISeqItem> seq) {
