@@ -120,6 +120,8 @@ socket.onmessage = function(event) {
 	$('[data-toggle="popover"]').popover({
 		container: 'body'
 	});
+
+	return false;
 }
 
 // find the location of the API call, highlight it, and generate a popover on it
