@@ -128,6 +128,20 @@ public class UseChecker {
 			}
 		}
 		
+		ArrayList<Violation> disorderAPICalls = new ArrayList<Violation>();
+		for(Violation vio : violations) {
+			if(vio.type == ViolationType.DisorderMethodCall) {
+				disorderAPICalls.add(vio);
+			}
+		}
+		
+		if(disorderAPICalls.size() == 1 && lcs.contains(ControlConstruct.TRY)) {
+			// if there is a single disordered method call and both the snippet and the pattern contain try-catch blocks,
+			// report missing try-catch blocks instead of disorder API call
+			violations.remove(disorderAPICalls.get(0));
+			violations.add(new Violation(ViolationType.MissingStructure, ControlConstruct.TRY));
+		}
+		
 		return violations;
 	}
 	
@@ -171,6 +185,15 @@ public class UseChecker {
 	        			APICall call1 = (APICall)item1;
 	        			APICall call2 = (APICall)item2;
 	        			if(call1.name.equals(call2.name)) {
+	        				lengths[i+1][j+1] = lengths[i][j] + 1;
+	        			} else {
+	        				lengths[i+1][j+1] =
+	        	                    Math.max(lengths[i+1][j], lengths[i][j+1]);
+	        			}
+	        		} else if (item1 instanceof CATCH) {
+	        			CATCH catch1 = (CATCH) item1;
+	        			CATCH catch2 = (CATCH) item2;
+	        			if(catch1.type.equals("Exception") || catch2.type.equals("Exception") || catch1.type.equals(catch2.type)) {
 	        				lengths[i+1][j+1] = lengths[i][j] + 1;
 	        			} else {
 	        				lengths[i+1][j+1] =

@@ -2,16 +2,24 @@ package edu.ucla.cs.maple.check;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.junit.Test;
 
+import edu.ucla.cs.maple.server.MySQLAccess;
+import edu.ucla.cs.maple.server.PartialProgramAnalyzer;
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
 import edu.ucla.cs.model.ControlConstruct;
+import edu.ucla.cs.model.Pattern;
 import edu.ucla.cs.model.Violation;
+import edu.ucla.cs.model.ViolationType;
 import edu.ucla.cs.utils.CheckerUtils;
+import edu.ucla.cs.utils.FileUtils;
+import edu.ucla.cs.utils.PatternUtils;
 
 public class UseCheckTest {
 	@Test
@@ -171,5 +179,29 @@ public class UseCheckTest {
 		
 		assertTrue(CheckerUtils.isSubsequence(s1, s3));
 		assertFalse(CheckerUtils.isSubsequence(s2, s3));
+	}
+	
+	@Test
+	public void testSnippet() throws Exception {
+		String snippet = FileUtils.readFileToString("test/snippet_cursor_close.txt");
+		MySQLAccess dbAccess = new MySQLAccess();
+		dbAccess.connect();
+		PartialProgramAnalyzer analyzer = new PartialProgramAnalyzer(snippet);
+		HashMap<String, ArrayList<APISeqItem>> seqs = analyzer
+                .retrieveAPICallSequences();
+		ArrayList<APISeqItem> callSeq = seqs.get("getNames");
+		HashSet<Pattern> pset = dbAccess.getPatterns("close", "Cursor");
+		ArrayList<Violation> vios = new ArrayList<Violation>();
+		for(Pattern p : pset) {
+			HashSet<ArrayList<APISeqItem>> pset2 = new HashSet<ArrayList<APISeqItem>>();
+			pset2.add(PatternUtils.convert(p.pattern));
+			UseChecker checker = new UseChecker();
+			vios.addAll(checker.validate(pset2, callSeq));
+		}
+		
+		assertEquals(1, vios.size());
+		assertEquals(ViolationType.MissingStructure, vios.get(0).type);
+		assertEquals(ControlConstruct.TRY, vios.get(0).item);
+		dbAccess.close();
 	}
 }
