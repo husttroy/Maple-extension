@@ -11,8 +11,11 @@ import edu.ucla.cs.model.ControlConstruct;
 
 public class FixGenerator {
 	
+	final String indentS = "  ";
+	
 	public String generate(ArrayList<APISeqItem> pattern, ArrayList<APISeqItem> mSeq) {
 		String fix = "";
+		int indent = 0;
 		boolean hasSynthesizedGuard = false;
 		for(int i = 0; i < pattern.size(); i++) {
 			APISeqItem item = pattern.get(i);
@@ -21,28 +24,47 @@ public class FixGenerator {
 					// look forward to find an API call with guard condition
 					String guard = getContextualizedGuardCondition(i, pattern, mSeq);
 					if(guard != null) {
+						for(int j = 0; j < indent; j++) {
+							fix += indentS;
+						}
 						fix += "if (" + guard + ") {";
+						indent++;
 					}
 					hasSynthesizedGuard = true;
 				} else if (item.equals(ControlConstruct.ELSE)) {
-					fix += "else {";
+					fix += " else {";
+					indent++;
 				} else if (item.equals(ControlConstruct.TRY)) {
+					for(int j = 0; j < indent; j++) {
+						fix += indentS;
+					}
 					fix += "try {";
+					indent++;
 				}  else if (item.equals(ControlConstruct.LOOP)) {
 					// look forward to find an API call with guard condition
 					String guard = getContextualizedGuardCondition(i, pattern, mSeq);
 					if(guard != null) {
+						for(int j = 0; j < indent; j++) {
+							fix += indentS;
+						}
 						fix += "while (" + guard + ") {";
+						indent++;
 					}
 					hasSynthesizedGuard = true;
 				} else if (item.equals(ControlConstruct.FINALLY)) {
-					fix += "finally {";
+					fix += " finally {";
+					indent++;
 				} else if (item.equals(ControlConstruct.END_BLOCK)) {
+					indent--;
+					for(int j = 0; j < indent; j++) {
+						fix += indentS;
+					}
 					fix += "}";
 				}
 			} else if (item instanceof CATCH) {
 				CATCH catchClause = (CATCH) item;
-				fix += "catch (" + catchClause.type + " e)";
+				fix += " catch (" + catchClause.type + " e) {";
+				indent++;
 			} else {
 				APICall call = (APICall)item;
 				APICall counterpart = findCounterpartCall(call, mSeq);
@@ -50,7 +72,15 @@ public class FixGenerator {
 				if(!hasSynthesizedGuard && !call.condition.equals("true")) {
 					// synthesize an if guard
 					String guard = getContextualizedGuardCondition(call.condition, counterpart);
+					for(int j = 0; j < indent; j++) {
+						fix += indentS;
+					}
 					fix += "if (" + guard + ") {" + System.lineSeparator();
+					indent++;
+				}
+				
+				for(int j = 0; j < indent; j++) {
+					fix += indentS;
 				}
 				
 				if(counterpart != null) {
@@ -89,11 +119,23 @@ public class FixGenerator {
 				}
 				
 				if(!hasSynthesizedGuard && !call.condition.equals("true")) {
-					fix += System.lineSeparator() + "}";
+					fix += System.lineSeparator();
+					indent--;
+					for(int j = 0; j < indent; j++) {
+						fix += indentS;
+					}
+					fix += "}";
 				}
 			}
 			
-			fix += System.lineSeparator();
+			if(i+1 < pattern.size()) {
+				APISeqItem next = pattern.get(i+1);
+				if(!(next instanceof ControlConstruct 
+						&& (next == ControlConstruct.ELSE || next == ControlConstruct.FINALLY)
+					) && !(next instanceof CATCH)) {
+					fix += System.lineSeparator();
+				}
+			}
 		}
 		
 		return fix;
