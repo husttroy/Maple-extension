@@ -195,7 +195,7 @@ public class MapleWebSocketHandler {
                         
                         if(type.equals("unresolved")) {
                         	// TODO: check against the oracle
-                        	type = null;
+                        	continue;
                         }
                         
                         if (patterns.containsKey(name)) {
