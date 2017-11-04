@@ -47,4 +47,16 @@ public class PartialAnalysisTest {
 		assertEquals("BufferedReader", close.receiver_type);
 		System.out.println(seq);
 	}
+	
+	@Test
+	public void testResolveVariableTypeInEnhancedForLoop() throws Exception {
+		String path = "test/snippet_enhanced_for.txt";
+		String snippet = FileUtils.readFileToString(path);
+		PartialProgramAnalyzer ppa = new PartialProgramAnalyzer(snippet);
+		HashMap<String, ArrayList<APISeqItem>> seqs = ppa.retrieveAPICallSequences();
+		ArrayList<APISeqItem> seq = seqs.get("foo");
+		APICall getAsString = (APICall)seq.get(5);
+		assertEquals("JsonElement", getAsString.receiver_type);
+		System.out.println(seq);
+	}
 }

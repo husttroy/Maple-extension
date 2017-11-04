@@ -313,6 +313,11 @@ public class APICallVisitor extends ASTVisitor {
 				condition = oldCond + " && " + expr.toString() + ".size() > 0";
 			}
 		}
+		
+		SingleVariableDeclaration decl = node.getParameter();
+		if(decl != null) {
+			decl.accept(this);
+		}
 
 		Statement stmt = node.getBody();
 		stmt.accept(this);
