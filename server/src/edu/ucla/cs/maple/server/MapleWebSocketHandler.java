@@ -167,11 +167,14 @@ public class MapleWebSocketHandler {
         for (CodeSnippet cs : snippets) {
             try {
                 // parse and analyze a snippet using Maple
+            	String snippet = cs.getSnippet();
                 PartialProgramAnalyzer analyzer = new PartialProgramAnalyzer(
-                        cs.getSnippet());
+                        snippet);
                 HashSet<Pattern> ps; 
                 HashMap<String, ArrayList<APISeqItem>> seqs = analyzer
                         .retrieveAPICallSequences();
+                
+                HashSet<String> checkedMethodCalls = new HashSet<String>(); 
                 for (String method : seqs.keySet()) {
                     // get the corresponding call sequence for a method
                     // in the snippet
@@ -184,6 +187,12 @@ public class MapleWebSocketHandler {
 
                         String name = ((APICall) item).getName();
                         String type = ((APICall) item).receiver_type;
+                        if(checkedMethodCalls.contains(type + "." + name)) {
+                        	continue;
+                        } else {
+                        	checkedMethodCalls.add(type + "." + name);
+                        }
+                        
                         if(type.equals("unresolved")) {
                         	// TODO: check against the oracle
                         	type = null;
@@ -299,7 +308,15 @@ public class MapleWebSocketHandler {
                             	v.fix = fix;
                             }
                             
-                            vioMap.put(vioPattern, vios);
+                            
+                            if(vioMap.containsKey(vioPattern)) {
+                            	ArrayList<Violation> existingVios = vioMap.get(vioPattern);
+                            	existingVios.addAll(vios);
+                            	vioMap.put(vioPattern, existingVios);
+                            } else {
+                            	vioMap.put(vioPattern, vios);
+                            }
+                            
                         }
                     }
                 }

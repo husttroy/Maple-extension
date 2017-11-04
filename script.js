@@ -62,58 +62,72 @@ socket.onmessage = function(event) {
 	// each API call has one or more required patterns + violations mapped to it
 	// this generates a single popover for the API call whose pages correspond to the different violations
 	for (var apiCall in jsonData) {
-		var content = "";
-		
+		// first iterate through the violations of this API call to find all unique snippet ids
+		var csIdSet = new Set();
 		for (var i=0; i < jsonData[apiCall].length; i++) {
-			// save an instance of this API call's csID
-			// this is kind of awkward but it would be more so to change the JSON message's structure
 			var csID = jsonData[apiCall][i].csID;
-			// the actual index of the alt pattern is off by one (e.g. jsonData[apicCall][0] should be in data-page 1, etc.)
-			var iOffset = i + 1;
-
-			// TODO: this will be pExample when that part is implemented
-			//var tempCodeString = '<span style="background-color: #FFFF00">try {</span> \n\r FileChannel.write(); \n\r<span style="background-color: #FFFF00">} catch (IOException e) { \n\rthrow new IllegalStateException(e); \n\r}</span>';
-			// var tempCodeString = 'if (jsonElement != null){\n    jsonElement.getAsString();\n}';
-			
-			// if this is the first page, add outer div and make it visible
-			if (i == 0) {
-				content += '<div class="pagination-container"><div data-page="1">';
-			}
-			else {
-				content += '<div data-page="'+ iOffset +'" style="display:none;">';
-			}
-			
-			// add the rest of the data-page
-			// the pID is the id of the pattern in this page; we'll use it to keep track of voting
-			content += '<p>' + jsonData[apiCall][i].vioMessage + '</p>'
-			+ '<table><tbody><tr><td class="voteCell_'+ iOffset +'"><div class="upvote" id="' + jsonData[apiCall][i].pID +'"></div><div class="voteSpacer"></div>'
-			+ '<div class="downvote" id="' + jsonData[apiCall][i].pID +'"></div></td>'
-			+ '<td class="codeCell_'+ iOffset +'"><pre class="fix"><code>'+ jsonData[apiCall][i].pExample +'</code></pre></td></tr></tbody></table>';
-			
-			if (jsonData[apiCall][i].hasOwnProperty('ex1')) {
-				content+= 'See this in a GitHub example: </br>'
-				+ '<a class="ghLink" id="'+jsonData[apiCall][i].ex1Method+'" target="_blank" href="'+jsonData[apiCall][i].ex1+'")">Example 1</a></br>'
-				+ '<a class="ghLink" id="'+jsonData[apiCall][i].ex2Method+'" target="_blank" href="'+jsonData[apiCall][i].ex2+'")">Example 2</a></br>'
-				+ '<a class="ghLink" id="'+jsonData[apiCall][i].ex3Method+'" target="_blank" href="'+jsonData[apiCall][i].ex3+'")">Example 3</a>';
-			}
-			
-			content += '</div>';
+			csIdSet.add(csID);
 		}
 		
-		content += '<div class="pagination-container"><ul class="pagination pagination-centered"><li class="active" data-page="1"><a href="#" >1</a></li>';
+		var csIdArray = Array.from(csIdSet);
+		for(var i=0; i < csIdArray.length; i++) {
+			var id = csIdArray[i];
+			// generate popover window for the API call in each snippet
+			var content = "";
+			var count = 0;
+			for (var j=0; j < jsonData[apiCall].length; j++) {
+				// save an instance of this API call's csID
+				// this is kind of awkward but it would be more so to change the JSON message's structure
+				var csID = jsonData[apiCall][j].csID;
+				if (csID != id) {
+					continue;
+				} 
+				// the actual index of the alt pattern is off by one (e.g. jsonData[apicCall][0] should be in data-page 1, etc.)
+				var iOffset = count + 1;
+
+				// TODO: this will be pExample when that part is implemented
+				//var tempCodeString = '<span style="background-color: #FFFF00">try {</span> \n\r FileChannel.write(); \n\r<span style="background-color: #FFFF00">} catch (IOException e) { \n\rthrow new IllegalStateException(e); \n\r}</span>';
+				// var tempCodeString = 'if (jsonElement != null){\n    jsonElement.getAsString();\n}';
+			
+				// if this is the first page, add outer div and make it visible
+				if (count == 0) {
+					content += '<div class="pagination-container"><div data-page="1">';
+				}
+				else {
+					content += '<div data-page="'+ iOffset +'" style="display:none;">';
+				}
+			
+				// add the rest of the data-page
+				// the pID is the id of the pattern in this page; we'll use it to keep track of voting
+				content += '<p>' + jsonData[apiCall][j].vioMessage + '</p>'
+				+ '<table><tbody><tr><td class="voteCell_'+ iOffset +'"><div class="upvote" id="' + jsonData[apiCall][j].pID +'"></div><div class="voteSpacer"></div>'
+				+ '<div class="downvote" id="' + jsonData[apiCall][j].pID +'"></div></td>'
+				+ '<td class="codeCell_'+ iOffset +'"><pre class="fix"><code>'+ jsonData[apiCall][j].pExample +'</code></pre></td></tr></tbody></table>';
+			
+				if (jsonData[apiCall][j].hasOwnProperty('ex1')) {
+					content+= 'See this in a GitHub example: </br>'
+					+ '<a class="ghLink" id="'+jsonData[apiCall][j].ex1Method+'" target="_blank" href="'+jsonData[apiCall][j].ex1+'")">Example 1</a></br>'
+					+ '<a class="ghLink" id="'+jsonData[apiCall][j].ex2Method+'" target="_blank" href="'+jsonData[apiCall][j].ex2+'")">Example 2</a></br>'
+					+ '<a class="ghLink" id="'+jsonData[apiCall][j].ex3Method+'" target="_blank" href="'+jsonData[apiCall][j].ex3+'")">Example 3</a>';
+				}
+			
+				content += '</div>';
+				count++;
+			}
+		
+			content += '<div class="pagination-container"><ul class="pagination pagination-centered"><li class="active" data-page="1"><a href="#" >1</a></li>';
 				
-		// add any subsequent pagination buttons
-		if (jsonData[apiCall].length > 1) {
+			// add any subsequent pagination buttons
 			// the page offset is off by two since we've already added the first page
 			// add one to the length of the array for +2 offset, -1 page
-			for (var j=2; j < jsonData[apiCall].length + 1; j++) {
-				content += '<li data-page="'+ j +'"><a href="#" >'+ j +'</a></li>';
+			for (var k=2; k < count + 1; k++) {
+				content += '<li data-page="'+ k +'"><a href="#" >'+ k +'</a></li>';
 			}
-		}
 		
-		content += '</ul></div></div>';
+			content += '</ul></div></div>';
 				
-		doSearch(apiCall, csID, content);
+			doSearch(apiCall, id, content);
+		}
 	}
 	
 	// initialize all popovers

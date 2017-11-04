@@ -24,4 +24,17 @@ public class CodeSnippet {
     public String toString() {
         return "ID: " + id + ", snippet: " + snippet;
     }
+    
+    @Override
+    public int hashCode() {
+    	int hash = 31;
+    	hash += 17 * id.hashCode();
+    	hash += 43 * snippet.hashCode();
+    	return hash;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+    	return obj instanceof CodeSnippet && ((CodeSnippet)obj).getId().equals(id) && ((CodeSnippet)obj).getSnippet().equals(snippet);
+    }
 }
