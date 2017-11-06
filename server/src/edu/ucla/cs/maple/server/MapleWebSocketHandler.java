@@ -23,6 +23,7 @@ import edu.ucla.cs.maple.check.UseChecker;
 import edu.ucla.cs.maple.fix.FixGenerator;
 import edu.ucla.cs.model.APICall;
 import edu.ucla.cs.model.APISeqItem;
+import edu.ucla.cs.model.CATCH;
 import edu.ucla.cs.model.CodeSnippet;
 import edu.ucla.cs.model.ControlConstruct;
 import edu.ucla.cs.model.Pattern;
@@ -247,11 +248,12 @@ public class MapleWebSocketHandler {
                             ArrayList<Violation> vios = new ArrayList<Violation>();
                             for (int i = 0; i < viosTemp.size(); i++) {
                                 if (viosTemp.get(i).item instanceof APICall
-                                        || viosTemp.get(i).item == ControlConstruct.TRY
+                                        //|| viosTemp.get(i).item == ControlConstruct.TRY
+                                        || viosTemp.get(i).item instanceof CATCH
                                         || viosTemp.get(i).item == ControlConstruct.FINALLY
                                         || viosTemp.get(i).item == ControlConstruct.LOOP) {
                                     // if this is an APICall, save it
-                                    // if this is a try-catch, save TRY
+                                    // if this is a try-catch, save CATCH
                                     // if this is a try-catch-finally, save FINALLY
                                     // if this is a loop, save LOOP
                                     viosTemp.get(i).id = cs.getId();
@@ -303,20 +305,31 @@ public class MapleWebSocketHandler {
                             
                             // generate fix suggestions for the remaining violations
                             FixGenerator fg = new FixGenerator();
+                            HashMap<String, Violation> fixes = new HashMap<String, Violation>();
+                            ArrayList<Violation> vioTemp = new ArrayList<Violation>();
                             for(Violation v : vios) {
-                            	String fix = fg.generate(pattern, seq);
-                            	v.fix = fix;
+                                String fix = fg.generate(pattern, seq);
+                                v.fix = fix;
+                                if (fixes.containsKey(fix)) {
+                                    Violation tmp = fixes.get(fix);
+                                    tmp.addRedundant(v);
+                                    vioTemp.remove(vioTemp.indexOf(tmp));
+                                    vioTemp.add(tmp);
+                                    fixes.replace(fix, tmp);
+                                }
+                                else {
+                                    fixes.put(fix, v);
+                                    vioTemp.add(v);
+                                }
                             }
-                            
                             
                             if(vioMap.containsKey(vioPattern)) {
                             	ArrayList<Violation> existingVios = vioMap.get(vioPattern);
-                            	existingVios.addAll(vios);
+                            	existingVios.addAll(vioTemp);
                             	vioMap.put(vioPattern, existingVios);
                             } else {
-                            	vioMap.put(vioPattern, vios);
+                            	vioMap.put(vioPattern, vioTemp);
                             }
-                            
                         }
                     }
                 }
