@@ -100,8 +100,9 @@ socket.onmessage = function(event) {
 				// add the rest of the data-page
 				// the pID is the id of the pattern in this page; we'll use it to keep track of voting
 				content += '<p>' + jsonData[apiCall][j].vioMessage + '</p>'
-				+ '<table><tbody><tr><td class="voteCell_'+ iOffset +'"><div class="upvote" id="' + jsonData[apiCall][j].pID +'"></div><div class="voteSpacer"></div>'
-				+ '<div class="downvote" id="' + jsonData[apiCall][j].pID +'"></div></td>'
+				+ '<table><tbody><tr>'
+				// + '<td class="voteCell_'+ iOffset +'"><div class="upvote" id="' + jsonData[apiCall][j].pID +'"></div><div class="voteSpacer"></div>'
+				// + '<div class="downvote" id="' + jsonData[apiCall][j].pID +'"></div></td>'
 				+ '<td class="codeCell_'+ iOffset +'"><pre class="fix"><code>'+ jsonData[apiCall][j].pExample +'</code></pre></td></tr></tbody></table>';
 			
 				if (jsonData[apiCall][j].hasOwnProperty('ex1')) {
