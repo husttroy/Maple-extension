@@ -1,6 +1,8 @@
 package edu.ucla.cs.model;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import edu.ucla.cs.model.Pattern;
 
 public class Violation {
 	public ViolationType type;
@@ -128,26 +130,154 @@ public class Violation {
 	}
 	
 	private String findGuardCondition() {
-	    String guard = "";
-	    String[] p = vioPattern.pattern.split(",");
-	    for (String str : p) {
-	        //System.out.println(str);
-	        if (str.contains("@")) {
-	            guard = str.substring(str.indexOf("@"));
-	            break;
-	        }
-	    }
-	    
-	    String ret = "";
-	    switch (guard) {
-	        //TODO: make this more dynamic
-	        case "@rcv!=null": ret = "the receiver of " + ((APICall) item).name + " is not null";
-	            break;
-	        case "@rcv.exists()": ret = ((APICall) item).name + " exists";
-	            break;
-	        default: ret = "a condition is true";
-	    }
-	    
-	    return ret;
-	}
+        String guard = "";
+        String ret = "";
+        String[] p = vioPattern.pattern.split(",");
+        boolean isNeg = false;
+        boolean foundAPIitem = false;
+        
+        for (String str : p) {
+            if (str.contains(((APICall) item).getName()) || foundAPIitem) {
+                if (str.contains("@")) {
+                    guard = str.substring(str.indexOf("@")+1);
+                    break;
+                }
+                else {
+                    foundAPIitem = true;
+                }
+            }
+        }
+        
+        if (guard.equals("true")) {
+            ret = ((APICall) item).getName() + "() returns true";
+        }
+        else {
+            if (guard.charAt(0) == '!') {
+                isNeg = true;
+                // trim parenthesis off
+                guard = guard.substring(2, guard.length()-1);
+            }
+            
+            if (guard.contains("||")) {
+                String[] g2 = guard.split("\\|\\|");
+                
+                for (int i=0; i<g2.length; i++) {
+                    ret += translateTokens(g2[i], isNeg);
+                    if (i != g2.length-1) {
+                        ret += " or ";
+                    }
+                }
+            }
+            else {
+                ret += translateTokens(guard, isNeg);
+            }
+        }
+        
+        return ret;
+    }
+    
+	private String translateTokens(String tokenSeq, boolean isNeg) {
+        String ret;
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile("([><=!][=]?)");
+        Matcher m = p.matcher(tokenSeq);
+        
+        if (m.find()) {
+            // translate first token (substring from 0 to m.start())
+            ret = translateSmallTokens(tokenSeq.substring(0, m.start()));
+            // translate m.group() to natural language
+            ret += " " + translateOp(m.group(), isNeg) + " ";
+            // translate second token (substring from m.end()+1 to end)
+            ret += translateSmallTokens(tokenSeq.substring(m.end()));
+        }
+        else {
+            // just print as-is
+            if (isNeg) {
+                ret = tokenSeq + " returns false";
+            }
+            else {
+                ret = tokenSeq + " returns true.";
+            }
+        }
+        
+        return ret;
+    }
+    
+	private String translateSmallTokens(String tok) {
+        String ret;
+        // tok is either null, arg*, rcv, or rcv.*
+        if (tok.equals("null")) {
+            ret = "null";
+        }
+        else {
+            java.util.regex.Pattern p = java.util.regex.Pattern.compile("(arg)[\\d]");
+            Matcher m = p.matcher(tok);
+            
+            if (m.find()) {
+                // tok is arg*
+                switch (tok.charAt(tok.length()-1)) {
+                    case '0': ret = "the first parameter";
+                        break;
+                    case '1': ret = "the second parameter";
+                        break;
+                    case '2': ret = "the third parameter";
+                        break;
+                    case '3': ret = "the fourth parameter";
+                        break;
+                    case '4': ret = "the fifth parameter";
+                        break;
+                    case '5': ret = "the sixth parameter";
+                        break;
+                    case '6': ret = "the seventh parameter";
+                        break;
+                    case '7': ret = "the eighth parameter";
+                        break;
+                    case '8': ret = "the ninth parameter";
+                        break;
+                    case '9': ret = "the tenth parameter";
+                        break;
+                    default: ret = "one of the parameters";
+                }
+            }
+            else {
+                // tok is rcv or rcv.*
+                if (tok.contains(".")) {
+                    // tok is rcv.*
+                    ret = tok;
+                }
+                else {
+                    // tok is rcv
+                    ret = "the receiver of " + ((APICall) item).getName() + "()";
+                }
+            }
+        }
+        
+        
+        return ret;
+    }
+    
+	private String translateOp(String op, boolean isNeg) {
+        String ret = "is ";
+        
+        if (isNeg) {
+            ret += "not ";
+        }
+        
+        switch (op) {
+            case "==": ret += "equal to";
+                break;
+            case "!=": ret += "not equal to";
+                break;
+            case ">": ret += "greater than";
+                break;
+            case ">=": ret += "greater than or equal to";
+                break;
+            case "<": ret += "less than";
+                break;
+            case "<=": ret += "less than or equal to";
+                break;
+            default: ret = "";
+        }
+        
+        return ret;
+    }
 }
