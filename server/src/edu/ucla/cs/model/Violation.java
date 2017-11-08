@@ -2,7 +2,9 @@ package edu.ucla.cs.model;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
+
 import edu.ucla.cs.model.Pattern;
+import edu.ucla.cs.utils.PatternUtils;
 
 public class Violation {
 	public ViolationType type;
@@ -59,7 +61,11 @@ public class Violation {
 	    String message = null;
         switch (type) {
             case IncorrectPrecondition:
-                message = "check whether " + findGuardCondition() + ". ";
+				try {
+					message = "check whether " + findGuardCondition() + ". ";
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
                 break;
             case MissingMethodCall:
                 message = "call " + ((APICall) item).getName() + "() " + 
@@ -129,48 +135,54 @@ public class Violation {
 	    return ret;
 	}
 	
-	private String findGuardCondition() {
-        String guard = "";
-        String ret = "";
-        String[] p = vioPattern.pattern.split(",");
+	private String findGuardCondition() throws Exception {
+		String guard = null;
+		String ret = "";
+		ArrayList<APISeqItem> pArray = PatternUtils.convert(vioPattern.pattern);
         boolean isNeg = false;
-        boolean foundAPIitem = false;
         
-        for (String str : p) {
-            if (str.contains(((APICall) item).getName()) || foundAPIitem) {
-                if (str.contains("@")) {
-                    guard = str.substring(str.indexOf("@")+1);
-                    break;
-                }
-                else {
-                    foundAPIitem = true;
-                }
-            }
+        for(APISeqItem i : pArray) {
+        	if(i instanceof APICall && ((APICall)i).name.equals(((APICall) item).name)) {
+        		guard = ((APICall)i).condition;
+        		break;
+        	}
+        }
+        
+        if(guard == null) {
+        	throw new Exception("Guard not found.");
         }
         
         if (guard.equals("true")) {
+        	// Tianyi: is it possible that for incorrect-precondition violations, the guard in the pattern is true?
             ret = ((APICall) item).getName() + "() returns true";
         }
         else {
-            if (guard.charAt(0) == '!') {
-                isNeg = true;
-                // trim parenthesis off
-                guard = guard.substring(2, guard.length()-1);
-            }
-            
-            if (guard.contains("||")) {
-                String[] g2 = guard.split("\\|\\|");
-                
-                for (int i=0; i<g2.length; i++) {
-                    ret += translateTokens(g2[i], isNeg);
-                    if (i != g2.length-1) {
-                        ret += " or ";
-                    }
-                }
-            }
-            else {
-                ret += translateTokens(guard, isNeg);
-            }
+        	if(guard.contains("rcv")) {
+        		// contexualize the receiver name
+        		guard = guard.replaceAll("rcv", ((APICall)item).receiver);
+        	}
+        	
+	        if (guard.charAt(0) == '!') {
+	            isNeg = true;
+	            // trim parenthesis off
+	            if(guard.charAt(1) == '(' && guard.charAt(guard.length() - 1) == ')') {
+	            	guard = guard.substring(2, guard.length()-1);
+	            }
+	        }
+	        
+	        if (guard.contains("||")) {
+	            String[] g2 = guard.split("\\|\\|");
+	            
+	            for (int i=0; i<g2.length; i++) {
+	                ret += translateTokens(g2[i], isNeg);
+	                if (i != g2.length-1) {
+	                    ret += " or ";
+	                }
+	            }
+	        }
+	        else {
+	            ret += translateTokens(guard, isNeg);
+	        }
         }
         
         return ret;
@@ -195,7 +207,7 @@ public class Violation {
                 ret = tokenSeq + " returns false";
             }
             else {
-                ret = tokenSeq + " returns true.";
+                ret = tokenSeq + " returns true";
             }
         }
         
