@@ -11,12 +11,16 @@
 %   Author   notification   : Tuesday, 12 August 2014
 %   Camera-ready deadline : Monday, 15 September 2014
 % ==================================================
-\documentclass{sig-alternate}
-\pdfpagewidth=8.5in
-\pdfpageheight=11in
+\documentclass[sigconf]{acmart}
+%\pdfpagewidth=8.5in
+%\pdfpageheight=11in
 \input{macros}
-\usepackage{caption}
-\usepackage{subcaption}
+
+\setcopyright{rightsretained}
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
 \begin{document}
 
 \title{Augmenting Stack Overflow with API Usage Patterns Mined from GitHub}
@@ -27,18 +31,38 @@
 %	\email{tianyi.zhang@cs.ucla.edu, mksong1117@utexas.edu, miryung@cs.ucla.edu}
 %}
 
-\maketitle
-
 % ==================================================
 % abstract
 % ==================================================
 \input{abstract}
 
-\category{D.2.6}{Software Engineering}{Programming Environme-\\nts---Integrated Environments}
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10002944.10011123.10010912</concept_id>
+<concept_desc>General and reference~Empirical studies</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+<concept>
+<concept_id>10011007.10010940.10011003.10011004</concept_id>
+<concept_desc>Software and its engineering~Software reliability</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+<concept>
+<concept_id>10011007.10011074.10011134</concept_id>
+<concept_desc>Software and its engineering~Collaboration in software development</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
 
-\terms{}
+\ccsdesc[300]{General and reference~Empirical studies}
+\ccsdesc[300]{Software and its engineering~Software reliability}
+\ccsdesc[300]{Software and its engineering~Collaboration in software development}
 
-\keywords{}
+\keywords{online Q\&A forum, API usage pattern, code example comprehension}  
+
+\maketitle
 
 % ==================================================
 % Introduction
@@ -60,13 +84,9 @@
 % ==================================================
 \input{summary}
 
-\section{Acknowledgement} 
+%\section{Acknowledgement} 
 
-\section{REFERENCES} 
 \balance
-\bibliographystyle{abbrv}
-%\bibliographystyle{unsrt}
-\renewcommand{\refname}{}
-\vspace{-.35in}
+\bibliographystyle{ACM-Reference-Format}
 \bibliography{soap}
 \end{document}

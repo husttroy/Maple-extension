@@ -2,7 +2,7 @@
 % -----------------------------------------------------------------
 % package
 % -----------------------------------------------------------------
-\usepackage[numbers,sort&compress]{natbib}
+%\usepackage[numbers,sort&compress]{natbib}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{microtype}
@@ -37,10 +37,16 @@
 \usepackage[listings]{tcolorbox}
 \usepackage{soul}
 \usepackage{graphicx}
-% \usepackage[font=bf]{caption}
-% \usepackage[font=bf]{subcaption}
 \usepackage{qtree}
 \usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% enable line breaks in a long url
+\makeatletter
+\g@addto@macro{\UrlBreaks}{\UrlOrds}
+\makeatother
+
 % \makeatletter  
 %  \let\@copyrightspace\relax  
 % \makeatother  
@@ -127,7 +133,7 @@
 \newcommand{\myhref}[2]{\texttt{\scriptsize{\href{#1}{#2}}}}
 \newcommand{\fix}[2]{\textbf{#1 asks:~\emph{ #2}}}
 \newcommand{\pagemark}[1]{\textcolor{blue}{PAGE: {#1}}}
-\newcommand{\todo}[1]{{\scriptsize{\textcolor{red}{{\bf TODO}: {#1}}}}}
+\newcommand{\todo}[1]{{\textcolor{red}{{\bf TODO}: {#1}}}}
 \newcommand{\tianyi}[1]{#1}
 \newcommand{\old}[1]{\textcolor{red}{{}}}
 \newcommand{\did}[1]{{\textcolor{red}{{#1}}}}
