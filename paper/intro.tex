@@ -17,7 +17,7 @@ Given an SO example, {\tool} first extracts the sequence of API calls with corre
 \centering
 \includegraphics[width=0.5\textwidth]{soap-v3.pdf}
   \vspace{.1in}
-  \caption{{\tool} Chrome extension that augments Stack Overflow with API misuse warning. The pop-up window alerts that the Stack Overflow answer does not properly handle potential exceptions (e.g., {\ttt IllegalStateException}) thrown by {\ttt JsonElement.getAsString}.\protect\footnotemark}
+  \caption{{\tool} Chrome extension that augments Stack Overflow with API misuse warning. The pop-up window alerts that {\ttt match\_number} can be {\ttt null} if the requested json attribute does not exist and will crash the program by throwing {\ttt NullPointerException} when {\ttt getAsString} is called on it.\protect\footnotemark}
   \label{fig:screenshot}
 \end{figure}
 

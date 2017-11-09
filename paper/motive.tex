@@ -32,25 +32,37 @@
 %\label{fig:features}
 %\end{figure*}
 
-Suppose Alice needs to read attribute values from a json message using Google's Gson library, which she is not familiar with. Alice finds a Stack Overflow answer post that reads a specific json message posted in the corresponding question post.\footnote{\url{https://stackoverflow.com/questions/29859683/assistance-with-json-from-url}} Though the answer post is accepted as the correct answer, this post does not properly use {\ttt JsonElement.getAsString} (line 7 in the snippet in Figure~\ref{fig:screenshot}), which gets the string value of a json element. For example, if the requested attribute does not exist in the json message, the preceding API call, {\ttt JsonObject.get} (line 2) may return {\ttt null}, which consequently leads to {\ttt NullPointException} when calling {\ttt getAsString} on the returned object. If Alice puts too much trust on this example, she may inadvertently follow a suboptimal solution, which may crash her program in some corner cases. 
+\begin{figure}
+\centering
+\includegraphics[width=0.49\textwidth]{github-example-v2.pdf}
+  \vspace{.1in}
+  \caption{{\tool} will redirect the programmer to a highlighted concrete code example in GitHub that follows the correct API usage pattern, when she clicks on one of the three GitHub example links in the pop-up window.\protect\footnotemark}
+  \label{fig:github}
+\end{figure}
+
+\footnotetext{\url{https://goo.gl/YHo1UM}}
+
+Suppose Alice needs to read attribute values from a json message using Google's Gson library, which she is not familiar with. Alice finds a Stack Overflow answer post that reads a specific json message posted in the corresponding question post.\footnote{\url{https://stackoverflow.com/questions/29859683/assistance-with-json-from-url}} Though the answer post is accepted as the correct answer, this post does not properly use {\ttt JsonElement.getAsString} (line 7 in the snippet in Figure~\ref{fig:screenshot}), which gets the string value of a json element. For example, if the requested attribute does not exist in the json message, the preceding API call, {\ttt JsonObject.get} (line 2) may return {\ttt null}, which consequently leads to a {\ttt NullPointException} when calling {\ttt getAsString} on the returned object. If Alice puts too much trust on this example, she may inadvertently follow a suboptimal solution, which may crash her program in some corner cases. 
 
 Alice cannot easily recognize this potential limitation in the given Stack Overflow post. She may have to manually investigate many other posts till finding a code example with ideal API usage. In practice, however, programmers often examine a handful of search results due to the limited time and attention~\cite{brandt2009two, starke2009working, duala2012asking}. {\tool} frees Alice from this manual investigation labor by constrasting a Stack Overflow post with common API usage patterns learned from over 380K GitHub repositories. {\tool} then highlights the API calls that have potential API usage violations in the Stack Overflow post. When Alice clicks on the highlighted API call, {\tool} generates a pop-up window with detailed descriptions about the API usage violations, as shown in Figure~\ref{fig:screenshot}.
 
-{\bf API misuse description.} To help Alice understand a detected API usage violation, {\tool} translates the violation to a short natural language description (see \ding{172} in Figure~\ref{fig:screenshot}). From  the short warning message, Alice learns that she should check whether the {\ttt JsonElement} object is null before calling {\ttt getAsString}. Furthermore, {\tool} shows how many GitHub examples also follow the API usage pattern that the Stack Overflow post violates. This quantitative measurement can demonstrate the prevalence of API usage patterns in real-world programs and help Alice build confidence on the detected violations.
+{\bf API misuse description.} To help Alice understand a detected API usage violation, {\tool} translates the violation to a short natural language description (see \ding{172} in Figure~\ref{fig:screenshot}). From  the short warning message, Alice learns that she should check whether the {\ttt JsonElement} object is null before calling {\ttt getAsString}. Furthermore, {\tool} shows how many GitHub examples also follow the API usage pattern that the Stack Overflow post violates. This quantitative measurement can demonstrate the prevalence of API usage patterns in real-world projects and help Alice build confidence on the detected violations.
 
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{soap-v3-2.pdf}
   \vspace{.1in}
-  \caption{Another API usage warning that reminds programmers to check whether the {\ttt JsonElement} object represents a Json primitive value by calling the {\ttt isJsonPrimitive} method. Otherwise, it may throw  {\ttt ClassCastException}.}
+  \caption{Another API usage warning that reminds programmers to check whether the {\ttt JsonElement} object represents a Json primitive value by calling the {\ttt isJsonPrimitive} method. It also suggests to catch potential exceptions thrown by {\ttt getAsString}.}
   \label{fig:screenshot2}
 \end{figure}
 
-{\bf Fix suggestion.} {\tool} further suggests a fix that corrects the violation in the original Stack Overflow post following the correct API usage pattern. The fix is generated based on the context of the Stack Overflow post to mitigate the mind gap between the original post and the fix. For example, the {\ttt JsonElement} variable in the fix is named as the corresponding variable, {\ttt match\_number} in the original post in Figure~\ref{fig:screenshot}. 
+{\bf Fix suggestion.} To demonstrate how to fix the violation, {\tool} suggests a fix that follows the correct API usage pattern and corrects the violation in the original Stack Overflow post. The fix is generated based on the context of the Stack Overflow post to mitigate the mind gap between the original post and the fix. For example, the {\ttt JsonElement} variable in the fix is named as the corresponding variable, {\ttt match\_number} in the original post (see \ding{174} in Figure~\ref{fig:screenshot}). 
 
-{\bf Demonstrative GitHub examples.} Alice then inspects the second page (Figure~\ref{fig:screenshot2}), and finds that it suggests to check whether the {\ttt JsonElement} object is primitive before calling {\ttt getAsString} to avoid a {\ttt ClassCastException}. She notices that this pattern has less than half the support of the previous pattern.
+{\bf Demonstrative GitHub examples.} {\tool} provides three demonstrative GitHub examples that follow the same API usage pattern (see \ding{175} in Figure~\ref{fig:screenshot}). Alice is curious about how other programmers use {\ttt JsonElement.getAsString} in real-world projects so she clicks on the link of the first GitHub example. {\tool} redirects Alice to a GitHub page and automatically scrolls down to the Java method where {\ttt JsonElement.getAsString} is called. {\tool} also highlights the example so Alice can easily find it, as shown in Figure~\ref{fig:github}. The addition of concrete GitHub examples can aid Alice in understanding how the API of interest is used in real-world projects. 
 
-Curious to see the first pattern in context, Alice returns to the first page of the popup and clicks on the first link provided to her under ``See this in a GitHub example.''
+{\bf Multiple API usage violations.} If a method call in a Stack Overflow post violates multiple API usage patterns, {\tool} describes these violations in separate pages in the pop-up window. For example, the method call, {\ttt getAsString} in Figure~\ref{fig:screenshot} violates four API usage patterns (see \ding{176} in Figure~\ref{fig:screenshot}). Figure~\ref{fig:screenshot2} shows the second violated pattern and suggests Alice to check whether the {\ttt JsonElement} object is primitive before calling {\ttt getAsString}. Otherwise, {\ttt getAsString} will throw a {\ttt ClassCastException}. {\tool} also suggests Alice to wrap {\ttt getAsString} with a try-catch block to handle other potential exceptions such as {\ttt IllegalStateException}. Alice notices that this pattern is supported by 48 GitHub examples, while the pattern in Figure~\ref{fig:screenshot} is supported by 119 GitHub examples.
+
+{\bf User feedback.} After seeing concrete GitHub examples as well as the number of GitHub supports for each pattern, Alice can infer that the null check in Figure~\ref{fig:screenshot} is more necessary and is more common than the primitive check in Figure~\ref{fig:screenshot2}. She upvotes the pattern by clicking on the ``thumbs-up'' button on the first page to notify the server that this pattern is very helpful for her.
 
 %\begin{figure*}[t!]
 %\centering
@@ -78,22 +90,6 @@ Curious to see the first pattern in context, Alice returns to the first page of 
   %\caption{The GitHub example that a link from Figure~\ref{fig:page1} redirects to, highlighted by the Chrome extension.\protect\footnotemark} 
   %\label{fig:github_examples}
 %\end{figure}
-
-{\bf GitHub Example View.} When Alice clicks on one of the GitHub links, the file opens in a new tab and the view scrolls to where the API is called in the file, and the method in which this occurs is highlighted so Alice can easily find it, as seen in Figure~\ref{fig:github}. The addition of a compilable code example that demonstrates the pattern in context can aid Alice in understanding how to use the pattern if it is unfamiliar to her. In this case, Alice finds herself redirected to the method in a GitHub project seen in Figure~\ref{fig:github}.
-
-Returning to the popup in Stack Overflow, Alice clicks on the second link provided for the second page to compare usage patterns in context. This link opens up to the GitHub method seen in Figure~\ref{fig:github}. She notices that the example uses a null check in conjunction with the primitive check, which makes sense to her after seeing that both were missing from the Stack Overflow code snippet. However, she notes that the more commonly-used pattern only uses a null check.
-
-After seeing these two examples, Alice can infer that a null check is more necessary and is more common than the primitive check, based on the GitHub examples she has seen as well as the GitHub support indicated by the popup message. She upvotes the null check's pattern by clicking on the up-arrow on its page (see Figure~\ref{fig:screenshot2}) to send the server her feedback on the patterns it gave her.
-
-\begin{figure}
-\centering
-\includegraphics[width=0.5\textwidth]{github-example.pdf}
-  \vspace{.1in}
-  \caption{{\tool} will redirect the programmer to a highlighted concrete code example in GitHub that follows the correct API usage pattern, when she clicks on one of the three GitHub example links in the pop-up window.\protect\footnotemark}
-  \label{fig:github}
-\end{figure}
-
-\footnotetext{\url{https://goo.gl/dV4wTh}}
 
 %https://github.com/asakusafw/asakusafw/blob/cad94753128bd3168e23c0539cc55c7e5a653dbd/asakusa-test-data-provider/src/main/java/com/asakusafw/testdriver/json/JsonObjectDriver.java
 %\footnotetext{http://tinyurl.com/JsonObjectDriver}
