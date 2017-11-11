@@ -169,6 +169,9 @@ public class MapleWebSocketHandler {
             try {
                 // parse and analyze a snippet using Maple
             	String snippet = cs.getSnippet();
+            	if(!snippet.contains(";") && !(snippet.split(System.lineSeparator()).length > 1)) {
+            		continue;
+            	}
                 PartialProgramAnalyzer analyzer = new PartialProgramAnalyzer(
                         snippet);
                 HashSet<Pattern> ps; 
@@ -194,7 +197,7 @@ public class MapleWebSocketHandler {
                         	checkedMethodCalls.add(type + "." + name);
                         }
                         
-                        if(type.equals("unresolved")) {
+                        if(type == null || type.equals("unresolved")) {
                         	// TODO: check against the oracle
                         	continue;
                         }
