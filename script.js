@@ -111,8 +111,8 @@ socket.onmessage = function(event) {
 					+ '<a class="ghLink" id="'+jsonData[apiCall][j].ex2Method+'" target="_blank" href="'+jsonData[apiCall][j].ex2+'")">Example 2</a></br>'
 					+ '<a class="ghLink" id="'+jsonData[apiCall][j].ex3Method+'" target="_blank" href="'+jsonData[apiCall][j].ex3+'")">Example 3</a>';
 				}
-			
-				content += '</div>';
+					
+				content += '</div>';			
 				count++;
 			}
 		
@@ -126,6 +126,17 @@ socket.onmessage = function(event) {
 			}
 		
 			content += '</ul></div></div>';
+			
+			content += '<table align="right"><tbody>'
+							+ '<tr class="voteCell_'+ iOffset +'">'
+							//+ '<td class="upvote" id="' + jsonData[apiCall][j].pID +'">'
+							+ '<td class="upvote">'
+							+ '<input type="image" src='+chrome.extension.getURL("images/thumb-up.png")+' name="up" class="submit" value="" height="35px" /></td>'
+							+ '<td>15</td>'
+							//+ '<td class="downvote" id="' + jsonData[apiCall][j].pID +'">'
+							+ '<td class="downvote">'
+							+ '<input type="image" src='+chrome.extension.getURL("images/thumb-down.png")+' name="down" class="submit" value="" height="35px" /></td>'
+							+ '<td>2</td></tr>';
 				
 			doSearch(apiCall, id, content);
 		}
@@ -219,6 +230,7 @@ $('html').on('click', function(e) {
     });
 });
 
+
 $(document).on( "click", ".upvote", function () {
 	// make a JSON message
 	// should send server whether it's an up or downvote,
@@ -226,7 +238,7 @@ $(document).on( "click", ".upvote", function () {
 	socket.send('{"vote":1, "id":"'+this.id+'"}');
 	
 	// change the color to green
-	$(this).css("border-bottom", "12px solid green");
+	//$(this).css("border-bottom", "12px solid green");
 	
 	// disable the button so the user can't send more than one upvote
 	 this.disabled = true;
@@ -234,7 +246,7 @@ $(document).on( "click", ".upvote", function () {
 
 $(document).on( "click", ".downvote", function () {
 	socket.send('{"vote":-1, "id":"'+this.id+'"}');
-	$(this).css("border-top", "12px solid red");
+	//$(this).css("border-top", "12px solid red");
 	this.disabled = true;
 });
 

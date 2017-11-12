@@ -3,7 +3,7 @@
 	"description": "My prototype testing for Maple UI",
 	"version": "2.0",
 	"manifest_version": 2,
-	"web_accessible_resources": ["jquery.min.js"],
+	"web_accessible_resources": ["jquery.min.js", "images/thumb-up.png", "images/thumb-down.png"],
 	"content_scripts": [
 		{
 			"matches": ["https://stackoverflow.com/*"],
