@@ -125,18 +125,18 @@ socket.onmessage = function(event) {
 				content += '<li data-page="'+ k +'"><a href="#" >'+ k +'</a></li>';
 			}
 		
-			content += '</ul></div></div>';
+			content += '</ul>';
 			
 			content += '<table align="right"><tbody>'
 							+ '<tr class="voteCell_'+ iOffset +'">'
 							//+ '<td class="upvote" id="' + jsonData[apiCall][j].pID +'">'
-							+ '<td class="upvote">'
-							+ '<input type="image" src='+chrome.extension.getURL("images/thumb-up.png")+' name="up" class="submit" value="" height="35px" /></td>'
-							+ '<td>15</td>'
+							+ '<td style="vertical-align:middle;" class="upvote">'
+							+ '<input type="image" src='+chrome.extension.getURL("images/thumb-up.png")+' name="up" class="submit" value="" height="50px" /></td>'
+							+ '<td style="vertical-align:middle;">15</td>'
 							//+ '<td class="downvote" id="' + jsonData[apiCall][j].pID +'">'
-							+ '<td class="downvote">'
-							+ '<input type="image" src='+chrome.extension.getURL("images/thumb-down.png")+' name="down" class="submit" value="" height="35px" /></td>'
-							+ '<td>2</td></tr>';
+							+ '<td style="vertical-align:bottom;" class="downvote">'
+							+ '<input type="image" src='+chrome.extension.getURL("images/thumb-down.png")+' name="down" class="submit" value="" height="50px" /></td>'
+							+ '<td style="vertical-align:middle;">2</td></tr></div></div>';
 				
 			doSearch(apiCall, id, content);
 		}
