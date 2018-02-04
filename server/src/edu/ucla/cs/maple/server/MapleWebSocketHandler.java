@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.eclipse.jetty.util.StringUtil;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
@@ -311,7 +310,7 @@ public class MapleWebSocketHandler {
                             HashMap<String, Violation> fixes = new HashMap<String, Violation>();
                             ArrayList<Violation> vioTemp = new ArrayList<Violation>();
                             for(Violation v : vios) {
-                                String fix = fg.generate(pattern, seq);
+                                String fix = fg.generate(pattern, seq, (APICall) item);
                                 v.fix = fix;
                                 if (fixes.containsKey(fix)) {
                                     Violation tmp = fixes.get(fix);

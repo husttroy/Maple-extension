@@ -43,7 +43,9 @@ public class PatternUtils {
                 		String args = strItem.substring(strItem.indexOf('(') + 1, strItem.indexOf(')'));
                 		ArrayList<String> argList = new ArrayList<String>();
                 		for(String arg : args.split(",")) {
-                			argList.add(arg);
+                			if(!arg.trim().isEmpty()) {
+                				argList.add(arg);
+                			}
                 		}
                         patternArray.add(new APICall(name, guard, null, null, argList));
                 	}

@@ -13,7 +13,7 @@ public class FixGenerator {
 	
 	final String indentS = "  ";
 	
-	public String generate(ArrayList<APISeqItem> pattern, ArrayList<APISeqItem> mSeq) {
+	public String generate(ArrayList<APISeqItem> pattern, ArrayList<APISeqItem> mSeq, APICall focalAPICall) {
 		String fix = "";
 		int indent = 0;
 		boolean hasSynthesizedGuard = false;
@@ -104,8 +104,13 @@ public class FixGenerator {
 							fix += call.receiver_type.toLowerCase() + "." + call.name + "("; 
 						}
 					} else {
-						// constructor
-						fix += call.name + "(";
+						if(call.name.startsWith("new ")) {
+							// constructor
+							fix += call.name + "(";
+						} else {
+							fix += focalAPICall.receiver + "." + call.name + "(";
+						}
+						
 					}
 					
 					for(int j = 0; j < call.arguments.size(); j++) {

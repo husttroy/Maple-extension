@@ -21,7 +21,8 @@ public class FixGeneratorTest {
 		args.add("String");
 		ArrayList<APISeqItem> pattern = new ArrayList<APISeqItem>();
 		pattern.add(ControlConstruct.TRY);
-		pattern.add(new APICall("new FileInputStream", "true", null, "FileInputStream", args));
+		APICall focal = new APICall("new FileInputStream", "true", "fstream", "FileInputStream", args);
+		pattern.add(focal);
 		pattern.add(ControlConstruct.END_BLOCK);
 		pattern.add(new CATCH("FileNotFoundException"));
 		pattern.add(ControlConstruct.END_BLOCK);
@@ -33,7 +34,7 @@ public class FixGeneratorTest {
 		ArrayList<APISeqItem> seq = seqs.get("foo");
 		
 		FixGenerator fixGen = new FixGenerator();
-		String fix = fixGen.generate(pattern, seq);
+		String fix = fixGen.generate(pattern, seq, focal);
 		System.out.println(fix);
 	}
 	
@@ -47,7 +48,25 @@ public class FixGeneratorTest {
 		ArrayList<APISeqItem> seq = seqs.get("foo");
 		
 		FixGenerator fixGen = new FixGenerator();
-		String fix = fixGen.generate(pattern, seq);
+		ArrayList<String> args = new ArrayList<String>();
+		args.add("\"(^\\\\*)|(\\\\*$)|\\*\", \"<$1|$2>\"");
+		String fix = fixGen.generate(pattern, seq, new APICall("replaceAll", "true", "str", "String", args));
+		System.out.println(fix);	
+	}
+	
+	@Test
+	public void testMissingAPICall() throws Exception {
+		ArrayList<APISeqItem> pattern = PatternUtils.convert("TRY, write(ByteBuffer)@true, close()@true, END_BLOCK, CATCH(Exception), END_BLOCK");
+		String path = "test/snippet_with_missing_method_call.txt";
+		String snippet = FileUtils.readFileToString(path);
+		PartialProgramAnalyzer ppa = new PartialProgramAnalyzer(snippet);
+		HashMap<String, ArrayList<APISeqItem>> seqs = ppa.retrieveAPICallSequences();
+		ArrayList<APISeqItem> seq = seqs.get("foo");
+		
+		FixGenerator fixGen = new FixGenerator();
+		ArrayList<String> args = new ArrayList<String>();
+		args.add("...");
+		String fix = fixGen.generate(pattern, seq, new APICall("write", "true", "fileOut", "FileChannel", args));
 		System.out.println(fix);	
 	}
 }
