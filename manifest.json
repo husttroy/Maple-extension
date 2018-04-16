@@ -1,6 +1,6 @@
 {
-	"name": "Maple Prototype",
-	"description": "My prototype testing for Maple UI",
+	"name": "ExampleCheck",
+	"description": "A Chrome extension that augments Stack Overflow with API usage patterns mined from GitHub",
 	"version": "2.0",
 	"manifest_version": 2,
 	"web_accessible_resources": ["jquery.min.js", "images/thumb-up.png", "images/thumb-down.png"],
