@@ -2,7 +2,7 @@
 create database if not exists maple; 
 use maple;
 drop table if exists patterns;
-create table patterns(id int auto_increment primary key, class varchar(256), method varchar(256), pattern varchar(256), support int, isRequired BOOLEAN, description varchar(256), votes int default 0, links TEXT default NULL); 
+create table patterns(id int auto_increment primary key, class varchar(256), method varchar(256), pattern varchar(256), support int, isRequired BOOLEAN, description varchar(256), votes int default 0, downvotes int default 0,links TEXT default NULL); 
 
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (0, 'SwingUtilities', 'invokeLater', 'new Runnable()@true, invokeLater(Runnable)@true', 20406, TRUE, '');
 insert into patterns (id, class, method, pattern, support, isRequired, description) values (1, 'JFrame', 'pack', 'pack()@true, setVisible(boolean)@true', 6651, TRUE, '');

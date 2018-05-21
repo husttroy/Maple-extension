@@ -94,6 +94,8 @@ public class MapleWebSocketHandler {
     			    vMap.put("pExample", StringEscapeUtils.escapeHtml4(v.fix));
     			    vMap.put("pID", p.id);
     			    vMap.put("csID", v.id);
+    			    vMap.put("pVote", p.vote);
+    			    vMap.put("pDownvote", p.downvote);
     			    
     			    if (p.links != null) {
         			    String[] linkArray = p.links.split("\\\\");
@@ -138,12 +140,27 @@ public class MapleWebSocketHandler {
 			JsonNode voteMessage;
 			try {
 				voteMessage = mapper.readValue(message, JsonNode.class);
-
 				/* TEST */
-				System.out.println("Vote:" + voteMessage.get("vote").asText()
-						+ ", ID:" + voteMessage.get("id").asText());
+				if (voteMessage.get("vote").toString()!="null") {
+					System.out.println(voteMessage.get("vote").toString());
+					System.out.println("Vote:" + voteMessage.get("vote").asText()
+							+ ", ID:" + voteMessage.get("id").asText()); 
+					// DONE: send to MySQL
+					MySQLAccess dbAccess = new MySQLAccess();
+					dbAccess.connect();
+					dbAccess.addVote(1, Integer.parseInt(voteMessage.get("id").asText()));
+					dbAccess.close();
+				}
+				if (voteMessage.get("downvote").toString()!="null") {
+					System.out.println("Downvote:" + voteMessage.get("downvote").asText()
+							+ ", ID:" + voteMessage.get("id").asText()); 
+					MySQLAccess dbAccess2 = new MySQLAccess();
+					dbAccess2.connect();
+					dbAccess2.addDownvote(1, Integer.parseInt(voteMessage.get("id").asText()));
+					dbAccess2.close();
+				}
 
-				// TODO: send to MySQL
+				
 
 			} catch (JsonGenerationException e) {
 				e.printStackTrace();

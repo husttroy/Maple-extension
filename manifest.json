@@ -1,21 +1,27 @@
 {
 	"name": "ExampleCheck",
 	"description": "A Chrome extension that augments Stack Overflow with API usage patterns mined from GitHub",
+	"browser_action": {
+		"default_popup": "popup.html"
+	},
+	"background": {
+		"scripts": ["background.js"]
+	},
 	"version": "2.0",
 	"manifest_version": 2,
-	"web_accessible_resources": ["jquery.min.js", "images/thumb-up.png", "images/thumb-down.png"],
+	"web_accessible_resources": ["jquery.min.js","waypoints.min.js", "images/thumb-up.png", "images/thumb-down.png","images/upvote.svg", "images/upvote2.svg", "images/downvote.svg", "images/downvote2.svg"],
 	"content_scripts": [
 		{
 			"matches": ["https://stackoverflow.com/*"],
 			"css": ["bootstrap.min.css", "style.css"],
-			"js": ["jquery.min.js", "bootstrap.min.js", "script.js"]
+			"js": ["jquery.min.js", "waypoints.min.js","bootstrap.min.js", "script.js"]
 		},
 		{
 			"matches": ["https://github.com/*"],
-			"js": ["jquery.min.js", "ghscript.js"]
+			"js": ["jquery.min.js", "waypoints.min.js", "ghscript.js"]
 		}
 	],
 	"permissions": [
-		"tabs", "storage", "http://localhost/","http://*/*", "https://*/*"
+		"tabs", "storage", "activeTab", "http://localhost/","http://*/*", "https://*/*"
 	]
 }

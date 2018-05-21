@@ -16,7 +16,7 @@ public class MySQLAccess {
 	final String url = "jdbc:mysql://localhost:3306/maple?autoReconnect=true&useSSL=false";
 	final String username = "root";
 	//final String password = "Password69";
-	final String password = "5887526";
+	final String password = "Mihirmathur@01";
 	String table;
 	Connection connect = null;
 	Statement statement = null;
@@ -62,10 +62,11 @@ public class MySQLAccess {
 					boolean isRequired = result.getBoolean("isRequired");
 					String description = result.getString("description");
 					int vote = result.getInt("votes");
+					int downvotes = result.getInt("downvotes");
 					String links = result.getString("links");
 					Pattern p = new Pattern(id, className, methodName, pattern,
 							support, isRequired, description,
-							vote, links);
+							vote, downvotes, links);
 					patterns.add(p);
 				}
 				
@@ -83,6 +84,22 @@ public class MySQLAccess {
 			try {
 				// construct the update
 				String update = "UPDATE patterns SET votes = votes +" + vote
+						+ " WHERE id = " + patternID + ";";
+
+				prep = connect.prepareStatement(update);
+				prep.executeUpdate();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void addDownvote(int downvote, int patternID) {
+		if (connect != null) {
+			try {
+				// construct the update
+				String update = "UPDATE patterns SET downvotes = downvotes +" + downvote
 						+ " WHERE id = " + patternID + ";";
 
 				prep = connect.prepareStatement(update);
