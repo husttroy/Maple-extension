@@ -16,7 +16,8 @@ public class MySQLAccess {
 	final String url = "jdbc:mysql://localhost:3306/maple?autoReconnect=true&useSSL=false";
 	final String username = "root";
 	//final String password = "Password69";
-	final String password = "Mihirmathur@01";
+//	final String password = "Mihirmathur@01";
+	final String password = "5887526";
 	String table;
 	Connection connect = null;
 	Statement statement = null;
