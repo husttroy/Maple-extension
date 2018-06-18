@@ -2,6 +2,8 @@ package edu.ucla.cs.maple.server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -87,7 +89,22 @@ public class MapleWebSocketHandler {
 			HashMap<String, ArrayList<HashMap<String, Object>>> apiMap = 
 			        new HashMap<String, ArrayList<HashMap<String, Object>>>();
 			
-			for (Pattern p : vioMap.keySet()) {
+			// sort the violations by the vote score of each pattern and the number of supported GitHub examples
+			ArrayList<Pattern> sortedPatterns = new ArrayList<Pattern>(vioMap.keySet());
+			Collections.sort(sortedPatterns, new Comparator<Pattern>() {
+
+		        public int compare(Pattern p1, Pattern p2) {
+		            int vote1 = p1.vote - p1.downvote;
+		            int vote2 = p2.vote - p2.downvote;
+		            if(vote1 == vote2) {
+		            	return p2.support - p1.support;
+		            } else {
+		            	return vote2 - vote1;
+		            }
+		        }
+		    });
+			
+			for (Pattern p : sortedPatterns) {
     			for (Violation v : vioMap.get(p)) {
     			    HashMap<String, Object> vMap = new HashMap<String, Object>();
     			    vMap.put("vioMessage", v.getViolationMessage(p));
@@ -159,9 +176,6 @@ public class MapleWebSocketHandler {
 					dbAccess2.addDownvote(1, Integer.parseInt(voteMessage.get("id").asText()));
 					dbAccess2.close();
 				}
-
-				
-
 			} catch (JsonGenerationException e) {
 				e.printStackTrace();
 			} catch (JsonMappingException e) {
