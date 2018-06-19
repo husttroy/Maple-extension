@@ -1,29 +1,32 @@
 % ==================================================
 % FSE demo paper
-%    4 pages in the ACM proceedings format, including all text, references and figures.
+%   4 pages in the ACM proceedings format, including all text, references and figures.
 %
-%   Accompanied by:
-%     1. a link to screencast of 5 to 10 minutes
-%     2. a link to the website for this tool
-%     3. information on tool availability and maturity 
+%   The paper must communicate clearly the following information to the audience:
+%      1. the envisioned users
+%      2. the software engineering challenge it proposes to address;
+%      3. the methodology it implies for its users
+%      4. the results of validation studies already conducted for mature tools, or the design of planned studies for early prototypes.
+%   The paper must be accompanied by a short video (between 3 and 5 minutes long)
 %
-%   Paper    submission : November 20, 2017
-%   Author   notification : January 22, 2018
-%   Camera-ready deadline : February 12, 2018
+%   Paper    submission : June 29, 2018
+%   Author   notification : July 16, 2018
+%   Camera-ready deadline : July 30, 2018
 % ==================================================
-\documentclass[sigconf]{acmart}
+\documentclass[sigconf, review, anonymous]{acmart}
 %\pdfpagewidth=8.5in
 %\pdfpageheight=11in
 \input{macros}
 
 \setcopyright{rightsretained}
+\acmConference[ESEC/FSE 2018]{The 26th ACM Joint European Software Engineering Conference and Symposium on the Foundations of Software Engineering}{4--9 November, 2018}{Lake Buena Vista, Florida, United States}
 
 % correct bad hyphenation here
 \hyphenation{op-tical net-works semi-conduc-tor}
 
 \begin{document}
 
-\title{Augmenting Stack Overflow with API Usage Patterns Mined from GitHub}
+\title{{\sc ExampleCheck}: Assessing Stack Overflow Code Snippets with API Usage Patterns Mined from GitHub}
 
 %\numberofauthors{1}
 %\author{\alignauthor Tianyi Zhang$^{\ast}$~~~Myoungkyu Song$^{\dag}$~~~Miryung Kim$^{\ast}$\\
@@ -93,5 +96,5 @@
 
 \balance
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{soap}
+\bibliography{examplecheck}
 \end{document}
