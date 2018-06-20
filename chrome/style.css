@@ -2,7 +2,7 @@
  font-family: "Proxima Nova";
  font-style: normal;
  font-weight: 700;
- src: url(‘chrome-extension://__MSG_@@extension_id__/ProximaNovaRegular.otf’); 
+ src: url(chrome.extension.getURL("ProximaNovaRegular.otf")); 
 }
 
 .popover {
