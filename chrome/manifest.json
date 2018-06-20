@@ -9,7 +9,17 @@
 	},
 	"version": "2.0",
 	"manifest_version": 2,
-	"web_accessible_resources": ["jquery.min.js","waypoints.min.js", "images/thumb-up.png", "images/thumb-down.png","images/upvote.svg", "images/upvote2.svg", "images/downvote.svg", "images/downvote2.svg"],
+	"web_accessible_resources": [
+		"jquery.min.js",
+		"waypoints.min.js", 
+		"images/thumb-up.png", 
+		"images/thumb-down.png",
+		"images/upvote.svg", 
+		"images/upvote2.svg", 
+		"images/downvote.svg", 
+		"images/downvote2.svg",
+		"ProximaNovaRegular.otf"
+	],
 	"content_scripts": [
 		{
 			"matches": ["https://stackoverflow.com/*"],
