@@ -6,7 +6,8 @@ function getRepoFromURL(url){
 
 
 // setup the websocket
-var socket = new WebSocket('ws://131.179.224.239:4000/');
+//var socket = new WebSocket('ws://131.179.224.239:4000/');
+var socket = new WebSocket('ws://127.0.0.1:4000/');
 
 // Handle any errors that occur.
 socket.onerror = function(error) {
