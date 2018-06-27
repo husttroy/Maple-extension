@@ -32,17 +32,17 @@
 \begin{figure}
 \centering
 \includegraphics[width=0.49\textwidth]{github-example-v2.pdf}
-  \caption{{\tool} will redirect the programmer to a concrete code example in GitHub that follows the correct API usage pattern, when she clicks on one of the three GitHub example links in the pop-up window.\protect\footnotemark}
+  \caption{{\tool} will redirect a programmer to a concrete code example frp, GitHub that follows a correct API usage pattern, when she clicks on a GitHub example link in the pop-up window.\protect\footnotemark}
   \label{fig:github}
 \end{figure}
 
 \footnotetext{\url{https://goo.gl/YHo1UM}}
 
-Suppose Alice wants to read attribute values from a {\ttt JSON} message using Google's Gson library. Alice searches online and finds a related Stack Overflow post with an illustrative code example.\footnote{\url{https://stackoverflow.com/questions/29860000}} Though this post is accepted as the correct answer, it does not properly use the {\ttt JsonElement.getAsString} method (line 7 in the snippet in Figure~\ref{fig:screenshot}), which gets the {\ttt string} value of a {\ttt JSON} element. For example, if the requested attribute does not exist in the {\ttt JSON} message, the preceding API call, {\ttt JsonObject.get} (line 2) may return {\ttt null}, which consequently leads to {\ttt NullPointException} when calling {\ttt getAsString} on the returned object. If Alice puts too much trust on this example, she may inadvertently follow a suboptimal solution, which might lead to runtime errors in some edge cases. 
+Suppose Alice wants to read attribute values from a {\ttt JSON} message using Google's Gson library. Alice searches online and finds a related Stack Overflow post with an illustrative code example, as shown in Figure~\ref{fig:screenshot}.\footnote{\url{https://stackoverflow.com/questions/29860000}} Though this post is accepted as a correct answer, it does not properly use the {\ttt JsonElement.getAsString} method, which gets the {\ttt string} value of a {\ttt JSON} element. For example, if the requested attribute does not exist in the {\ttt JSON} message, the preceding API call, {\ttt JsonObject.get} may return {\ttt null}, which consequently leads to {\ttt NullPointException} when calling {\ttt getAsString} on the returned object. If Alice puts too much trust on this example, she may inadvertently follow an unreliable solution, which might lead to runtime errors in some edge cases. 
 
-Alice cannot easily recognize the potential limitation in the given SO post, unless she manually investigates many other posts and finds code examples that handle such corner cases. In practice, however, programmers often inspect a handful of search results due to the limited time and attention~\cite{brandt2009two, starke2009working}. {\tool} frees Alice from this manual investigation labor by contrasting a Stack Overflow post with common API usage patterns learned from over 380K GitHub repositories. {\tool} then highlights the API calls that have potential API usage violations in the Stack Overflow post. When Alice clicks on a highlighted API call, {\tool} generates a pop-up window with detailed descriptions about the API usage violation, as shown in Figure~\ref{fig:screenshot}.
+Alice cannot easily recognize the potential limitation of the given SO post, unless she manually investigates many other posts and discovers code examples that handle such corner cases. {\tool} frees Alice from this manual investigation labor by contrasting a Stack Overflow post with common API usage patterns learned from over 380K GitHub repositories. {\tool} then highlights the API calls that have potential API usage violations in the Stack Overflow post. When Alice clicks on a highlighted API call, {\tool} generates a pop-up window with detailed descriptions about the API usage violation, as shown in Figure~\ref{fig:screenshot}.
 
-{\bf API misuse description.} To help Alice understand a detected API usage violation, {\tool} translates the violation to a short natural language description (see \ding{172} in Figure~\ref{fig:screenshot}). From the short warning message, Alice learns that she should check whether the {\ttt JsonElement} object is {\ttt null} before calling {\ttt getAsString}. Furthermore, {\tool} shows that 119 GitHub examples also follow the same API usage pattern. Such quantification can provide additional evidence about how many real-world examples are inconsistent with the given SO snippet and help Alice build confidence on the suggested API usage pattern.
+{\bf API misuse description.} To help Alice understand a detected API usage violation, {\tool} translates the violation to a short natural language description (see \ding{172} in Figure~\ref{fig:screenshot}). From the short warning message, Alice learns that she should check whether the {\ttt JsonElement} object is {\ttt null} before calling {\ttt getAsString}. Furthermore, {\tool} displays a message that 119 GitHub examples also follow this API usage pattern. Such quantification can provide additional evidence about how many real-world examples are different from the given SO snippet.
 
 \begin{figure}
 \centering
@@ -51,11 +51,11 @@ Alice cannot easily recognize the potential limitation in the given SO post, unl
   \label{fig:screenshot2}
 \end{figure}
 
-{\bf Fix suggestion.} {\tool} further sketches a fix to demonstrate how to fix the violation in the original SO post, as shown in \ding{174} in Figure~\ref{fig:screenshot}. This fix is an embodiment of the correct API usage pattern in the context of the SO post. To mitigate the gap between the fix and the original post, we reuse the same variable names in the original SO posts to generate the fix. For example, the {\ttt JsonElement} variable in the fix is named as the same variable, {\ttt match\_number} in the original post.
+{\bf Fix suggestion.} {\tool} further sketches a fix to demonstrate how to fix the violation in the original SO post, as shown in \ding{174} in Figure~\ref{fig:screenshot}. This fix is an embodiment of the correct API usage pattern in the context of the SO post. To reduce the gap between the fix and the original post, we reuse the same variable names in the original SO posts to generate the fix. For example, the {\ttt JsonElement} variable in the fix is named as the same variable, {\ttt match\_number} in the original post.
 
 \begin{figure*}[!th]
 \centering
-\includegraphics[width=0.8\textwidth]{maple-extension-v3.pdf}
+\includegraphics[width=0.8\textwidth]{examplecheck-extension.pdf}
 \caption{An overview of {\tool}'s architecture}
 \label{fig:arch}
 \end{figure*}
