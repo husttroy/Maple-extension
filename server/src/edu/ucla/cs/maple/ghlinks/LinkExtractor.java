@@ -7,6 +7,14 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Map;
+
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTParser;
+import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 import edu.ucla.cs.maple.server.MySQLAccess;
 
@@ -113,15 +121,28 @@ public class LinkExtractor {
             while (((line = br.readLine()) != null) && (count < 3))
             {
                 url = line.substring(line.indexOf("[")+1, line.indexOf("]"));
-                // if URL works, append to sb
-                if (urlExists(url)) {
-                    count++;
+                // rewrite the url to retrieve its raw code from GitHub
+                String rawFileLink = url.replace("github.com", "raw.githubusercontent.com");
+				rawFileLink = rawFileLink.replace("/blob/", "/");
+				String code = DownloadUtils.download(rawFileLink);
+                if (code != null) {
                     // add the corresponding method (i.e. the one that the
                     // API call occurs in)
                     // note: the format of each sampled example is changed to 'results[url][method][frequency] = ...' where 'frequency' indicate the number of duplicated examples.
                     method = line.substring(line.indexOf("[", line.indexOf('[') + 1)+1, line.indexOf("]", line.indexOf(']') + 1));
-                    // use a backslash as a delimiter between urls
-                    sb.append(url + "\\\\" + method + "\\\\");
+                    
+                    // find the line range of the method
+                    ASTParser p = getASTParser(code);
+        			CompilationUnit cu = (CompilationUnit) p.createAST(null);
+        			MatchMethod mm = new MatchMethod(cu, method);
+        			cu.accept(mm);
+        			if(mm.startLine > 0 && mm.endLine > 0) {
+        				count++;
+        				// append the line number to the end of the GitHub url
+        				url += "#L" + mm.startLine + "-L" + mm.endLine;
+        				// use a backslash as a delimiter between urls
+                        sb.append(url + "\\\\" + method + "\\\\");
+        			}
                 }
             }
         } catch (IOException e) {
@@ -135,6 +156,19 @@ public class LinkExtractor {
         }
         return sb.toString();
     }
+    
+    private static ASTParser getASTParser(String sourceCode) {
+		ASTParser parser = ASTParser.newParser(AST.JLS8);
+		parser.setStatementsRecovery(true);
+		parser.setKind(ASTParser.K_COMPILATION_UNIT);
+		parser.setSource(sourceCode.toCharArray());
+		parser.setResolveBindings(true);
+		parser.setBindingsRecovery(true);
+		Map options = JavaCore.getOptions();
+		JavaCore.setComplianceOptions(JavaCore.VERSION_1_5, options);
+		parser.setCompilerOptions(options);
+		return parser;
+	}
     
     // from https://stackoverflow.com/questions/4177864/checking-if-a-url-exists-or-not
     private static boolean urlExists(String URLName){
@@ -151,5 +185,5 @@ public class LinkExtractor {
            e.printStackTrace();
            return false;
         }
-      }  
+    }  
 }
