@@ -2257,9 +2257,9 @@ Computing Machinery]
     \fancyhead[LO]{\ACM@linecountL\@headfootfont\shorttitle}%
     \fancyhead[RE]{\@headfootfont\@shortauthors\ACM@linecountR}%
     \fancyhead[LE]{\ACM@linecountL\@headfootfont\acmConference@shortname,
-      Nov 4-9, 2018, Lake Buena Vista, Florida}%
+      Nov 4-9, 2018, Lake Buena Vista, FL, USA}%
     \fancyhead[RO]{\@headfootfont\acmConference@shortname,
-      Nov 4-9, 2018, Lake Buena Vista, Florida\ACM@linecountR}%
+      Nov 4-9, 2018, Lake Buena Vista, FL, USA\ACM@linecountR}%
   \fi
   \if@ACM@sigchiamode
      \fancyheadoffset[L]{\dimexpr(\marginparsep+\marginparwidth)}%
