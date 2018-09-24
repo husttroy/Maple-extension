@@ -1194,7 +1194,7 @@ Computing Machinery]
 \def\@authornotes{}
 \def\authornote#1{%
   \if@ACM@anonymous\else
-    \g@addto@macro\addresses{}%
+    \g@addto@macro\addresses{\@authornotemark}%
     \g@addto@macro\@authornotes{%
       \stepcounter{footnote}\footnotetext{#1}}%
   \fi}
@@ -2257,9 +2257,9 @@ Computing Machinery]
     \fancyhead[LO]{\ACM@linecountL\@headfootfont\shorttitle}%
     \fancyhead[RE]{\@headfootfont\@shortauthors\ACM@linecountR}%
     \fancyhead[LE]{\ACM@linecountL\@headfootfont\acmConference@shortname,
-      Nov 4-9, 2018, Lake Buena Vista, FL, USA}%
+      November 4-9, 2018, Lake Buena Vista, FL, USA}%
     \fancyhead[RO]{\@headfootfont\acmConference@shortname,
-      Nov 4-9, 2018, Lake Buena Vista, FL, USA\ACM@linecountR}%
+      November 4-9, 2018, Lake Buena Vista, FL, USA\ACM@linecountR}%
   \fi
   \if@ACM@sigchiamode
      \fancyheadoffset[L]{\dimexpr(\marginparsep+\marginparwidth)}%
