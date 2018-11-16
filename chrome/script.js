@@ -189,17 +189,28 @@ function doSearch(_apiCall, _csID, _content) {
 		} else if (($('#answer-' + parentPostID).find($(".typ:contains(" + _apiCall + ")")).html() === _apiCall)) {
 			var typ_elements = $('#answer-' + parentPostID).find($(".typ:contains(" + _apiCall + ")")); 
 			// a quick dirty fix here---assume the first one is the type declaration and the second one is the constructor call
-			var replaced;
-			if (typ_elements.length > 1) {			
-				replaced = typ_elements.eq(1).html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + _apiCall + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span class="api-misuse_'+_apiCall+'" style="background-color: #FFFF00">' + _apiCall + '</span></a>');
+			var replaced = typ_elements.first().html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + _apiCall + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span class="api-misuse_'+_apiCall+'" style="background-color: #FFFF00">' + _apiCall + '</span></a>');
+			if(typ_elements.length > 1) {
+				if(typ_elements.first().html() === _apiCall && typ_elements.eq(1).html() === _apiCall) {
+					// the first time to highlight the constructor call
+					typ_elements.eq(1).html(replaced);
+				} else {
+					// the popover is opened, need to close it
+					if (document.getElementById('popoverLink' + _csID + _apiCall) != null) {
+						document.getElementById('popoverLink' + _csID + _apiCall).setAttribute('data-content', _content);
+					}
+				}
 			} else {
-				replaced = typ_elements.first().html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + _apiCall + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span class="api-misuse_'+_apiCall+'" style="background-color: #FFFF00">' + _apiCall + '</span></a>');
+				// the constructor call is likely to be the first call, highlight it
+				typ_elements.first().html(replaced);
 			}
-			$('#answer-' + parentPostID).find($(".typ:contains(" + _apiCall + ")")).eq(1).html(replaced);
+
+			// set the popover to invisible at first
 			if (document.getElementById('popoverLink' + _csID + _apiCall) != null) {
 				document.getElementById('popoverLink' + _csID + _apiCall).setAttribute('data-content', _content);
 			}
 		} else if($('#answer-' + parentPostID).find($('.api-misuse_'+_apiCall)).html() === _apiCall) {
+			// the popover is opened, need to close it
 			if (document.getElementById('popoverLink' + _csID + _apiCall) != null) {
 				document.getElementById('popoverLink' + _csID + _apiCall).setAttribute('data-content', _content);
 			}
