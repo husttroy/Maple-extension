@@ -7,8 +7,8 @@ function getRepoFromURL(url){
 var jsonData = {}
 
 // setup the websocket
-var socket = new WebSocket('wss://131.179.224.239:4000/');
-//var socket = new WebSocket('wss://127.0.0.1:4000/');
+var socket = new WebSocket('wss://examplore.cs.ucla.edu:4000/');
+// var socket = new WebSocket('wss://127.0.0.1:4000/');
 
 // Handle any errors that occur.
 socket.onerror = function(error) {
@@ -180,29 +180,40 @@ function doSearch(_apiCall, _csID, _content) {
 		var csIndex = _csID.substr(_csID.indexOf('-') + 1);
 		// If the text is in a span of class "pln" or "typ", surround the text with a popover and highlight
 		// else, the text we found is not in the SO code snippet proper or is not an exact match
-		if (($('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).html() === _apiCall)
-			|| ($('#answer-' + parentPostID).find($(".typ:contains(" + _apiCall + ")")).html() === _apiCall)) {
-		var replaced = $('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).first().html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + _apiCall + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span class="api-misuse_'+_apiCall+'" style="background-color: #FFFF00">' + _apiCall + '</span></a>');
-		$('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).first().html(replaced);
-		if (document.getElementById('popoverLink' + _csID + _apiCall) != null) {
-			document.getElementById('popoverLink' + _csID + _apiCall).setAttribute('data-content', _content);
+		if (($('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).html() === _apiCall)) {
+			var replaced = $('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).first().html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + _apiCall + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span class="api-misuse_'+_apiCall+'" style="background-color: #FFFF00">' + _apiCall + '</span></a>');
+			$('#answer-' + parentPostID).find($(".pln:contains(" + _apiCall + ")")).first().html(replaced);
+			if (document.getElementById('popoverLink' + _csID + _apiCall) != null) {
+				document.getElementById('popoverLink' + _csID + _apiCall).setAttribute('data-content', _content);
+			}
+		} else if (($('#answer-' + parentPostID).find($(".typ:contains(" + _apiCall + ")")).html() === _apiCall)) {
+			var typ_elements = $('#answer-' + parentPostID).find($(".typ:contains(" + _apiCall + ")")); 
+			// a quick dirty fix here---assume the first one is the type declaration and the second one is the constructor call
+			var replaced;
+			if (typ_elements.length > 1) {			
+				replaced = typ_elements.eq(1).html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + _apiCall + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span class="api-misuse_'+_apiCall+'" style="background-color: #FFFF00">' + _apiCall + '</span></a>');
+			} else {
+				replaced = typ_elements.first().html().replace(_apiCall, '<a data-toggle="popover" id="popoverLink' + _csID + _apiCall + '" data-title="Potential API Misuse" data-container="body" data-html="true"><span class="api-misuse_'+_apiCall+'" style="background-color: #FFFF00">' + _apiCall + '</span></a>');
+			}
+			$('#answer-' + parentPostID).find($(".typ:contains(" + _apiCall + ")")).eq(1).html(replaced);
+			if (document.getElementById('popoverLink' + _csID + _apiCall) != null) {
+				document.getElementById('popoverLink' + _csID + _apiCall).setAttribute('data-content', _content);
+			}
+		} else if($('#answer-' + parentPostID).find($('.api-misuse_'+_apiCall)).html() === _apiCall) {
+			if (document.getElementById('popoverLink' + _csID + _apiCall) != null) {
+				document.getElementById('popoverLink' + _csID + _apiCall).setAttribute('data-content', _content);
+			}
 		}
-	}
-	else if($('#answer-' + parentPostID).find($('.api-misuse_'+_apiCall)).html() === _apiCall) {
-		if (document.getElementById('popoverLink' + _csID + _apiCall) != null) {
-			document.getElementById('popoverLink' + _csID + _apiCall).setAttribute('data-content', _content);
-		}
-	}
 
-	$('#popoverLink' + _csID + _apiCall).popover();
-	// var waypoint = new Waypoint({
-	// 	element: document.getElementById('answer-' + parentPostID),
-	// 	handler: function(direction) {
-	// 		$('#popoverLink' + _csID + _apiCall).popover('show');
-	// 	}
-	// })
+		$('#popoverLink' + _csID + _apiCall).popover();
+		// var waypoint = new Waypoint({
+		// 	element: document.getElementById('answer-' + parentPostID),
+		// 	handler: function(direction) {
+		// 		$('#popoverLink' + _csID + _apiCall).popover('show');
+		// 	}
+		// })
 
-}
+	}
 }
 
 // script for running the pagination

@@ -237,7 +237,12 @@ public class MapleWebSocketHandler {
                             ps = patterns.get(name); 
                         } else {
                             // get patterns from the database
-                            ps = dbAccess.getPatterns(name, type);
+                        	if(name.startsWith("new ")) {
+                        		// remove the new keyword and the following whilespace
+                        		ps = dbAccess.getPatterns(name.substring(4), type); 
+                        	} else {
+                                ps = dbAccess.getPatterns(name, type);
+                        	}
                             patterns.put(name, ps);
                         }
                         

@@ -204,4 +204,26 @@ public class UseCheckTest {
 		assertEquals(ControlConstruct.TRY, vios.get(0).item);
 		dbAccess.close();
 	}
+	
+	@Test
+	public void testSnippetWithConstructorCall() throws Exception {
+		String snippet = FileUtils.readFileToString("test/snippet_with_constructor_call.txt");
+		MySQLAccess dbAccess = new MySQLAccess();
+		dbAccess.connect();
+		PartialProgramAnalyzer analyzer = new PartialProgramAnalyzer(snippet);
+		HashMap<String, ArrayList<APISeqItem>> seqs = analyzer
+                .retrieveAPICallSequences();
+		ArrayList<APISeqItem> callSeq = seqs.get("foo");
+		HashSet<Pattern> pset = dbAccess.getPatterns("SimpleDateFormat", "SimpleDateFormat");
+		ArrayList<Violation> vios = new ArrayList<Violation>();
+		for(Pattern p : pset) {
+			HashSet<ArrayList<APISeqItem>> pset2 = new HashSet<ArrayList<APISeqItem>>();
+			pset2.add(PatternUtils.convert(p.pattern));
+			UseChecker checker = new UseChecker();
+			vios.addAll(checker.validate(pset2, callSeq));
+		}
+		
+		assertTrue(vios.size() > 0);
+		dbAccess.close();
+	}
 }
